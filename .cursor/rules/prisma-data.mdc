@@ -1,11 +1,11 @@
 ---
-description: Prisma y modelo de datos
+description: Prisma and data model
 globs: "apps/api/prisma/**/*"
 alwaysApply: false
 ---
 
 # Prisma
 
-- Cambios de schema → migración nombrada (`prisma migrate dev`).
-- Índices para filtros por `agencyId` + stage/assignee.
-- Seeds solo con datos demo; nunca PII real de clientes.
+- Schema changes → named migration (`prisma migrate dev`).
+- Index filters by `agencyId` + stage/assignee.
+- Seeds are demo-only; never commit real customer PII.

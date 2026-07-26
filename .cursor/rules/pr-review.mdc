@@ -1,16 +1,16 @@
 ---
-description: Checklist de revisión de PRs
+description: Pull request review checklist
 alwaysApply: false
 ---
 
 # PR Review Checklist
 
-- [ ] HU/Issue referenciada
-- [ ] AC cubiertos
-- [ ] Aislamiento multi-tenant verificado
-- [ ] Validación de inputs
-- [ ] Tests o justificación QA
-- [ ] Sin secretos / `.env`
+- [ ] Issue / HU referenced
+- [ ] Acceptance criteria covered
+- [ ] Multi-tenant isolation verified
+- [ ] Input validation present
+- [ ] Tests or QA justification
+- [ ] No secrets / `.env` files
 - [ ] Lint/build OK
-- [ ] UI coherente con mockups (si aplica)
-- [ ] Sin código muerto ni TODOs bloqueantes sin issue
+- [ ] UI matches prototype (if UI change)
+- [ ] No dead code or blocking TODOs without an issue

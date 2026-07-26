@@ -6,20 +6,20 @@ export default function HomePage() {
           TravelOS AI
         </p>
         <h1 className="text-4xl font-semibold tracking-tight">
-          Scaffold listo para Sprint 1
+          Scaffold ready — start coding Sprint 1
         </h1>
         <p className="text-lg text-zinc-600">
-          Monorepo preparado: web (Next.js), API (NestJS), shared (Zod) y Docker
-          (Postgres + Redis). Revisa los planes por rol en{" "}
+          Monorepo prepared: web (Next.js), API (NestJS), shared (Zod), and Docker
+          (Postgres + Redis). Open your role brief in{" "}
           <code className="rounded bg-zinc-200 px-1.5 py-0.5 text-sm">
-            documentacion/planes
+            documentation/plans/sprint-1
           </code>
           .
         </p>
         <ul className="list-disc space-y-2 pl-5 text-zinc-700">
           <li>API health: http://localhost:4000/api/health</li>
           <li>Web: http://localhost:3000</li>
-          <li>Wiki: producto y arquitectura</li>
+          <li>Prototype to reuse: github.com/nickamam08/TravelOS-AI-Ecosystem</li>
         </ul>
       </div>
     </main>

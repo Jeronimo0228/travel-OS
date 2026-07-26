@@ -1,14 +1,14 @@
 ---
-description: Reutilizar código del prototipo TravelOS-AI-Ecosystem (FE/UX)
+description: Reuse TravelOS-AI-Ecosystem prototype code (FE/UX)
 globs: "apps/web/**/*.{ts,tsx,css}"
 alwaysApply: false
 ---
 
-# Reutilización del prototipo UI
+# Prototype UI reuse
 
-Al trabajar UI en `apps/web`:
+When working on `apps/web` UI:
 
-1. Consulta `documentacion/planes/FUENTE-MOCKUPS-CODIGO.md`.
-2. Abre el HTML fuente en https://github.com/nickamam08/TravelOS-AI-Ecosystem (`index.html`, `crm.html`, `cotizador.html`, `itinerario.html`, `agentes.html`).
-3. Porta layout/clases/tokens a React; no inventes otra identidad visual.
-4. Screenshots en `documentacion/mockups/screenshots/` solo validan el resultado.
+1. Read `documentation/plans/MOCKUP-CODE-SOURCE.md`.
+2. Open the source HTML in https://github.com/nickamam08/TravelOS-AI-Ecosystem (`index.html`, `crm.html`, `cotizador.html`, `itinerario.html`, `agentes.html`).
+3. Port layout/classes/tokens to React; do not invent a new visual identity.
+4. Screenshots in `documentation/mockups/screenshots/` only validate the result.

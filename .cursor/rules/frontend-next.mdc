@@ -1,5 +1,5 @@
 ---
-description: Convenciones frontend Next.js
+description: Next.js frontend conventions
 globs: "apps/web/**/*.{ts,tsx}"
 alwaysApply: false
 ---
@@ -7,8 +7,9 @@ alwaysApply: false
 # Frontend
 
 - App Router (`apps/web/src/app`).
-- Server Components por defecto; Client Components solo con estado/interacción.
-- Llamadas API vía helpers en `apps/web/src/lib`.
-- UI: Tailwind; componentes reutilizables en `apps/web/src/components`.
-- No hardcodear secretos; solo `NEXT_PUBLIC_*` en cliente.
-- Accesibilidad: labels, contraste, foco visible (liderazgo UX).
+- Server Components by default; Client Components only for state/interaction.
+- API calls via helpers in `apps/web/src/lib`.
+- UI: Tailwind; reusable components under `apps/web/src/components`.
+- Reuse prototype HTML/Tailwind from TravelOS-AI-Ecosystem (see `ui-prototype-reuse` rule).
+- No secrets on the client except `NEXT_PUBLIC_*`.
+- Accessibility: labels, contrast, visible focus (UX leads).

@@ -1,12 +1,13 @@
 ---
-description: Contexto permanente TravelOS AI / PI2
+description: Permanent TravelOS AI / PI2 context
 alwaysApply: true
 ---
 
 # TravelOS AI — Core
 
-- Producto: SaaS multi-tenant para agencias de viajes (MVP piloto).
-- Código en `apps/web`, `apps/api`, `packages/shared`.
-- Docs de producto canónicas: GitHub Wiki + Issues. Artefactos locales: `documentacion/`.
-- Planes de trabajo por rol: `documentacion/planes/`.
-- Antes de implementar, identifica la HU (Issue) y respeta AC + aislamiento tenant.
+- Product: multi-tenant SaaS for travel agencies (pilot MVP).
+- Code lives in `apps/web`, `apps/api`, `packages/shared`.
+- Canonical product docs: GitHub Wiki + Issues. Local artifacts: `documentation/`.
+- Role work plans: `documentation/plans/`.
+- Before coding, identify the Issue (HU) and respect AC + tenant isolation.
+- Frontend/UX must reuse https://github.com/nickamam08/TravelOS-AI-Ecosystem (see `documentation/plans/MOCKUP-CODE-SOURCE.md`).
