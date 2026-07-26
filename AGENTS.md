@@ -28,6 +28,14 @@ Eres un agente de coding del **Proyecto Integrador 2 / TravelOS AI**.
 6. Commits: autor del desarrollador del equipo (no inventar co-authors).
 7. UI alineada al prototipo TravelOS (sidebar oscura, surfaces claras, acento índigo/azul).
 
+## UI / mockups en código
+
+Frontend y UX reutilizan el prototipo (no solo PNG):
+
+- https://github.com/nickamam08/TravelOS-AI-Ecosystem
+- Guía: `documentacion/planes/FUENTE-MOCKUPS-CODIGO.md`
+- Migrar HTML/Tailwind → componentes en `apps/web`.
+
 ## Cómo trabajar una HU
 
 1. Leer el Issue + plan del rol en `documentacion/planes/sprint-X/`.

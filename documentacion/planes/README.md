@@ -19,3 +19,11 @@ Prompts genéricos: `prompts/`.
 | Backend Developer | Samuel Madrid | `apps/api`, Prisma |
 | QA Engineer | Miguel Mercado | tests e2e/API, matrices AC |
 | UX/UI Designer | Juan José Palacio | design tokens, a11y, flujos UI |
+
+
+## Fuente de mockups en código (FE + UX)
+
+Frontend y UX **deben reutilizar** el prototipo HTML:
+
+→ [`FUENTE-MOCKUPS-CODIGO.md`](./FUENTE-MOCKUPS-CODIGO.md)  
+→ https://github.com/nickamam08/TravelOS-AI-Ecosystem
