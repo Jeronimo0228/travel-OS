@@ -1,0 +1,14 @@
+---
+description: Seguridad, auth y multi-tenant
+globs: "apps/api/**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# Seguridad API
+
+- Toda query de negocio incluye `where: { agencyId: user.agencyId }` (o equivalente).
+- Prohibido tomar `agencyId` del cliente sin verificar que coincide con el JWT/sesión.
+- Passwords solo con bcrypt (cost ≥ 10). Nunca loguear tokens ni passwords.
+- RBAC en guards Nest (`ADMIN` / `GERENTE` / `ASESOR`).
+- Validación de DTO obligatoria (Zod o class-validator + ValidationPipe).
+- No interpolar SQL crudo con input de usuario; Prisma parametriza.

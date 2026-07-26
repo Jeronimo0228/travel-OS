@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: travelos
+          POSTGRES_PASSWORD: travelos
+          POSTGRES_DB: travelos
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U travelos -d travelos"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      DATABASE_URL: postgresql://travelos:travelos@localhost:5432/travelos?schema=public
+      JWT_SECRET: ci-test-secret-not-for-production
+      NEXT_PUBLIC_API_URL: http://localhost:4000
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Install
+        run: pnpm install --frozen-lockfile
+      - name: Build shared
+        run: pnpm --filter @travelos/shared build
+      - name: Prisma generate
+        run: pnpm --filter @travelos/api prisma:generate
+      - name: Lint API
+        run: pnpm --filter @travelos/api lint
+      - name: Test API
+        run: pnpm --filter @travelos/api test
+      - name: Build API
+        run: pnpm --filter @travelos/api build
+      - name: Lint Web
+        run: pnpm --filter @travelos/web lint
+      - name: Build Web
+        run: pnpm --filter @travelos/web build

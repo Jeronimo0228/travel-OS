@@ -1,0 +1,22 @@
+{
+  "name": "travel-os",
+  "private": true,
+  "packageManager": "pnpm@9.15.0",
+  "scripts": {
+    "dev": "pnpm -r --parallel --filter @travelos/web --filter @travelos/api dev",
+    "dev:web": "pnpm --filter @travelos/web dev",
+    "dev:api": "pnpm --filter @travelos/api dev",
+    "build": "pnpm -r build",
+    "lint": "pnpm -r lint",
+    "test": "pnpm -r test",
+    "db:up": "docker compose up -d postgres redis",
+    "db:down": "docker compose down",
+    "db:migrate": "pnpm --filter @travelos/api prisma:migrate",
+    "db:seed": "pnpm --filter @travelos/api prisma:seed",
+    "format": "prettier --write \"**/*.{ts,tsx,md,json}\" --ignore-path .gitignore"
+  },
+  "devDependencies": {
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.2"
+  }
+}

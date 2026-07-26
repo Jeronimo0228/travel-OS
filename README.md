@@ -2,53 +2,54 @@
 
 Sistema Operativo Inteligente para Agencias de Viajes — **Proyecto Integrador 2 (EAFIT)**.
 
-Este repositorio versiona el **código y artefactos de desarrollo**. La documentación académica de producto (definición, arquitectura narrativa, backlog vivo, etc.) vive en GitHub Wiki e Issues.
+## Enlaces
 
-| Recurso | Ubicación |
+| Recurso | URL |
 |---|---|
-| Wiki (entregables Sprint) | https://github.com/Jeronimo0228/travel-OS/wiki |
-| Backlog / HU | https://github.com/Jeronimo0228/travel-OS/issues |
-| Milestones | https://github.com/Jeronimo0228/travel-OS/milestones |
-| Documentación local esencial | [`documentacion/`](./documentacion/) |
+| Wiki | https://github.com/Jeronimo0228/travel-OS/wiki |
+| Issues / Backlog | https://github.com/Jeronimo0228/travel-OS/issues |
+| Planes por rol | [`documentacion/planes/`](./documentacion/planes/) |
+| Reglas agentes | [`AGENTS.md`](./AGENTS.md) · [`.cursor/rules/`](./.cursor/rules/) |
 
-## Estructura del repositorio
+## Monorepo
 
 ```
-travel-OS/
-├── documentacion/     # Actas, evidencias, mockups, vision, checklist (no sustituye la Wiki)
-├── scripts/           # Automatización DevOps / bootstrap GitHub
-├── .github/           # Issue templates y futuros workflows CI
-└── README.md
+apps/web          Next.js 15 (UI agencia / portal)
+apps/api          NestJS + Prisma (API)
+packages/shared   Zod schemas + roles
+documentacion/    Actas, mockups, planes de trabajo
 ```
 
-> El código de aplicación (`apps/`, `packages/`, etc.) se agregará a partir de Sprint 1.
+## Quick start
 
-## Stack previsto (MVP)
+```bash
+pnpm install
+pnpm db:up
+cp .env.example apps/api/.env
+cp .env.example apps/web/.env.local   # ajustar NEXT_PUBLIC_API_URL
+pnpm --filter @travelos/shared build
+pnpm --filter @travelos/api prisma:generate
+pnpm --filter @travelos/api exec prisma migrate dev --name init
+pnpm --filter @travelos/api prisma:seed
+pnpm dev
+```
 
-Next.js 15 · NestJS · PostgreSQL/Prisma · Redis/BullMQ · OpenAI · Auth.js · R2/S3 · GitHub Actions
+- Web: http://localhost:3000  
+- API health: http://localhost:4000/api/health  
 
-Detalle: [Wiki → Stack](https://github.com/Jeronimo0228/travel-OS/wiki/10-Stack-Tecnologico) y [Arquitectura](https://github.com/Jeronimo0228/travel-OS/wiki/05-Arquitectura).
+## Stack
+
+Next.js 15 · NestJS · PostgreSQL/Prisma · Redis · Zod · Tailwind · GitHub Actions · (OpenAI desde Sprint 2)
 
 ## Equipo
 
-| Integrante | Rol |
+| Rol | Persona |
 |---|---|
-| Jerónimo Restrepo Ángel | Scrum Master + DevSecOps |
-| Santiago Arboleda Giraldo | Frontend Developer |
-| Samuel Madrid Ossa | Backend Developer |
-| Miguel Mercado Mercado | QA Engineer |
-| Juan José Palacio Zuluaga | UX/UI Designer |
+| SM + DevSecOps | Jerónimo Restrepo Ángel |
+| Frontend | Santiago Arboleda Giraldo |
+| Backend | Samuel Madrid Ossa |
+| QA | Miguel Mercado Mercado |
+| UX/UI | Juan José Palacio Zuluaga |
+| PO | Juan Manuel Restrepo Molina (Punto D' Partida) |
 
-**PO / Cliente:** Juan Manuel Restrepo Molina — CEO, Punto D' Partida
-
-## Scripts
-
-```bash
-# Recrear labels/milestones/issues (si hace falta)
-./scripts/bootstrap-github-project.sh
-```
-
-## Prototipo UI de referencia
-
-Mockups interactivos (externo): https://github.com/nickamam08/TravelOS-AI-Ecosystem  
-Screenshots de entrega: [`documentacion/mockups/screenshots/`](./documentacion/mockups/screenshots/)
+Cada quien trabaja su brief en `documentacion/planes/sprint-N/<rol>.md` (incluye prompt para agente de coding).

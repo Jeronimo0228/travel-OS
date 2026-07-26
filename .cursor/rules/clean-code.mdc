@@ -1,0 +1,15 @@
+---
+description: Clean code y estándares TypeScript
+globs: "**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# Clean Code
+
+- Prefiere claridad sobre cleverness. Nombres de dominio (`Lead`, `Agency`, `assigneeId`).
+- Funciones ≤ ~40 líneas cuando sea razonable; extrae helpers.
+- Evita `any`. Usa tipos de Prisma / Zod inferidos.
+- No dejes `console.log` de debug en código de producción; usa logger Nest o elimina.
+- No comentes lo obvio; documenta solo invariantes no triviales (tenancy, auth).
+- Early returns > nesting profundo.
+- No dupliques schemas: vive en `@travelos/shared` si se usa en web y api.

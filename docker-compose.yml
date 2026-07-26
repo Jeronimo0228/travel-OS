@@ -1,0 +1,36 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: travelos-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: travelos
+      POSTGRES_PASSWORD: travelos
+      POSTGRES_DB: travelos
+    ports:
+      - "5432:5432"
+    volumes:
+      - travelos_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U travelos -d travelos"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: travelos-redis
+    restart: unless-stopped
+    ports:
+      - "6380:6379"
+    volumes:
+      - travelos_redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  travelos_pg:
+  travelos_redis:

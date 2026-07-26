@@ -1,0 +1,14 @@
+---
+description: Convenciones frontend Next.js
+globs: "apps/web/**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# Frontend
+
+- App Router (`apps/web/src/app`).
+- Server Components por defecto; Client Components solo con estado/interacción.
+- Llamadas API vía helpers en `apps/web/src/lib`.
+- UI: Tailwind; componentes reutilizables en `apps/web/src/components`.
+- No hardcodear secretos; solo `NEXT_PUBLIC_*` en cliente.
+- Accesibilidad: labels, contraste, foco visible (liderazgo UX).

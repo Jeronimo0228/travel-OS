@@ -1,0 +1,109 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  GERENTE
+  ASESOR
+}
+
+enum LeadStage {
+  PROSPECTO
+  COTIZANDO
+  CIERRE
+  GANADO
+  PERDIDO
+}
+
+model Agency {
+  id           String   @id @default(cuid())
+  name         String
+  slug         String   @unique
+  logoUrl      String?
+  primaryColor String   @default("#4648d4")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  users      User[]
+  leads      Lead[]
+  tasks      Task[]
+  auditLogs  AuditLog[]
+}
+
+model User {
+  id           String   @id @default(cuid())
+  agencyId     String
+  email        String
+  passwordHash String
+  name         String
+  role         Role     @default(ASESOR)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  agency         Agency @relation(fields: [agencyId], references: [id], onDelete: Cascade)
+  assignedLeads  Lead[] @relation("LeadAssignee")
+  tasks          Task[]
+  auditLogs      AuditLog[]
+
+  @@unique([agencyId, email])
+  @@index([agencyId])
+}
+
+model Lead {
+  id          String    @id @default(cuid())
+  agencyId    String
+  name        String
+  email       String?
+  phone       String?
+  destination String?
+  notes       String?
+  stage       LeadStage @default(PROSPECTO)
+  assigneeId  String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  agency   Agency @relation(fields: [agencyId], references: [id], onDelete: Cascade)
+  assignee User?  @relation("LeadAssignee", fields: [assigneeId], references: [id])
+  tasks    Task[]
+
+  @@index([agencyId, stage])
+  @@index([agencyId, assigneeId])
+}
+
+model Task {
+  id          String    @id @default(cuid())
+  agencyId    String
+  leadId      String
+  title       String
+  dueAt       DateTime?
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  createdById String?
+
+  agency    Agency @relation(fields: [agencyId], references: [id], onDelete: Cascade)
+  lead      Lead   @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  createdBy User?  @relation(fields: [createdById], references: [id])
+
+  @@index([agencyId, leadId])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  agencyId  String
+  userId    String?
+  action    String
+  meta      Json?
+  createdAt DateTime @default(now())
+
+  agency Agency @relation(fields: [agencyId], references: [id], onDelete: Cascade)
+  user   User?  @relation(fields: [userId], references: [id])
+
+  @@index([agencyId, createdAt])
+}
