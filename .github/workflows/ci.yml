@@ -45,7 +45,7 @@ jobs:
       - name: Lint API
         run: pnpm --filter @travelos/api lint
       - name: Test API
-        run: pnpm --filter @travelos/api test --passWithNoTests
+        run: pnpm --filter @travelos/api test
       - name: Build API
         run: pnpm --filter @travelos/api build
       - name: Lint Web

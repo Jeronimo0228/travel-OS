@@ -21,4 +21,4 @@ async function bootstrap() {
 
   console.log(`TravelOS API listening on http://localhost:${port}/api`);
 }
-bootstrap();
+void bootstrap();
