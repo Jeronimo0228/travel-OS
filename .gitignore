@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials*.json
+service-account*.json
+
+# Build / IDE
+dist/
+build/
+.next/
+.turbo/
+coverage/
+.DS_Store
+.idea/
+.vscode/
+*.log
+
+# Local tooling
+.playwright/

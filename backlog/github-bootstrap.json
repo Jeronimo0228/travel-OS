@@ -1,0 +1,319 @@
+{
+  "milestones": [
+    {
+      "title": "Sprint 0 — Definición del Producto",
+      "description": "Definición, arquitectura, mockups, backlog. Sin desarrollo productivo.",
+      "due_on": "2026-08-05T23:59:59Z",
+      "state": "closed"
+    },
+    {
+      "title": "Sprint 1 — Fundación + CRM núcleo",
+      "description": "Auth, tenancy, CRM básico. Estado MVP: ~25%.",
+      "due_on": "2026-08-19T23:59:59Z"
+    },
+    {
+      "title": "Sprint 2 — Cotizador IA + Itinerarios",
+      "description": "Quoting NL, PDF, itinerarios, knowledge base. Estado MVP: ~65%.",
+      "due_on": "2026-09-02T23:59:59Z"
+    },
+    {
+      "title": "Sprint 3 — Portal + Insights + Piloto",
+      "description": "Portal viajero, dashboard, automatización. MVP piloto ~100% alcance acordado.",
+      "due_on": "2026-09-16T23:59:59Z"
+    }
+  ],
+  "labels": [
+    {
+      "name": "epic:e1",
+      "color": "1D76DB",
+      "description": "Fundación"
+    },
+    {
+      "name": "epic:e2",
+      "color": "5319E7",
+      "description": "CRM"
+    },
+    {
+      "name": "epic:e3",
+      "color": "B60205",
+      "description": "Cotizador/Itinerarios"
+    },
+    {
+      "name": "epic:e4",
+      "color": "0E8A16",
+      "description": "Portal/Insights"
+    },
+    {
+      "name": "sprint:0",
+      "color": "ededed",
+      "description": "Sprint 0"
+    },
+    {
+      "name": "sprint:1",
+      "color": "FBCA04",
+      "description": "Sprint 1"
+    },
+    {
+      "name": "sprint:2",
+      "color": "F9D0C4",
+      "description": "Sprint 2"
+    },
+    {
+      "name": "sprint:3",
+      "color": "C5DEF5",
+      "description": "Sprint 3"
+    },
+    {
+      "name": "type:user-story",
+      "color": "a2eeef",
+      "description": "HU"
+    },
+    {
+      "name": "type:docs",
+      "color": "d4c5f9",
+      "description": "Documentación"
+    }
+  ],
+  "issues": [
+    {
+      "title": "HU-01: Registro de agencia (tenant)",
+      "body": "## Historia\nComo dueño de agencia, quiero registrar mi agencia en TravelOS, para operar en un espacio aislado multi-tenant.\n\n## Metadatos\n- Épica: E1\n- Sprint: 1\n- Estimación: 5 sp\n- Responsable sugerido: Samuel Madrid Ossa\n\n## Definition of Done\n- [ ] AC cumplidos\n- [ ] Casos de prueba\n- [ ] CI verde\n- [ ] Wiki/Issue actualizado\n",
+      "labels": [
+        "epic:e1",
+        "sprint:1",
+        "type:user-story"
+      ],
+      "milestone": "Sprint 1 — Fundación + CRM núcleo"
+    },
+    {
+      "title": "HU-02: Login y sesión segura",
+      "body": "## Historia\nComo usuario de agencia, quiero autenticarme de forma segura, para acceder a mis módulos autorizados.\n\n## Metadatos\n- Épica: E1\n- Sprint: 1\n- Estimación: 5 sp\n- Responsable sugerido: Samuel Madrid Ossa\n\n## Definition of Done\n- [ ] AC cumplidos\n- [ ] Casos de prueba\n- [ ] CI verde\n- [ ] Wiki/Issue actualizado\n",
+      "labels": [
+        "epic:e1",
+        "sprint:1",
+        "type:user-story"
+      ],
+      "milestone": "Sprint 1 — Fundación + CRM núcleo"
+    },
+    {
+      "title": "HU-03: RBAC (gerente, asesor, admin)",
+      "body": "## Historia\nComo admin, quiero asignar roles, para controlar permisos por función.\n\n## Metadatos\n- Épica: E1\n- Sprint: 1\n- Estimación: 5 sp\n- Responsable sugerido: Samuel Madrid Ossa\n\n## Definition of Done\n- [ ] AC cumplidos\n- [ ] Casos de prueba\n- [ ] CI verde\n- [ ] Wiki/Issue actualizado\n",
+      "labels": [
+        "epic:e1",
+        "sprint:1",
+        "type:user-story"
+      ],
+      "milestone": "Sprint 1 — Fundación + CRM núcleo"
+    },
+    {
+      "title": "HU-04: Branding básico de marca blanca",
+      "body": "## Historia\nComo gerente, quiero cargar logo y color primario, para ver la app con la identidad de mi agencia.\n\n## Metadatos\n- Épica: E1\n- Sprint: 1\n- Estimación: 3 sp\n- Responsable sugerido: Santiago Arboleda Giraldo\n\n## Definition of Done\n- [ ] AC cumplidos\n- [ ] Casos de prueba\n- [ ] CI verde\n- [ ] Wiki/Issue actualizado\n",
+      "labels": [
+        "epic:e1",
+        "sprint:1",
+        "type:user-story"
+      ],
+      "milestone": "Sprint 1 — Fundación + CRM núcleo"
+    },
+    {
+      "title": "HU-05: Auditoría de acciones sensibles",
+      "body": "## Historia\nComo DevSecOps, quiero registrar auditoría de login y cambios de rol, para trazabilidad de seguridad.\n\n## Metadatos\n- Épica: E1\n- Sprint: 1\n- Estimación: 3 sp\n- Responsable sugerido: Jerónimo Restrepo Ángel\n\n## Definition of Done\n- [ ] AC cumplidos\n- [ ] Casos de prueba\n- [ ] CI verde\n- [ ] Wiki/Issue actualizado\n",
+      "labels": [
+        "epic:e1",
+        "sprint:1",
+        "type:user-story"
+      ],
+      "milestone": "Sprint 1 — Fundación + CRM núcleo"
+    },
+    {
+      "title": "HU-06: Healthcheck y CI base",
+      "body": "## Historia\nComo DevSecOps, quiero pipeline CI (lint/test/build) y healthcheck, para asegurar calidad desde Sprint 1.\n\n## Metadatos\n- Épica: E1\n- Sprint: 1\n- Estimación: 3 sp\n- Responsable sugerido: Jerónimo Restrepo Ángel\n\n## Definition of Done\n- [ ] AC cumplidos\n- [ ] Casos de prueba\n- [ ] CI verde\n- [ ] Wiki/Issue actualizado\n",
+      "labels": [
+        "epic:e1",
+        "sprint:1",
+        "type:user-story"
+      ],
+      "milestone": "Sprint 1 — Fundación + CRM núcleo"
+    },
+    {
+      "title": "HU-07: Crear y editar leads",
+      "body": "## Historia\nComo asesor, quiero crear y editar leads, para centralizar prospectos.\n\n## Metadatos\n- Épica: E2\n- Sprint: 1\n- Estimación: 5 sp\n- Responsable sugerido: Samuel Madrid Ossa\n\n## Definition of Done\n- [ ] AC cumplidos\n- [ ] Casos de prueba\n- [ ] CI verde\n- [ ] Wiki/Issue actualizado\n",
+      "labels": [
+        "epic:e2",
+        "sprint:1",
+        "type:user-story"
+      ],
+      "milestone": "Sprint 1 — Fundación + CRM núcleo"
+    },
+    {
+      "title": "HU-08: Pipeline visual por stages",
+      "body": "## Historia\nComo asesor, quiero mover leads entre stages del embudo, para ver el estado de ventas.\n\n## Metadatos\n- Épica: E2\n- Sprint: 1\n- Estimación: 5 sp\n- Responsable sugerido: Santiago Arboleda Giraldo\n\n## Definition of Done\n- [ ] AC cumplidos\n- [ ] Casos de prueba\n- [ ] CI verde\n- [ ] Wiki/Issue actualizado\n",
+      "labels": [
+        "epic:e2",
+        "sprint:1",
+        "type:user-story"
+      ],
+      "milestone": "Sprint 1 — Fundación + CRM núcleo"
+    },
+    {
+      "title": "HU-09: Tareas y recordatorios",
+      "body": "## Historia\nComo asesor, quiero crear tareas/recordatorios en un lead, para no perder seguimientos.\n\n## Metadatos\n- Épica: E2\n- Sprint: 1\n- Estimación: 3 sp\n- Responsable sugerido: Santiago Arboleda Giraldo\n\n## Definition of Done\n- [ ] AC cumplidos\n- [ ] Casos de prueba\n- [ ] CI verde\n- [ ] Wiki/Issue actualizado\n",
+      "labels": [
+        "epic:e2",
+        "sprint:1",
+        "type:user-story"
+      ],
+      "milestone": "Sprint 1 — Fundación + CRM núcleo"
+    },
+    {
+      "title": "HU-10: Copiloto IA de priorización",
+      "body": "## Historia\nComo asesor, quiero ver qué lead contactar ahora (score IA), para responder primero a los de mayor probabilidad.\n\n## Metadatos\n- Épica: E2\n- Sprint: 2\n- Estimación: 8 sp\n- Responsable sugerido: Samuel Madrid Ossa\n\n## Definition of Done\n- [ ] AC cumplidos\n- [ ] Casos de prueba\n- [ ] CI verde\n- [ ] Wiki/Issue actualizado\n",
+      "labels": [
+        "epic:e2",
+        "sprint:2",
+        "type:user-story"
+      ],
+      "milestone": "Sprint 2 — Cotizador IA + Itinerarios"
+    },
+    {
+      "title": "HU-11: Listado y filtros de clientes",
+      "body": "## Historia\nComo asesor, quiero filtrar leads por stage/destino/asesor, para organizar mi trabajo diario.\n\n## Metadatos\n- Épica: E2\n- Sprint: 1\n- Estimación: 3 sp\n- Responsable sugerido: Santiago Arboleda Giraldo\n\n## Definition of Done\n- [ ] AC cumplidos\n- [ ] Casos de prueba\n- [ ] CI verde\n- [ ] Wiki/Issue actualizado\n",
+      "labels": [
+        "epic:e2",
+        "sprint:1",
+        "type:user-story"
+      ],
+      "milestone": "Sprint 1 — Fundación + CRM núcleo"
+    },
+    {
+      "title": "HU-12: Asignación de lead a asesor",
+      "body": "## Historia\nComo gerente, quiero asignar leads a asesores, para distribuir la carga comercial.\n\n## Metadatos\n- Épica: E2\n- Sprint: 1\n- Estimación: 2 sp\n- Responsable sugerido: Samuel Madrid Ossa\n\n## Definition of Done\n- [ ] AC cumplidos\n- [ ] Casos de prueba\n- [ ] CI verde\n- [ ] Wiki/Issue actualizado\n",
+      "labels": [
+        "epic:e2",
+        "sprint:1",
+        "type:user-story"
+      ],
+      "milestone": "Sprint 1 — Fundación + CRM núcleo"
+    },
+    {
+      "title": "HU-13: Cotización por lenguaje natural",
+      "body": "## Historia\nComo asesor, quiero describir un viaje en texto natural, para obtener opciones generadas por IA.\n\n## Metadatos\n- Épica: E3\n- Sprint: 2\n- Estimación: 8 sp\n- Responsable sugerido: Samuel Madrid Ossa\n\n## Definition of Done\n- [ ] AC cumplidos\n- [ ] Casos de prueba\n- [ ] CI verde\n- [ ] Wiki/Issue actualizado\n",
+      "labels": [
+        "epic:e3",
+        "sprint:2",
+        "type:user-story"
+      ],
+      "milestone": "Sprint 2 — Cotizador IA + Itinerarios"
+    },
+    {
+      "title": "HU-14: Opciones de cotización comparables",
+      "body": "## Historia\nComo asesor, quiero ver 2–3 opciones con precio estimado, para presentar alternativas al cliente.\n\n## Metadatos\n- Épica: E3\n- Sprint: 2\n- Estimación: 5 sp\n- Responsable sugerido: Santiago Arboleda Giraldo\n\n## Definition of Done\n- [ ] AC cumplidos\n- [ ] Casos de prueba\n- [ ] CI verde\n- [ ] Wiki/Issue actualizado\n",
+      "labels": [
+        "epic:e3",
+        "sprint:2",
+        "type:user-story"
+      ],
+      "milestone": "Sprint 2 — Cotizador IA + Itinerarios"
+    },
+    {
+      "title": "HU-15: Exportar cotización a PDF",
+      "body": "## Historia\nComo asesor, quiero exportar la cotización a PDF, para enviarla por WhatsApp/correo.\n\n## Metadatos\n- Épica: E3\n- Sprint: 2\n- Estimación: 5 sp\n- Responsable sugerido: Samuel Madrid Ossa\n\n## Definition of Done\n- [ ] AC cumplidos\n- [ ] Casos de prueba\n- [ ] CI verde\n- [ ] Wiki/Issue actualizado\n",
+      "labels": [
+        "epic:e3",
+        "sprint:2",
+        "type:user-story"
+      ],
+      "milestone": "Sprint 2 — Cotizador IA + Itinerarios"
+    },
+    {
+      "title": "HU-16: Constructor de itinerario por días",
+      "body": "## Historia\nComo asesor, quiero armar un itinerario día a día, para detallar la experiencia del viaje.\n\n## Metadatos\n- Épica: E3\n- Sprint: 2\n- Estimación: 8 sp\n- Responsable sugerido: Santiago Arboleda Giraldo\n\n## Definition of Done\n- [ ] AC cumplidos\n- [ ] Casos de prueba\n- [ ] CI verde\n- [ ] Wiki/Issue actualizado\n",
+      "labels": [
+        "epic:e3",
+        "sprint:2",
+        "type:user-story"
+      ],
+      "milestone": "Sprint 2 — Cotizador IA + Itinerarios"
+    },
+    {
+      "title": "HU-17: Vincular cotización a lead",
+      "body": "## Historia\nComo asesor, quiero asociar cotizaciones a un lead, para mantener trazabilidad comercial.\n\n## Metadatos\n- Épica: E3\n- Sprint: 2\n- Estimación: 3 sp\n- Responsable sugerido: Samuel Madrid Ossa\n\n## Definition of Done\n- [ ] AC cumplidos\n- [ ] Casos de prueba\n- [ ] CI verde\n- [ ] Wiki/Issue actualizado\n",
+      "labels": [
+        "epic:e3",
+        "sprint:2",
+        "type:user-story"
+      ],
+      "milestone": "Sprint 2 — Cotizador IA + Itinerarios"
+    },
+    {
+      "title": "HU-18: Catálogo seed de hoteles/actividades",
+      "body": "## Historia\nComo sistema, quiero un catálogo inicial mock, para cotizar sin GDS real en el piloto.\n\n## Metadatos\n- Épica: E3\n- Sprint: 2\n- Estimación: 5 sp\n- Responsable sugerido: Samuel Madrid Ossa\n\n## Definition of Done\n- [ ] AC cumplidos\n- [ ] Casos de prueba\n- [ ] CI verde\n- [ ] Wiki/Issue actualizado\n",
+      "labels": [
+        "epic:e3",
+        "sprint:2",
+        "type:user-story"
+      ],
+      "milestone": "Sprint 2 — Cotizador IA + Itinerarios"
+    },
+    {
+      "title": "HU-19: Portal: ver itinerario del viaje",
+      "body": "## Historia\nComo viajero, quiero abrir mi portal y ver el itinerario, para consultar mi viaje desde el celular.\n\n## Metadatos\n- Épica: E4\n- Sprint: 3\n- Estimación: 5 sp\n- Responsable sugerido: Santiago Arboleda Giraldo\n\n## Definition of Done\n- [ ] AC cumplidos\n- [ ] Casos de prueba\n- [ ] CI verde\n- [ ] Wiki/Issue actualizado\n",
+      "labels": [
+        "epic:e4",
+        "sprint:3",
+        "type:user-story"
+      ],
+      "milestone": "Sprint 3 — Portal + Insights + Piloto"
+    },
+    {
+      "title": "HU-20: Portal: documentos del viaje",
+      "body": "## Historia\nComo viajero, quiero ver documentos asociados (pasaporte/voucher), para tener todo centralizado.\n\n## Metadatos\n- Épica: E4\n- Sprint: 3\n- Estimación: 5 sp\n- Responsable sugerido: Santiago Arboleda Giraldo\n\n## Definition of Done\n- [ ] AC cumplidos\n- [ ] Casos de prueba\n- [ ] CI verde\n- [ ] Wiki/Issue actualizado\n",
+      "labels": [
+        "epic:e4",
+        "sprint:3",
+        "type:user-story"
+      ],
+      "milestone": "Sprint 3 — Portal + Insights + Piloto"
+    },
+    {
+      "title": "HU-21: Portal: chat básico con agencia",
+      "body": "## Historia\nComo viajero, quiero chatear con la agencia, para resolver dudas del viaje.\n\n## Metadatos\n- Épica: E4\n- Sprint: 3\n- Estimación: 5 sp\n- Responsable sugerido: Samuel Madrid Ossa\n\n## Definition of Done\n- [ ] AC cumplidos\n- [ ] Casos de prueba\n- [ ] CI verde\n- [ ] Wiki/Issue actualizado\n",
+      "labels": [
+        "epic:e4",
+        "sprint:3",
+        "type:user-story"
+      ],
+      "milestone": "Sprint 3 — Portal + Insights + Piloto"
+    },
+    {
+      "title": "HU-22: Dashboard KPIs gerenciales",
+      "body": "## Historia\nComo gerente, quiero ver ventas, conversión y desempeño por asesor/destino, para tomar decisiones.\n\n## Metadatos\n- Épica: E4\n- Sprint: 3\n- Estimación: 8 sp\n- Responsable sugerido: Santiago Arboleda Giraldo\n\n## Definition of Done\n- [ ] AC cumplidos\n- [ ] Casos de prueba\n- [ ] CI verde\n- [ ] Wiki/Issue actualizado\n",
+      "labels": [
+        "epic:e4",
+        "sprint:3",
+        "type:user-story"
+      ],
+      "milestone": "Sprint 3 — Portal + Insights + Piloto"
+    },
+    {
+      "title": "HU-23: Automatización de recordatorio de follow-up",
+      "body": "## Historia\nComo gerente, quiero que el sistema recuerde follow-ups vencidos, para no perder leads fríos.\n\n## Metadatos\n- Épica: E4\n- Sprint: 3\n- Estimación: 5 sp\n- Responsable sugerido: Samuel Madrid Ossa\n\n## Definition of Done\n- [ ] AC cumplidos\n- [ ] Casos de prueba\n- [ ] CI verde\n- [ ] Wiki/Issue actualizado\n",
+      "labels": [
+        "epic:e4",
+        "sprint:3",
+        "type:user-story"
+      ],
+      "milestone": "Sprint 3 — Portal + Insights + Piloto"
+    },
+    {
+      "title": "HU-24: Base de conocimiento de la agencia para IA",
+      "body": "## Historia\nComo admin, quiero cargar políticas/tono/FAQs de mi agencia, para que la IA responda como nosotros.\n\n## Metadatos\n- Épica: E4\n- Sprint: 2\n- Estimación: 5 sp\n- Responsable sugerido: Jerónimo Restrepo Ángel\n\n## Definition of Done\n- [ ] AC cumplidos\n- [ ] Casos de prueba\n- [ ] CI verde\n- [ ] Wiki/Issue actualizado\n",
+      "labels": [
+        "epic:e4",
+        "sprint:2",
+        "type:user-story"
+      ],
+      "milestone": "Sprint 2 — Cotizador IA + Itinerarios"
+    }
+  ]
+}
