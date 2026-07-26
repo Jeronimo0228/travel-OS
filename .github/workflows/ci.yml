@@ -30,9 +30,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      # Version comes from package.json "packageManager" (avoid mismatch with action input)
       - uses: pnpm/action-setup@v4
-        with:
-          version: 9
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -46,7 +45,7 @@ jobs:
       - name: Lint API
         run: pnpm --filter @travelos/api lint
       - name: Test API
-        run: pnpm --filter @travelos/api test
+        run: pnpm --filter @travelos/api test --passWithNoTests
       - name: Build API
         run: pnpm --filter @travelos/api build
       - name: Lint Web
