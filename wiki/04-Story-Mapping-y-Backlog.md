@@ -40,8 +40,8 @@ flowchart TB
 
 ## Backlog
 
-- Product Backlog completo (≥20 HU): [`backlog/product-backlog.md`](../backlog/product-backlog.md)
+- Product Backlog completo (≥20 HU): [`backlog/product-backlog.md`](https://github.com/Jeronimo0228/travel-OS/blob/main/backlog/product-backlog.md)
 - Issues GitHub: etiquetas `epic:e1..e4`, `sprint:0|1|2|3`
-- Sprint 1 detallado: [`backlog/sprint-1-planning.md`](../backlog/sprint-1-planning.md)
+- Sprint 1 detallado: [`backlog/sprint-1-planning.md`](https://github.com/Jeronimo0228/travel-OS/blob/main/backlog/sprint-1-planning.md)
 
 **Link de backlog en plataforma:** https://github.com/Jeronimo0228/travel-OS/issues

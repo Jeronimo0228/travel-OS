@@ -18,7 +18,8 @@ Plataforma SaaS multi-tenant con IA que centraliza la operación comercial, admi
 
 Entrega de **definición de producto** (sin desarrollo de features productivas aún):
 
-- [Wiki del proyecto](./wiki/Home.md)
+- [Wiki del proyecto (GitHub Wiki)](https://github.com/Jeronimo0228/travel-OS/wiki)
+- [Wiki (espejo en repo)](./wiki/Home.md)
 - [Definición del producto](./wiki/01-Definicion-del-Producto.md)
 - [Arquitectura y stack](./wiki/05-Arquitectura.md)
 - [Mockups / prototipo](./wiki/06-Diseno-de-Interfaces.md)

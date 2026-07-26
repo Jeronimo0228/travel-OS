@@ -15,28 +15,28 @@ Este prototipo permite pruebas de aceptación tempranas con el PO y será la bas
 
 | Pantalla | Archivo |
 |---|---|
-| Panel de Control / Inteligencia | [`docs/mockups/screenshots/index.png`](../docs/mockups/screenshots/index.png) |
-| CRM Inteligente | [`docs/mockups/screenshots/crm.png`](../docs/mockups/screenshots/crm.png) |
-| Cotizador IA | [`docs/mockups/screenshots/cotizador.png`](../docs/mockups/screenshots/cotizador.png) |
-| Constructor de Itinerario | [`docs/mockups/screenshots/itinerario.png`](../docs/mockups/screenshots/itinerario.png) |
-| Centro de Agentes | [`docs/mockups/screenshots/agentes.png`](../docs/mockups/screenshots/agentes.png) |
-| Agents (EN) | [`docs/mockups/screenshots/agentes-en.png`](../docs/mockups/screenshots/agentes-en.png) |
+| Panel de Control / Inteligencia | [`docs/mockups/screenshots/index.png`](https://raw.githubusercontent.com/Jeronimo0228/travel-OS/main/docs/mockups/screenshots/index.png) |
+| CRM Inteligente | [`docs/mockups/screenshots/crm.png`](https://raw.githubusercontent.com/Jeronimo0228/travel-OS/main/docs/mockups/screenshots/crm.png) |
+| Cotizador IA | [`docs/mockups/screenshots/cotizador.png`](https://raw.githubusercontent.com/Jeronimo0228/travel-OS/main/docs/mockups/screenshots/cotizador.png) |
+| Constructor de Itinerario | [`docs/mockups/screenshots/itinerario.png`](https://raw.githubusercontent.com/Jeronimo0228/travel-OS/main/docs/mockups/screenshots/itinerario.png) |
+| Centro de Agentes | [`docs/mockups/screenshots/agentes.png`](https://raw.githubusercontent.com/Jeronimo0228/travel-OS/main/docs/mockups/screenshots/agentes.png) |
+| Agents (EN) | [`docs/mockups/screenshots/agentes-en.png`](https://raw.githubusercontent.com/Jeronimo0228/travel-OS/main/docs/mockups/screenshots/agentes-en.png) |
 
 ### Vista embebida (Panel)
 
-![Panel TravelOS AI](../docs/mockups/screenshots/index.png)
+![Panel TravelOS AI](https://raw.githubusercontent.com/Jeronimo0228/travel-OS/main/docs/mockups/screenshots/index.png)
 
 ### Vista embebida (CRM)
 
-![CRM TravelOS AI](../docs/mockups/screenshots/crm.png)
+![CRM TravelOS AI](https://raw.githubusercontent.com/Jeronimo0228/travel-OS/main/docs/mockups/screenshots/crm.png)
 
 ### Vista embebida (Cotizador)
 
-![Cotizador TravelOS AI](../docs/mockups/screenshots/cotizador.png)
+![Cotizador TravelOS AI](https://raw.githubusercontent.com/Jeronimo0228/travel-OS/main/docs/mockups/screenshots/cotizador.png)
 
 ### Vista embebida (Itinerario)
 
-![Itinerario TravelOS AI](../docs/mockups/screenshots/itinerario.png)
+![Itinerario TravelOS AI](https://raw.githubusercontent.com/Jeronimo0228/travel-OS/main/docs/mockups/screenshots/itinerario.png)
 
 ## Prueba de prototipo (casos iniciales)
 

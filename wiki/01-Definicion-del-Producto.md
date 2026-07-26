@@ -143,7 +143,7 @@ flowchart TD
 
 **Participantes:** equipo completo Grupo 2 + Juan Manuel Restrepo Molina (PO).  
 **Cuándo:** Kickoff 22-jul-2026; Planning 24-jul-2026.  
-**Evidencias:** ver [Ceremonias](./08-Ceremonias.md) y `docs/elicitation/`.
+**Evidencias:** ver [Ceremonias](08-Ceremonias) y `docs/elicitation/`.
 
 **RF principales (MVP)**
 
@@ -176,4 +176,4 @@ flowchart TD
 
 ## Sección 3. User Story Mapping y Backlog
 
-Ver detalle completo en [04 — Story Mapping y Backlog](./04-Story-Mapping-y-Backlog.md), [`backlog/product-backlog.md`](../backlog/product-backlog.md) y [`backlog/sprint-1-planning.md`](../backlog/sprint-1-planning.md).
+Ver detalle completo en [04 — Story Mapping y Backlog](04-Story-Mapping-y-Backlog), [`backlog/product-backlog.md`](https://github.com/Jeronimo0228/travel-OS/blob/main/backlog/product-backlog.md) y [`backlog/sprint-1-planning.md`](https://github.com/Jeronimo0228/travel-OS/blob/main/backlog/sprint-1-planning.md).

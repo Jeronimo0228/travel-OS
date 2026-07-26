@@ -6,11 +6,11 @@
 
 | Entregable | Peso | Artefacto en repo |
 |---|---:|---|
-| Repositorios, Wiki, Acuerdos, Evidencias ceremonias | 10% | Este repo + [Acuerdos](./07-Acuerdos-con-el-Cliente.md) + [Ceremonias](./08-Ceremonias.md) |
-| Definición del Producto | 20% | [01 — Definición](./01-Definicion-del-Producto.md) |
-| Diseño de la Arquitectura | 30% | [05 — Arquitectura](./05-Arquitectura.md) |
-| Mockups de Interfaces | 20% | [06 — Interfaces](./06-Diseno-de-Interfaces.md) |
-| Presentación / Sustentación | 20% | [09 — Presentación](./09-Presentacion-Sustentacion.md) |
+| Repositorios, Wiki, Acuerdos, Evidencias ceremonias | 10% | Este repo + [Acuerdos](07-Acuerdos-con-el-Cliente) + [Ceremonias](08-Ceremonias) |
+| Definición del Producto | 20% | [01 — Definición](01-Definicion-del-Producto) |
+| Diseño de la Arquitectura | 30% | [05 — Arquitectura](05-Arquitectura) |
+| Mockups de Interfaces | 20% | [06 — Interfaces](06-Diseno-de-Interfaces) |
+| Presentación / Sustentación | 20% | [09 — Presentación](09-Presentacion-Sustentacion) |
 
 ## Decisiones clave del Sprint 0
 
