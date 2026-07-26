@@ -1,13 +1,16 @@
 # Mockups TravelOS AI
 
-Capturas generadas ejecutando el prototipo `TravelOS-AI-Ecosystem` (Vite) el 25-jul-2026.
+Capturas del prototipo interactivo [TravelOS-AI-Ecosystem](https://github.com/nickamam08/TravelOS-AI-Ecosystem).
 
-```bash
-# Clonado fuera del workspace de entrega:
-# Documentos/Semestre 6/_external/TravelOS-AI-Ecosystem
-npm install
-npm run dev -- --host 127.0.0.1 --port 5173
-playwright screenshot http://127.0.0.1:5173/ ...
-```
+Fuente de las pantallas usadas en la entrega: assets oficiales del prototipo (`public/*.png`), con tipografía e iconos Material correctamente renderizados.
 
-Ver Wiki: [Diseño de Interfaces](../../wiki/06-Diseno-de-Interfaces.md).
+| Pantalla | Archivo |
+|---|---|
+| Panel de Control | `screenshots/index.png` |
+| CRM Inteligente | `screenshots/crm.png` |
+| Cotizador IA | `screenshots/cotizador.png` |
+| Itinerario | `screenshots/itinerario.png` |
+| Centro de Agentes | `screenshots/agentes.png` |
+| Agents (EN) | `screenshots/agentes-en.png` |
+
+Ver Wiki: [Diseño de Interfaces](https://github.com/Jeronimo0228/travel-OS/wiki/06-Diseno-de-Interfaces).
