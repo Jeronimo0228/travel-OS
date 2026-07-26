@@ -1,71 +1,54 @@
 # TravelOS AI
 
-**Sistema Operativo Inteligente para Agencias de Viajes** — Proyecto Integrador 2 (EAFIT).
+Sistema Operativo Inteligente para Agencias de Viajes — **Proyecto Integrador 2 (EAFIT)**.
 
-| Campo | Valor |
+Este repositorio versiona el **código y artefactos de desarrollo**. La documentación académica de producto (definición, arquitectura narrativa, backlog vivo, etc.) vive en GitHub Wiki e Issues.
+
+| Recurso | Ubicación |
 |---|---|
-| Producto | TravelOS AI |
-| Equipo | Grupo 2 (miércoles 6–9 am) |
-| Product Owner / Cliente | Juan Manuel Restrepo Molina — CEO, Punto D' Partida |
-| Repositorio | https://github.com/Jeronimo0228/travel-OS |
-| Gestión | Wiki + Issues + Milestones (este repo) |
+| Wiki (entregables Sprint) | https://github.com/Jeronimo0228/travel-OS/wiki |
+| Backlog / HU | https://github.com/Jeronimo0228/travel-OS/issues |
+| Milestones | https://github.com/Jeronimo0228/travel-OS/milestones |
+| Documentación local esencial | [`documentacion/`](./documentacion/) |
 
-## Qué es
+## Estructura del repositorio
 
-Plataforma SaaS multi-tenant con IA que centraliza la operación comercial, administrativa y de atención al cliente de una agencia de viajes (CRM + cotizador + itinerarios + portal del viajero + inteligencia gerencial), orientada a un **MVP estable** para pruebas piloto y futura comercialización.
+```
+travel-OS/
+├── documentacion/     # Actas, evidencias, mockups, vision, checklist (no sustituye la Wiki)
+├── scripts/           # Automatización DevOps / bootstrap GitHub
+├── .github/           # Issue templates y futuros workflows CI
+└── README.md
+```
 
-## Sprint 0 (estado actual)
+> El código de aplicación (`apps/`, `packages/`, etc.) se agregará a partir de Sprint 1.
 
-Entrega de **definición de producto** (sin desarrollo de features productivas aún):
+## Stack previsto (MVP)
 
-- [Wiki del proyecto (GitHub Wiki)](https://github.com/Jeronimo0228/travel-OS/wiki)
-- [Wiki (espejo en repo)](./wiki/Home.md)
-- [Definición del producto](./wiki/01-Definicion-del-Producto.md)
-- [Arquitectura y stack](./wiki/05-Arquitectura.md)
-- [Mockups / prototipo](./wiki/06-Diseno-de-Interfaces.md)
-- [Backlog y épicas](./backlog/product-backlog.md)
-- [Sprint 1 Planning](./backlog/sprint-1-planning.md)
-- [Ceremonias](./docs/ceremonias/)
-- [Presentación / sustentación](./wiki/09-Presentacion-Sustentacion.md)
+Next.js 15 · NestJS · PostgreSQL/Prisma · Redis/BullMQ · OpenAI · Auth.js · R2/S3 · GitHub Actions
 
-## Stack propuesto (MVP)
-
-| Capa | Tecnología |
-|---|---|
-| Frontend | Next.js 15 + React 19 + TypeScript + Tailwind CSS + shadcn/ui |
-| Backend | NestJS + TypeScript |
-| Datos | PostgreSQL + Prisma |
-| Cache / colas | Redis + BullMQ |
-| Auth | Auth.js (NextAuth) + JWT / sesiones |
-| IA | OpenAI API (cotización, copiloto CRM, embeddings por agencia) |
-| Storage | Cloudflare R2 / S3 |
-| Mensajería (post-MVP) | Meta WhatsApp Cloud API |
-| Infra | Docker + GitHub Actions + Vercel (web) + Railway/Fly (API) |
-| Observabilidad | Sentry + OpenTelemetry |
-
-Prototipo visual actual (reutilizable): clon externo `TravelOS-AI-Ecosystem` (Vite + HTML + Tailwind). Screenshots en [`docs/mockups/screenshots`](./docs/mockups/screenshots/).
+Detalle: [Wiki → Stack](https://github.com/Jeronimo0228/travel-OS/wiki/10-Stack-Tecnologico) y [Arquitectura](https://github.com/Jeronimo0228/travel-OS/wiki/05-Arquitectura).
 
 ## Equipo
 
-| Integrante | Correo | Rol |
-|---|---|---|
-| Jerónimo Restrepo Ángel | jrestrepoa@eafit.edu.co | Scrum Master + DevSecOps |
-| Santiago Arboleda Giraldo | sarboledag@eafit.edu.co | Frontend Developer |
-| Samuel Madrid Ossa | smadrido@eafit.edu.co | Backend Developer |
-| Miguel Mercado Mercado | mamercado@eafit.edu.co | QA Engineer |
-| Juan José Palacio Zuluaga | jjpalacioz@eafit.edu.co | UX/UI Designer |
+| Integrante | Rol |
+|---|---|
+| Jerónimo Restrepo Ángel | Scrum Master + DevSecOps |
+| Santiago Arboleda Giraldo | Frontend Developer |
+| Samuel Madrid Ossa | Backend Developer |
+| Miguel Mercado Mercado | QA Engineer |
+| Juan José Palacio Zuluaga | UX/UI Designer |
 
-## Cómo navegar la entrega académica
+**PO / Cliente:** Juan Manuel Restrepo Molina — CEO, Punto D' Partida
 
-1. Abre la [Wiki](./wiki/Home.md) — espejo de entregables por sprint.
-2. Revisa Issues etiquetados por épica/sprint (tras ejecutar bootstrap).
-3. Revisa [Milestones](./wiki/11-Milestones-y-Estado-MVP.md).
+## Scripts
 
 ```bash
-# Bootstrap de labels, milestones e issues (requiere gh autenticado como Jeronimo0228)
+# Recrear labels/milestones/issues (si hace falta)
 ./scripts/bootstrap-github-project.sh
 ```
 
-## Licencia
+## Prototipo UI de referencia
 
-Uso académico / Proyecto Integrador 2 — EAFIT. Derechos del producto alineados con acuerdos con Punto D' Partida.
+Mockups interactivos (externo): https://github.com/nickamam08/TravelOS-AI-Ecosystem  
+Screenshots de entrega: [`documentacion/mockups/screenshots/`](./documentacion/mockups/screenshots/)

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-JSON="$ROOT/backlog/github-bootstrap.json"
+JSON="$ROOT/documentacion/herramientas/github-bootstrap.json"
 REPO="${REPO:-Jeronimo0228/travel-OS}"
 GH="${GH:-/usr/bin/gh}"
 

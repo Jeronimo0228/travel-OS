@@ -82,7 +82,7 @@
 - [ ] Link de grabación (si aplica): _______________________
 - [ ] Otros anexos: _______________________
 
-**Carpeta sugerida:** `docs/ceremonias/evidencias/ACTA-001/`
+**Carpeta sugerida:** `documentacion/ceremonias/evidencias/ACTA-001/`
 
 ---
 *Acta de Kickoff — TravelOS AI / Grupo 2*

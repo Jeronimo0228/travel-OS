@@ -7,14 +7,14 @@
 | Repositorios creados | ✅ | https://github.com/Jeronimo0228/travel-OS |
 | Wiki en herramienta de gestión | ✅ | https://github.com/Jeronimo0228/travel-OS/wiki |
 | Acuerdos con el cliente | 🟡 | Documentados en Wiki; MOU firmado pendiente de carga |
-| Evidencias de ceremonias | 🟡 | Actas Kickoff + Planning listas; **faltan evidencias gráficas** en `docs/ceremonias/evidencias/` |
+| Evidencias de ceremonias | 🟡 | Actas Kickoff + Planning listas; **faltan evidencias gráficas** en `documentacion/ceremonias/evidencias/` |
 | Definición del Producto | ✅ | Wiki: generalidades, roles, público, flujos, glosario, elicitación, competencia |
 | Diseño de la Arquitectura | ✅ | Alcance MVP, RNF, dominio, componentes, diagramas, stack |
 | Mockups de Interfaces | ✅ | Prototipo + screenshots (incluye agentes/itinerario corregidos) |
 | Prueba de prototipo / aceptación PO | 🟡 | Casos PT-01…05 documentados; **aceptación formal del PO pendiente de marcar** |
-| Presentación / sustentación | 🟡 | Guion y estructura listos; **deck PDF/PPTX pendiente** en `docs/presentacion/` |
+| Presentación / sustentación | 🟡 | Guion y estructura listos; **deck PDF/PPTX pendiente** en `documentacion/presentacion/` |
 | Backlog ≥20 HU / ≥3 épicas | ✅ | 24 HU / 4 épicas en Issues |
-| Sprint 1 Planning (tareas, AC, pruebas, esfuerzo, responsable) | ✅ | `backlog/sprint-1-planning.md` + Issues Sprint 1 |
+| Sprint 1 Planning (tareas, AC, pruebas, esfuerzo, responsable) | ✅ | Issues Milestone Sprint 1 |
 | Milestones por sprint | ✅ | Sprint 0 cerrado; 1–3 abiertos |
 | Sustentación (cliente + profesor) | ⏳ | Evento académico pendiente |
 

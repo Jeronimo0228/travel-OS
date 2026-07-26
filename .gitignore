@@ -24,6 +24,7 @@ coverage/
 .idea/
 .vscode/
 *.log
-
-# Local tooling
 .playwright/
+
+# OS
+Thumbs.db

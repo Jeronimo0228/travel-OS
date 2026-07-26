@@ -82,7 +82,7 @@
 - [ ] Foto tablero de estimaciones
 - [ ] Link de grabación (si aplica): _______________________
 
-**Carpeta sugerida:** `docs/ceremonias/evidencias/ACTA-002/`
+**Carpeta sugerida:** `documentacion/ceremonias/evidencias/ACTA-002/`
 
 ---
 *Acta de Sprint Planning — TravelOS AI / Grupo 2*

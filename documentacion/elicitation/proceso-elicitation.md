@@ -23,7 +23,7 @@
 
 ## Evidencias
 
-Adjuntar en `docs/ceremonias/` (sección Evidencias de cada acta) y opcionalmente aquí:
+Adjuntar en `documentacion/ceremonias/` (sección Evidencias de cada acta) y opcionalmente aquí:
 
 - Lista de asistencia / captura Meet
 - Export Story Map
