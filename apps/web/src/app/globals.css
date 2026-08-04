@@ -3,6 +3,96 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* === TravelOS AI — Design tokens (UX Sprint 1) ===
+     Fuente: tailwind.config embebido en index.html / crm.html
+     del repo nickamam08/TravelOS-AI-Ecosystem */
+
+  /* Color */
+  --color-primary: #000000;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #131b2e;
+  --color-on-primary-container: #7c839b;
+  --color-primary-fixed: #dae2fd;
+  --color-primary-fixed-dim: #bec6e0;
+  --color-on-primary-fixed: #131b2e;
+  --color-on-primary-fixed-variant: #3f465c;
+  --color-inverse-primary: #bec6e0;
+
+  --color-secondary: #4648d4;
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: #6063ee;
+  --color-on-secondary-container: #fffbff;
+  --color-secondary-fixed: #e1e0ff;
+  --color-secondary-fixed-dim: #c0c1ff;
+  --color-on-secondary-fixed: #07006c;
+  --color-on-secondary-fixed-variant: #2f2ebe;
+
+  --color-tertiary: #000000;
+  --color-on-tertiary: #ffffff;
+  --color-tertiary-container: #001f26;
+  --color-on-tertiary-container: #0090a9;
+  --color-tertiary-fixed: #acedff;
+  --color-tertiary-fixed-dim: #4cd7f6;
+  --color-on-tertiary-fixed: #001f26;
+  --color-on-tertiary-fixed-variant: #004e5c;
+
+  --color-error: #ba1a1a;
+  --color-on-error: #ffffff;
+  --color-error-container: #ffdad6;
+  --color-on-error-container: #93000a;
+
+  --color-surface: #f7f9fb;
+  --color-on-surface: #191c1e;
+  --color-surface-variant: #e0e3e5;
+  --color-on-surface-variant: #45464d;
+  --color-surface-bright: #f7f9fb;
+  --color-surface-dim: #d8dadc;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f2f4f6;
+  --color-surface-container: #eceef0;
+  --color-surface-container-high: #e6e8ea;
+  --color-surface-container-highest: #e0e3e5;
+  --color-surface-tint: #565e74;
+
+  --color-outline: #76777d;
+  --color-outline-variant: #c6c6cd;
+
+  --color-inverse-surface: #2d3133;
+  --color-inverse-on-surface: #eff1f3;
+
+  --color-success-emerald: #10b981;
+  --color-alert-coral: #f43f5e;
+  --color-data-table-header: #f1f5f9;
+
+  /* Radios */
+  --radius-default: 0.25rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-full: 9999px;
+
+  /* Spacing semántico */
+  --spacing-compact-density: 4px;
+  --spacing-container-margin: 24px;
+  --spacing-gutter: 16px;
+  --spacing-card-padding: 20px;
+  --spacing-unit: 8px;
+  --spacing-section-gap: 40px;
+
+  /* Tipografía */
+  --font-headline: "Plus Jakarta Sans", sans-serif;
+  --font-body-custom: "Inter", sans-serif;
+
+  --text-body-sm: 0.875rem;
+  --text-body-md: 1rem;
+  --text-body-lg: 1.125rem;
+  --text-label-sm: 0.75rem;
+  --text-label-md: 0.875rem;
+  --text-headline-md: 1.25rem;
+  --text-headline-lg: 1.5rem;
+  --text-headline-xl: 2rem;
+  --text-display-lg: 3rem;
+  --text-data-mono: 0.875rem;
 }
 
 @theme inline {
@@ -10,6 +100,62 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --color-primary: var(--color-primary);
+  --color-on-primary: var(--color-on-primary);
+  --color-primary-container: var(--color-primary-container);
+  --color-on-primary-container: var(--color-on-primary-container);
+  --color-secondary: var(--color-secondary);
+  --color-on-secondary: var(--color-on-secondary);
+  --color-secondary-container: var(--color-secondary-container);
+  --color-on-secondary-container: var(--color-on-secondary-container);
+  --color-tertiary: var(--color-tertiary);
+  --color-on-tertiary: var(--color-on-tertiary);
+  --color-tertiary-container: var(--color-tertiary-container);
+  --color-on-tertiary-container: var(--color-on-tertiary-container);
+  --color-error: var(--color-error);
+  --color-on-error: var(--color-on-error);
+  --color-error-container: var(--color-error-container);
+  --color-on-error-container: var(--color-on-error-container);
+  --color-surface: var(--color-surface);
+  --color-on-surface: var(--color-on-surface);
+  --color-surface-variant: var(--color-surface-variant);
+  --color-on-surface-variant: var(--color-on-surface-variant);
+  --color-surface-container: var(--color-surface-container);
+  --color-surface-container-low: var(--color-surface-container-low);
+  --color-surface-container-high: var(--color-surface-container-high);
+  --color-surface-container-lowest: var(--color-surface-container-lowest);
+  --color-surface-container-highest: var(--color-surface-container-highest);
+  --color-outline: var(--color-outline);
+  --color-outline-variant: var(--color-outline-variant);
+  --color-success-emerald: var(--color-success-emerald);
+  --color-alert-coral: var(--color-alert-coral);
+  --color-data-table-header: var(--color-data-table-header);
+
+  --radius-default: var(--radius-default);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-full: var(--radius-full);
+
+  --spacing-gutter: var(--spacing-gutter);
+  --spacing-container-margin: var(--spacing-container-margin);
+  --spacing-card-padding: var(--spacing-card-padding);
+  --spacing-section-gap: var(--spacing-section-gap);
+  --spacing-unit: var(--spacing-unit);
+
+  --font-headline: var(--font-headline);
+  --font-body-custom: var(--font-body-custom);
+
+  --text-body-sm: var(--text-body-sm);
+  --text-body-md: var(--text-body-md);
+  --text-body-lg: var(--text-body-lg);
+  --text-label-sm: var(--text-label-sm);
+  --text-label-md: var(--text-label-md);
+  --text-headline-md: var(--text-headline-md);
+  --text-headline-lg: var(--text-headline-lg);
+  --text-headline-xl: var(--text-headline-xl);
+  --text-display-lg: var(--text-display-lg);
+  --text-data-mono: var(--text-data-mono);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -17,10 +163,4 @@
     --background: #0a0a0a;
     --foreground: #ededed;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
 }
