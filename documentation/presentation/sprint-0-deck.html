@@ -313,6 +313,237 @@
     .stage .note { font-size: 16px !important; }
     .stage .pill { font-size: 14px !important; }
     .hud .hint { opacity: .7; font-weight: 600; margin-right: .35rem; }
+
+    /* ===== Slide 4: Architecture ===== */
+    .arch-slide .lede { width: min(100%, 70ch); }
+    .arch-flow {
+      display: grid;
+      grid-template-columns: 1.1fr 24px 1.1fr 24px 1.1fr;
+      gap: 0.55rem;
+      align-items: stretch;
+      margin: 0.35rem 0 0.65rem;
+      flex: 1.15 1 0;
+      min-height: 0;
+    }
+    .arch-flow .lane {
+      background: rgba(250,248,244,.88);
+      border: 1px solid var(--line);
+      border-radius: 1rem;
+      padding: 0.9rem 1rem;
+      display: flex; flex-direction: column; gap: 0.45rem;
+    }
+    .arch-flow .lane .tag {
+      font-size: 0.82rem; font-weight: 800; letter-spacing: .12em;
+      text-transform: uppercase; color: #b8751f;
+    }
+    .arch-flow .lane h3 {
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: 1.45rem; font-weight: 400; line-height: 1.15;
+    }
+    .arch-flow .lane p { font-size: 0.95rem; color: var(--ink-soft); line-height: 1.35; }
+    .arch-flow .lane ul { margin: 0; padding-left: 1.1rem; color: var(--ink-soft); font-size: 0.92rem; }
+    .arch-flow .lane li + li { margin-top: 0.2rem; }
+    .arch-flow .arrow {
+      display: grid; place-items: center;
+      color: var(--sea); font-size: 1.6rem; font-weight: 800;
+    }
+    .arch-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.7rem;
+      flex: 1.25 1 0;
+      min-height: 0;
+    }
+    .arch-grid .card {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 1.15rem 1.2rem;
+      border-top: 4px solid var(--sea);
+    }
+    .arch-grid .card .tag {
+      font-size: 0.84rem; font-weight: 800; letter-spacing: .12em;
+      text-transform: uppercase; color: #b8751f; margin-bottom: 0.45rem;
+    }
+    .arch-grid .card h3 { font-size: 1.25rem !important; margin-bottom: 0.35rem; }
+    .arch-grid .card p { font-size: 1.02rem !important; line-height: 1.4; }
+    .arch-principles {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.65rem;
+      margin-top: 0.75rem; flex: 0 0 auto;
+    }
+    .arch-principles .card {
+      border-left: 4px solid var(--amber);
+      padding: 0.85rem 1rem;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .arch-principles h3 { font-size: 1.05rem !important; margin-bottom: 0.2rem; }
+    .arch-principles p { font-size: 0.95rem !important; }
+
+    .stage .arch-flow .lane h3 { font-size: 28px !important; }
+    .stage .arch-flow .lane p, .stage .arch-flow .lane li { font-size: 18px !important; }
+    .stage .arch-grid .card h3 { font-size: 26px !important; }
+    .stage .arch-grid .card p { font-size: 20px !important; }
+    .stage .arch-principles h3 { font-size: 22px !important; }
+    .stage .arch-principles p { font-size: 18px !important; }
+
+    /* ===== Slide 6: MVP Releases ===== */
+    .mvp-slide .lede { width: min(100%, 70ch); }
+    .mvp-track {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.9rem;
+      flex: 1;
+      min-height: 0;
+      margin-top: 0.55rem;
+      position: relative;
+    }
+    .mvp-card {
+      background: rgba(250,248,244,.88);
+      border: 1px solid var(--line);
+      border-radius: 1.15rem;
+      padding: 1.25rem 1.35rem 1.2rem;
+      display: flex; flex-direction: column;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    .mvp-card::before {
+      content: "";
+      position: absolute; left: 0; top: 0; right: 0; height: 6px;
+      background: linear-gradient(90deg, var(--amber-bright), var(--sea-bright));
+    }
+    .mvp-card .phase {
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      font-size: 0.78rem; font-weight: 800; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--sea); margin-bottom: 0.45rem;
+    }
+    .mvp-card .phase .pct {
+      background: rgba(31,111,120,.12); color: var(--sea);
+      padding: 0.2rem 0.55rem; border-radius: 999px;
+    }
+    .mvp-card h3 {
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: 1.7rem; font-weight: 400; line-height: 1.15; margin-bottom: 0.55rem;
+    }
+    .mvp-bar {
+      height: 8px; border-radius: 999px; background: rgba(11,31,42,.08);
+      overflow: hidden; margin-bottom: 0.9rem;
+    }
+    .mvp-bar > i {
+      display: block; height: 100%; border-radius: 999px;
+      background: linear-gradient(90deg, var(--amber-bright), var(--sea-bright));
+    }
+    .mvp-card ul {
+      list-style: none; padding: 0; margin: 0; flex: 1;
+      display: flex; flex-direction: column; gap: 0.55rem;
+      justify-content: stretch;
+    }
+    .mvp-card li {
+      position: relative;
+      flex: 1 1 0;
+      display: flex; align-items: center;
+      padding: 0.7rem 0.85rem 0.7rem 2.3rem;
+      background: rgba(255,255,255,.55);
+      border: 1px solid var(--line);
+      border-radius: 0.75rem;
+      font-size: 1.02rem; font-weight: 600; color: var(--ink-soft); line-height: 1.35;
+    }
+    .mvp-card li::before {
+      content: "✓";
+      position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%);
+      color: var(--sea); font-weight: 800;
+    }
+    .mvp-card .demo {
+      margin-top: 0.9rem; padding-top: 0.75rem;
+      border-top: 1px dashed var(--line);
+      font-size: 0.95rem; font-weight: 700; color: var(--ink);
+    }
+    .mvp-card .demo span { color: var(--sea); }
+    .mvp-foot {
+      margin-top: 0.75rem;
+      display: grid; grid-template-columns: 1.4fr 1fr; gap: 0.75rem;
+      flex: 0 0 auto;
+    }
+    .mvp-foot .card {
+      padding: 0.95rem 1.1rem;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .mvp-foot h3 { font-size: 1.1rem !important; }
+    .mvp-foot p { font-size: 1rem !important; }
+
+    .stage .mvp-card h3 { font-size: 34px !important; }
+    .stage .mvp-card li { font-size: 20px !important; }
+    .stage .mvp-card .demo { font-size: 18px !important; }
+    .stage .mvp-card .phase { font-size: 15px !important; }
+    .stage .mvp-foot h3 { font-size: 22px !important; }
+    .stage .mvp-foot p { font-size: 18px !important; }
+
+    /* denser impeccable layout for arch + mvp on 1080p stage */
+    .stage .arch-slide,
+    .stage .mvp-slide {
+      padding: 36px 56px 56px !important;
+    }
+    .stage .arch-slide h2,
+    .stage .mvp-slide h2 {
+      font-size: 48px !important;
+      margin-bottom: 0.35rem !important;
+      width: min(100%, 32ch) !important;
+    }
+    .stage .arch-slide .lede,
+    .stage .mvp-slide .lede {
+      font-size: 22px !important;
+      margin-bottom: 0.35rem;
+      width: min(100%, 72ch) !important;
+    }
+    .stage .arch-flow {
+      margin: 0.35rem 0 0.65rem !important;
+      gap: 0.65rem !important;
+    }
+    .stage .arch-flow .lane {
+      padding: 1.15rem 1.25rem !important;
+      min-height: 210px;
+    }
+    .stage .arch-flow .lane h3 { font-size: 30px !important; }
+    .stage .arch-flow .lane p,
+    .stage .arch-flow .lane li { font-size: 19px !important; }
+    .stage .arch-grid {
+      gap: 0.75rem !important;
+      min-height: 240px;
+    }
+    .stage .arch-grid .card {
+      padding: 1.35rem 1.4rem !important;
+    }
+    .stage .arch-grid .card h3 { font-size: 28px !important; }
+    .stage .arch-grid .card p { font-size: 20px !important; }
+    .stage .arch-principles {
+      margin-top: 0.65rem !important;
+      gap: 0.75rem !important;
+    }
+    .stage .arch-principles .card { padding: 1.05rem 1.2rem !important; min-height: 96px; }
+    .stage .arch-principles h3 { font-size: 24px !important; }
+    .stage .arch-principles p { font-size: 19px !important; }
+
+    .stage .mvp-track {
+      gap: 1rem !important;
+      margin-top: 0.4rem !important;
+    }
+    .stage .mvp-card {
+      padding: 1.35rem 1.45rem 1.25rem !important;
+    }
+    .stage .mvp-card h3 { font-size: 36px !important; }
+    .stage .mvp-card li {
+      font-size: 20px !important;
+      padding: 0.85rem 1rem 0.85rem 2.5rem !important;
+    }
+    .stage .mvp-card ul { gap: 0.65rem !important; }
+    .stage .mvp-card .demo { font-size: 19px !important; }
+    .stage .mvp-card .phase { font-size: 15px !important; margin-bottom: 0.55rem !important; }
+    .stage .mvp-bar { height: 10px !important; margin-bottom: 1rem !important; }
+    .stage .mvp-foot {
+      margin-top: 0.7rem !important;
+      gap: 0.85rem !important;
+    }
+    .stage .mvp-foot .card { padding: 1.1rem 1.25rem !important; min-height: 100px; }
+    .stage .mvp-foot h3 { font-size: 24px !important; }
+    .stage .mvp-foot p { font-size: 19px !important; }
   </style>
 </head>
 <body>
@@ -389,25 +620,53 @@
     </section>
 
     <!-- 4 Arquitectura -->
-    <section class="slide" data-title="Arquitectura">
+    <section class="slide arch-slide" data-title="Arquitectura">
       <p class="kicker">03 · Arquitectura de la solución</p>
-      <h2>Modular, multi-tenant, con aislamiento estricto por <em style="font-family:Instrument Serif;color:var(--sea)">agencyId</em></h2>
-      <p class="lede">Escala por agencia sin mezclar datos ni conocimiento. Lo pesado (PDF, IA) va a colas para no trabar la UI.</p>
+      <h2>Multi-tenant modular, con aislamiento estricto por <em style="font-family:Instrument Serif;color:var(--sea)">agencyId</em></h2>
+      <p class="lede">Cada agencia opera en su propio espacio: datos, marca e IA. Lo pesado (PDF, embeddings, emails) corre en colas para que la UI nunca se congele.</p>
+
       <div class="fill">
-      <div class="arch fill">
-        <div class="card"><div class="tag">Frontend</div><h3>Next.js 15 + Tailwind</h3><p>Web asesores/gerente + portal viajero. Base visual del prototipo Vite.</p></div>
-        <div class="card"><div class="tag">Backend</div><h3>NestJS + módulos de dominio</h3><p>CRM, cotizador, tenancy, auditoría. Lógica de negocio tipada.</p></div>
-        <div class="card"><div class="tag">Datos</div><h3>PostgreSQL + Prisma</h3><p>Modelo relacional multi-tenant. pgvector para RAG por agencia.</p></div>
-        <div class="card"><div class="tag">Async</div><h3>Redis + BullMQ</h3><p>Workers para PDF, IA y emails sin bloquear requests.</p></div>
-        <div class="card"><div class="tag">IA</div><h3>OpenAI + RAG</h3><p>Cotización NL y copiloto; knowledge filtrado por agencyId.</p></div>
-        <div class="card"><div class="tag">Storage</div><h3>Object storage</h3><p>Documentos, PDFs de cotización e itinerarios.</p></div>
-        <div class="card"><div class="tag">Auth</div><h3>JWT + RBAC</h3><p>Roles: asesor, gerente/admin, viajero.</p></div>
-        <div class="card"><div class="tag">Ops</div><h3>CI + health + audit</h3><p>Monorepo, GitHub Actions, trazas de acciones sensibles.</p></div>
+        <div class="arch-flow">
+          <div class="lane">
+            <div class="tag">Capa 1 · Experiencia</div>
+            <h3>Web agencia + Portal viajero</h3>
+            <p>Next.js 15 + Tailwind. Roles: gerente, asesor y viajero. UI basada en el prototipo Vite ya aprobado.</p>
+          </div>
+          <div class="arrow" aria-hidden="true">→</div>
+          <div class="lane">
+            <div class="tag">Capa 2 · Dominio</div>
+            <h3>API NestJS multi-tenant</h3>
+            <p>Módulos tipados: CRM, cotizador, itinerarios, tenancy, auditoría. Todo request lleva <strong>agencyId</strong>.</p>
+          </div>
+          <div class="arrow" aria-hidden="true">→</div>
+          <div class="lane">
+            <div class="tag">Capa 3 · Plataforma</div>
+            <h3>Datos · Colas · IA</h3>
+            <ul>
+              <li>PostgreSQL + Prisma (+ pgvector)</li>
+              <li>Redis + BullMQ (async)</li>
+              <li>OpenAI + RAG por agencia</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="arch-grid">
+          <div class="card"><div class="tag">Auth</div><h3>JWT + RBAC</h3><p>Asesor, gerente/admin y viajero con permisos explícitos por módulo.</p></div>
+          <div class="card"><div class="tag">Storage</div><h3>Object storage</h3><p>PDFs de cotización, documentos del viaje e itinerarios exportados.</p></div>
+          <div class="card"><div class="tag">IA aislada</div><h3>Knowledge por tenant</h3><p>Políticas, tono y FAQs indexados con filtro obligatorio por agencyId.</p></div>
+          <div class="card"><div class="tag">Ops</div><h3>CI + health + audit</h3><p>Monorepo, GitHub Actions, health checks y trazas de acciones sensibles.</p></div>
+        </div>
+
+        <div class="arch-principles">
+          <div class="card"><h3>1. Aislamiento real</h3><p>Sin mezcla de datos ni de conocimiento entre agencias.</p></div>
+          <div class="card"><h3>2. Async por diseño</h3><p>PDF/IA/email fuera del request HTTP → UI siempre responsiva.</p></div>
+          <div class="card"><h3>3. Stack transparente</h3><p>Arquitectura documentada: diferencial vs cajas negras del mercado.</p></div>
+        </div>
       </div>
-      <p class="note">Por qué así: aislamiento de datos, UI responsive bajo carga, stack moderno y documentado (diferencial vs cajas negras del mercado).</p>
-      </div>
+
       <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>4 / 10</span></div>
     </section>
+
 
     <!-- 5 Stack -->
     <section class="slide" data-title="Tecnologías">
@@ -431,45 +690,66 @@
     </section>
 
     <!-- 6 MVP Releases -->
-    <section class="slide" data-title="MVP">
+    <section class="slide mvp-slide" data-title="MVP">
       <p class="kicker">05 · Funcionalidades principales (MVP)</p>
       <h2>Tres releases = tres sprints de construcción</h2>
-      <div class="releases fill">
-        <div class="card">
-          <h3>Release 1 — Fundación + CRM</h3>
-          <p style="font-size:.72rem;color:var(--muted);font-weight:700;margin-bottom:.4rem;">SPRINT 1 · ~25% MVP</p>
+      <p class="lede">Del cimiento multi-tenant al piloto comercial con Punto D' Partida. Cada release cierra un demo usable frente al PO.</p>
+
+      <div class="mvp-track fill">
+        <article class="mvp-card">
+          <div class="phase">Release 1 · Sprint 1 <span class="pct">~25% MVP</span></div>
+          <h3>Fundación + CRM</h3>
+          <div class="mvp-bar" aria-hidden="true"><i style="width:25%"></i></div>
           <ul>
-            <li>Registro de agencia (tenant) + login seguro</li>
-            <li>RBAC + marca blanca básica</li>
-            <li>Leads: CRUD, pipeline visual, tareas, filtros, asignación</li>
-            <li>Auditoría + CI + health checks</li>
+            <li>Registro de agencia (tenant) y login seguro</li>
+            <li>RBAC + marca blanca básica (logo / colores)</li>
+            <li>Leads: CRUD, pipeline visual, tareas y asignación</li>
+            <li>Filtros, auditoría de acciones, CI y health checks</li>
           </ul>
-        </div>
-        <div class="card">
-          <h3>Release 2 — Cotizador IA + Knowledge</h3>
-          <p style="font-size:.72rem;color:var(--muted);font-weight:700;margin-bottom:.4rem;">SPRINT 2 · ~65% MVP</p>
+          <div class="demo"><span>Demo:</span> CRM vivo con embudo y roles</div>
+        </article>
+
+        <article class="mvp-card">
+          <div class="phase">Release 2 · Sprint 2 <span class="pct">~65% MVP</span></div>
+          <h3>Cotizador IA + Knowledge</h3>
+          <div class="mvp-bar" aria-hidden="true"><i style="width:65%"></i></div>
           <ul>
-            <li>Cotización en lenguaje natural</li>
-            <li>Comparación de opciones + export PDF</li>
+            <li>Cotización en lenguaje natural con opciones comparables</li>
+            <li>Export PDF profesional listo para enviar al viajero</li>
             <li>Constructor de itinerario día a día</li>
-            <li>Copiloto de priorización de leads</li>
-            <li>Carga de knowledge (políticas, tono, FAQs)</li>
+            <li>Copiloto de priorización + knowledge (tono, políticas, FAQs)</li>
           </ul>
+          <div class="demo"><span>Demo:</span> prompt → propuesta → itinerario → PDF</div>
+        </article>
+
+        <article class="mvp-card">
+          <div class="phase">Release 3 · Sprint 3 <span class="pct">100% MVP</span></div>
+          <h3>Portal + BI + Piloto</h3>
+          <div class="mvp-bar" aria-hidden="true"><i style="width:100%"></i></div>
+          <ul>
+            <li>Portal viajero: itinerario, documentos y chat con la agencia</li>
+            <li>Dashboard KPIs: ventas, conversión, asesores, destinos</li>
+            <li>Automatización de seguimiento a leads fríos</li>
+            <li>Piloto controlado con Punto D' Partida</li>
+          </ul>
+          <div class="demo"><span>Demo:</span> cierre de loop agencia ↔ viajero</div>
+        </article>
+      </div>
+
+      <div class="mvp-foot">
+        <div class="card">
+          <h3>Backlog listo en GitHub</h3>
+          <p><strong>24 historias · 4 épicas</strong> — Sprint 1 ya planificado con AC, esfuerzo y responsables.</p>
         </div>
         <div class="card">
-          <h3>Release 3 — Portal + BI</h3>
-          <p style="font-size:.72rem;color:var(--muted);font-weight:700;margin-bottom:.4rem;">SPRINT 3 · 100% MVP</p>
-          <ul>
-            <li>Portal viajero: itinerario, docs, chat</li>
-            <li>Dashboard KPIs (ventas, conversión, asesores, destinos)</li>
-            <li>Automatización de seguimiento a leads fríos</li>
-            <li>Piloto con Punto D' Partida</li>
-          </ul>
+          <h3>Criterio de avance</h3>
+          <p>Solo contamos “hecho” lo que se puede <strong>demostrar</strong> al PO en la review del sprint.</p>
         </div>
       </div>
-      <p class="lede" style="margin-top:.85rem;">Backlog ya en GitHub: <strong>24 historias de usuario · 4 épicas</strong>, con planning de Sprint 1 detallado.</p>
+
       <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>6 / 10</span></div>
     </section>
+
 
     <!-- 7 Prototipos -->
     <section class="slide" data-title="Prototipos">
@@ -632,7 +912,9 @@
 
       window.addEventListener("resize", fit);
       fit();
-      show(0);
+      const params = new URLSearchParams(location.search);
+      const start = Math.max(0, (parseInt(params.get("s") || "1", 10) || 1) - 1);
+      show(start);
     })();
   </script>
 </body>
