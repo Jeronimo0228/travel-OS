@@ -48,7 +48,8 @@
       background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
     }
     .slide > * { position: relative; z-index: 1; }
-    .fill { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+    .fill { flex: 1 1 auto; min-height: 0; }
+    .fill.col { display: flex; flex-direction: column; }
     .kicker {
       font-size: clamp(0.78rem, 1.15vw, 1rem); letter-spacing: .16em; text-transform: uppercase;
       font-weight: 800; color: var(--sea); margin-bottom: 0.35rem;
@@ -87,8 +88,16 @@
     .card {
       background: rgba(250,248,244,.78); border: 1px solid var(--line);
       border-radius: 1rem; padding: clamp(0.75rem, 1.4vh, 1.15rem) clamp(0.85rem, 1.2vw, 1.25rem);
-      backdrop-filter: blur(6px); height: 100%;
+      backdrop-filter: blur(6px);
     }
+    .stack .card,
+    .pains .card,
+    .map .card,
+    .arch .card,
+    .arch-grid .card,
+    .values .card,
+    .releases .card,
+    .mvp-foot .card { height: 100%; }
     .card h3 { font-size: clamp(0.95rem, 1.35vw, 1.2rem); font-weight: 800; margin-bottom: .3rem; }
     .card p, .card li { font-size: clamp(0.88rem, 1.2vw, 1.08rem); color: var(--ink-soft); line-height: 1.38; }
     .card ul { padding-left: 1.1rem; }
@@ -547,6 +556,52 @@
     .stage .mvp-foot .card { padding: 1.1rem 1.25rem !important; min-height: 100px; }
     .stage .mvp-foot h3 { font-size: 24px !important; }
     .stage .mvp-foot p { font-size: 19px !important; }
+
+    /* ===== Slide Tecnologías ===== */
+    .tech-slide .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: 1fr 1fr;
+      gap: 0.75rem;
+      flex: 1;
+      min-height: 0;
+      margin-top: 0.5rem;
+    }
+    .tech-slide .tech-grid .card {
+      height: 100%;
+      display: flex; flex-direction: column; justify-content: center;
+      border-top: 4px solid var(--sea);
+      padding: 1.2rem 1.25rem;
+    }
+    .tech-slide .tech-grid .tag {
+      font-size: 0.78rem; font-weight: 800; letter-spacing: .12em;
+      text-transform: uppercase; color: #b8751f; margin-bottom: 0.4rem;
+    }
+    .tech-slide .tech-grid h3 { font-size: 1.35rem !important; margin-bottom: 0.35rem; }
+    .tech-slide .tech-grid p { font-size: 1.05rem !important; line-height: 1.4; }
+    .tech-slide .tech-note {
+      margin-top: 0.75rem;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 0.75rem;
+      flex: 0 0 auto;
+    }
+    .tech-slide .tech-note .card {
+      border-left: 4px solid var(--amber);
+      padding: 1rem 1.15rem;
+      display: flex; flex-direction: column; justify-content: center;
+      min-height: 110px;
+    }
+    .tech-slide .tech-note h3 { font-size: 1.15rem !important; }
+    .tech-slide .tech-note p { font-size: 1rem !important; }
+
+    .stage .tech-slide { padding: 36px 56px 56px !important; }
+    .stage .tech-slide h2 { font-size: 48px !important; width: min(100%, 28ch) !important; }
+    .stage .tech-slide .lede { font-size: 22px !important; width: min(100%, 70ch) !important; }
+    .stage .tech-slide .tech-grid .card h3 { font-size: 28px !important; }
+    .stage .tech-slide .tech-grid .card p { font-size: 20px !important; }
+    .stage .tech-slide .tech-note h3 { font-size: 24px !important; }
+    .stage .tech-slide .tech-note p { font-size: 19px !important; }
   </style>
 </head>
 <body>
@@ -599,7 +654,7 @@
     <!-- 3 Solución -->
     <section class="slide" data-title="Solución">
       <div class="grid-2 fill">
-        <div class="fill">
+        <div class="fill col">
           <p class="kicker">02 · Solución propuesta</p>
           <h2>No es un CRM ni un chatbot: es el SO de la agencia</h2>
           <p class="lede">TravelOS AI centraliza ventas, operación y servicio con IA integrada — marca blanca y conocimiento propio por agencia.</p>
@@ -628,7 +683,7 @@
       <h2>Multi-tenant modular, con aislamiento estricto por <em style="font-family:Instrument Serif;color:var(--sea)">agencyId</em></h2>
       <p class="lede">Cada agencia opera en su propio espacio: datos, marca e IA. Lo pesado (PDF, embeddings, emails) corre en colas para que la UI nunca se congele.</p>
 
-      <div class="fill">
+      <div class="fill col">
         <div class="arch-flow">
           <div class="lane">
             <div class="tag">Capa 1 · Experiencia</div>
@@ -670,27 +725,39 @@
       <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>4 / 10</span></div>
     </section>
 
-
-    <!-- 5 Stack -->
-    <section class="slide" data-title="Tecnologías">
+    <!-- 5 Tecnologías -->
+    <section class="slide tech-slide" data-title="Tecnologías">
       <p class="kicker">04 · Tecnologías</p>
-      <h2>TypeScript de punta a punta, listo para el MVP académico y el piloto</h2>
-      <div class="stack fill">
-        <div class="card"><h3>Frontend</h3><p>Next.js 15 · Tailwind CSS · (prototipo Vite HTML reutilizable)</p></div>
-        <div class="card"><h3>Backend</h3><p>NestJS · Zod (validación compartida)</p></div>
-        <div class="card"><h3>Datos</h3><p>PostgreSQL · Prisma ORM</p></div>
-        <div class="card"><h3>Async</h3><p>Redis · BullMQ</p></div>
-        <div class="card"><h3>IA</h3><p>OpenAI (desde Release 2) · RAG por tenant</p></div>
-        <div class="card"><h3>Auth</h3><p>JWT · RBAC</p></div>
-        <div class="card"><h3>Storage</h3><p>Object storage (docs / PDFs)</p></div>
-        <div class="card"><h3>DevSecOps</h3><p>CI · monorepo · health checks · auditoría</p></div>
+      <h2>TypeScript de punta a punta, listo para el MVP y el piloto</h2>
+      <p class="lede">Un solo lenguaje en front y back, alineado al prototipo Tailwind y a la rúbrica académica. Sin cajas negras.</p>
+
+      <div class="fill col">
+        <div class="tech-grid">
+          <div class="card"><div class="tag">Frontend</div><h3>Next.js 15 + Tailwind</h3><p>App Router, React, UI reutilizada del prototipo Vite ya aprobado por el PO.</p></div>
+          <div class="card"><div class="tag">Backend</div><h3>NestJS + Zod</h3><p>API modular tipada. Validación compartida con el frontend.</p></div>
+          <div class="card"><div class="tag">Datos</div><h3>PostgreSQL + Prisma</h3><p>Modelo relacional multi-tenant. Base sólida para CRM y finanzas.</p></div>
+          <div class="card"><div class="tag">Async</div><h3>Redis + BullMQ</h3><p>Colas para PDF, IA y email sin congelar la interfaz.</p></div>
+          <div class="card"><div class="tag">IA</div><h3>OpenAI + RAG</h3><p>Desde Release 2. Knowledge aislado por agencia (agencyId).</p></div>
+          <div class="card"><div class="tag">Auth</div><h3>JWT + RBAC</h3><p>Roles asesor, gerente/admin y viajero con permisos por módulo.</p></div>
+          <div class="card"><div class="tag">Storage</div><h3>Object storage</h3><p>Documentos del viaje, cotizaciones PDF e itinerarios.</p></div>
+          <div class="card"><div class="tag">DevSecOps</div><h3>CI + monorepo</h3><p>GitHub Actions, health checks y auditoría de acciones sensibles.</p></div>
+        </div>
+
+        <div class="tech-note">
+          <div class="card">
+            <h3>Por qué no Django / Laravel / Firebase</h3>
+            <p>Los evaluamos. Elegimos este stack por alineación al prototipo React/Tailwind, consultas relacionales fuertes para CRM y transparencia académica.</p>
+          </div>
+          <div class="card">
+            <h3>Criterio de decisión</h3>
+            <p>Velocidad del equipo + demo piloto + mantenibilidad. No moda tecnológica.</p>
+          </div>
+        </div>
       </div>
-      <div class="card" style="margin-top:.85rem;">
-        <h3>Decisión consciente vs alternativas</h3>
-        <p>Django/Laravel/Firebase evaluados: priorizamos alineación al prototipo React/Tailwind del equipo, consultas relacionales fuertes para CRM/finanzas, y un stack transparente para la rúbrica académica.</p>
-      </div>
+
       <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>5 / 10</span></div>
     </section>
+
 
     <!-- 6 MVP Releases -->
     <section class="slide mvp-slide" data-title="MVP">
