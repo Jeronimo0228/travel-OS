@@ -1,6 +1,6 @@
 # Team instructions — coding phase
 
-Everything below Sprint 0 definition is done. **Only implementation remains.**
+Sprint 0 product artifacts are **approved by the PO**. Implementation remains.
 
 ## Everyone
 
@@ -19,17 +19,16 @@ Clone and run the prototype; reuse its HTML/Tailwind:
 
 ## Role map
 
-| Person | Role | Plan |
-|---|---|---|
-| Jerónimo Restrepo | SM + DevSecOps | `documentation/plans/sprint-1/devsecops.md` |
-| Santiago Arboleda | Frontend | `documentation/plans/sprint-1/frontend.md` |
-| Samuel Madrid | Backend | `documentation/plans/sprint-1/backend.md` |
-| Miguel Mercado | QA | `documentation/plans/sprint-1/qa.md` |
-| Juan José Palacio | UX/UI | `documentation/plans/sprint-1/ux.md` |
+| Person | Role | Plan | Photo |
+|---|---|---|---|
+| Jerónimo Restrepo | SM + DevSecOps | `documentation/plans/sprint-1/devsecops.md` | `documentation/team/jeronimo.jpg` |
+| Santiago Arboleda | Frontend | `documentation/plans/sprint-1/frontend.md` | `documentation/team/santiago.jpg` |
+| Samuel Madrid | Backend | `documentation/plans/sprint-1/backend.md` | `documentation/team/samuel.jpg` |
+| Miguel Mercado | QA | `documentation/plans/sprint-1/qa.md` | pending re-upload |
+| Juan José Palacio | UX/UI | `documentation/plans/sprint-1/ux.md` | `documentation/team/juanjose.jpg` |
 
-## Still human (not blocking coding)
+## Still human (admin evidence only)
 
 - Upload ceremony graphic evidence under `documentation/ceremonies/evidence/`
-- Team photos under `documentation/team/`
-- Pitch deck under `documentation/presentation/`
-- Formal PO mockup acceptance session
+- Upload signed kickoff acta scan
+- Re-upload Miguel Mercado photo to `documentation/team/miguel.jpg`
