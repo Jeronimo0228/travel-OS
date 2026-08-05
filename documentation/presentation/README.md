@@ -1,36 +1,27 @@
 # Sprint 0 — Presentación / Sustentación
 
-## Deck ampliado (10 diapositivas)
+## Deck (10 diapositivas, modo 16:9 a pantalla completa)
 
-- [`sprint-0-deck.html`](./sprint-0-deck.html) — deck visual (pitch 5–8 min)
-- [`guion-sustentacion-sprint-0.pdf`](./guion-sustentacion-sprint-0.pdf) — guion fuente del equipo
+- [`sprint-0-deck.html`](./sprint-0-deck.html)
+- Guion fuente: [`guion-sustentacion-sprint-0.pdf`](./guion-sustentacion-sprint-0.pdf)
 
-### Cómo presentarlo
+### Presentar
 
 ```bash
 cd travel-OS
-python3 -m http.server 8765
+python3 -m http.server 8765 --bind 127.0.0.1
 # http://127.0.0.1:8765/documentation/presentation/sprint-0-deck.html
 ```
 
-Controles: `→` / espacio · `←` · botones. PDF: `Ctrl+P`.
+- `F` — pantalla completa  
+- `→` / espacio — siguiente · `←` — anterior  
+- El stage es **1920×1080** y escala para llenar el monitor.
 
-### Contenido (alineado al guion)
-
-1. Portada + equipo completo  
-2. 8 dolores (problemática)  
-3. Solución mapeada a cada dolor  
-4. Arquitectura multi-tenant (`agencyId`, colas, RAG)  
-5. Stack tecnológico  
-6. MVP en 3 releases / sprints  
-7. Prototipos + demo local verificada  
-8. Competencia (TravelJoy / Travefy / chatbots)  
-9. Ventaja competitiva + frase de cierre  
-10. Checklist Sprint 0 + pedido al PO  
-
-### Demo mockups
+### Demo mockups (CSS local, sin CDN Tailwind)
 
 ```bash
 cd "$HOME/Documentos/Semestre 6/_external/TravelOS-AI-Ecosystem"
-npm run dev -- --host 127.0.0.1 --port 5173
+npm install
+npm run css   # regenera public/styles.css
+npm run dev   # http://127.0.0.1:5173
 ```
