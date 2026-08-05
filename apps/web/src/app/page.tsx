@@ -1,27 +1,34 @@
+import Link from "next/link";
+import { AppShell } from "@/components/layout/AppShell";
+
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-zinc-50 text-zinc-900">
-      <div className="mx-auto flex max-w-3xl flex-col gap-6 px-6 py-24">
-        <p className="text-sm font-medium uppercase tracking-[0.2em] text-indigo-600">
-          TravelOS AI
-        </p>
-        <h1 className="text-4xl font-semibold tracking-tight">
-          Scaffold ready — start coding Sprint 1
-        </h1>
-        <p className="text-lg text-zinc-600">
-          Monorepo prepared: web (Next.js), API (NestJS), shared (Zod), and Docker
-          (Postgres + Redis). Open your role brief in{" "}
-          <code className="rounded bg-zinc-200 px-1.5 py-0.5 text-sm">
-            documentation/plans/sprint-1
-          </code>
-          .
-        </p>
-        <ul className="list-disc space-y-2 pl-5 text-zinc-700">
-          <li>API health: http://localhost:4000/api/health</li>
-          <li>Web: http://localhost:3000</li>
-          <li>Prototype to reuse: github.com/nickamam08/TravelOS-AI-Ecosystem</li>
-        </ul>
+    <AppShell>
+      <div className="flex justify-between items-end">
+        <div>
+          <h2 className="font-headline text-headline-xl text-primary mb-1">
+            Comando de Inteligencia
+          </h2>
+          <p className="font-body-custom text-body-md text-on-surface-variant">
+            Panel de control en construcción. El CRM inteligente ya está
+            disponible.
+          </p>
+        </div>
       </div>
-    </main>
+
+      <div className="bg-surface-container-lowest p-card-padding rounded-xl border border-outline-variant shadow-sm max-w-xl">
+        <p className="font-body-custom text-body-md text-on-surface-variant mb-4">
+          Este panel se construirá en un sprint posterior. Mientras tanto,
+          revisa el pipeline de ventas en el CRM Inteligente.
+        </p>
+        <Link
+          href="/crm"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg font-body-custom text-label-md hover:opacity-90 transition-opacity"
+        >
+          <span className="material-symbols-outlined text-[18px]">group</span>
+          Ir al CRM Inteligente
+        </Link>
+      </div>
+    </AppShell>
   );
 }
