@@ -21,426 +21,215 @@
       --coral: #c45c4a;
       --muted: #6b7c86;
       --line: rgba(11, 31, 42, 0.12);
-      --shadow: 0 24px 60px rgba(11, 31, 42, 0.18);
+      --shadow: 0 22px 50px rgba(11, 31, 42, 0.16);
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     html, body {
-      height: 100%;
-      background: #050d12;
-      color: var(--ink);
-      font-family: "Manrope", system-ui, sans-serif;
-      overflow: hidden;
+      height: 100%; background: #050d12; color: var(--ink);
+      font-family: "Manrope", system-ui, sans-serif; overflow: hidden;
     }
-
-    .deck {
-      height: 100vh;
-      width: 100vw;
-      position: relative;
-    }
-
+    .deck { height: 100vh; width: 100vw; position: relative; }
     .slide {
-      position: absolute;
-      inset: 0;
-      display: none;
-      padding: clamp(2rem, 4vw, 3.5rem) clamp(2rem, 5vw, 4.5rem);
+      position: absolute; inset: 0; display: none;
+      padding: clamp(1.4rem, 3.2vw, 2.6rem) clamp(1.6rem, 4.2vw, 3.6rem);
       background:
-        radial-gradient(1200px 600px at 90% -10%, rgba(42, 154, 154, 0.18), transparent 55%),
-        radial-gradient(900px 500px at -10% 110%, rgba(212, 146, 58, 0.14), transparent 50%),
+        radial-gradient(1100px 520px at 92% -8%, rgba(42,154,154,.16), transparent 55%),
+        radial-gradient(800px 420px at -8% 110%, rgba(212,146,58,.12), transparent 50%),
         linear-gradient(160deg, var(--foam) 0%, var(--sand) 55%, var(--sand-dim) 100%);
       overflow: hidden;
     }
-
-    .slide.active { display: flex; flex-direction: column; animation: rise 420ms cubic-bezier(.2,.8,.2,1); }
-
-    @keyframes rise {
-      from { opacity: 0; transform: translateY(18px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
+    .slide.active { display: flex; flex-direction: column; animation: rise .4s cubic-bezier(.2,.8,.2,1); }
+    @keyframes rise { from { opacity:0; transform:translateY(14px);} to { opacity:1; transform:none;} }
     .slide::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
-      pointer-events: none;
-      mix-blend-mode: multiply;
+      content:""; position:absolute; inset:0; pointer-events:none; mix-blend-mode:multiply;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
     }
-
     .slide > * { position: relative; z-index: 1; }
-
     .kicker {
-      font-size: 0.78rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      font-weight: 700;
-      color: var(--sea);
-      margin-bottom: 0.85rem;
+      font-size: .72rem; letter-spacing: .16em; text-transform: uppercase;
+      font-weight: 800; color: var(--sea); margin-bottom: .55rem;
     }
-
     h1, h2 {
-      font-family: "Instrument Serif", Georgia, serif;
-      font-weight: 400;
-      line-height: 1.05;
-      letter-spacing: -0.02em;
+      font-family: "Instrument Serif", Georgia, serif; font-weight: 400;
+      line-height: 1.05; letter-spacing: -.02em;
     }
-
-    h1 { font-size: clamp(2.8rem, 6vw, 4.8rem); max-width: 14ch; }
-    h2 { font-size: clamp(2.1rem, 4.2vw, 3.4rem); max-width: 22ch; margin-bottom: 1.25rem; }
-
+    h1 { font-size: clamp(2.4rem, 5.4vw, 4.3rem); max-width: 16ch; }
+    h2 { font-size: clamp(1.7rem, 3.4vw, 2.7rem); max-width: 28ch; margin-bottom: .7rem; }
     .lede {
-      font-size: clamp(1.05rem, 1.6vw, 1.25rem);
-      color: var(--ink-soft);
-      max-width: 48ch;
-      line-height: 1.55;
-      font-weight: 500;
+      font-size: clamp(.95rem, 1.35vw, 1.12rem); color: var(--ink-soft);
+      max-width: 62ch; line-height: 1.5; font-weight: 500;
     }
-
     .meta {
-      margin-top: auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: end;
-      gap: 1rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid var(--line);
-      font-size: 0.85rem;
-      color: var(--muted);
-      font-weight: 600;
+      margin-top: auto; display: flex; justify-content: space-between; align-items: end;
+      gap: .8rem; padding-top: .9rem; border-top: 1px solid var(--line);
+      font-size: .78rem; color: var(--muted); font-weight: 700;
     }
-
     .brand-mark {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.55rem;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      font-size: 1.05rem;
+      display: inline-flex; align-items: center; gap: .5rem;
+      font-weight: 800; letter-spacing: -.03em; font-size: .95rem;
     }
-
-    .brand-mark span.dot {
-      width: 0.7rem; height: 0.7rem; border-radius: 999px;
+    .brand-mark .dot {
+      width: .65rem; height: .65rem; border-radius: 999px;
       background: linear-gradient(135deg, var(--amber-bright), var(--sea-bright));
-      box-shadow: 0 0 0 4px rgba(232, 165, 75, 0.18);
+      box-shadow: 0 0 0 3px rgba(232,165,75,.18);
     }
-
     .grid-2 {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: clamp(1.5rem, 3vw, 3rem);
-      flex: 1;
-      align-items: center;
-      min-height: 0;
+      display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(1rem, 2.5vw, 2rem);
+      flex: 1; align-items: center; min-height: 0;
     }
-
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-      margin-top: 1.25rem;
-    }
-
-    .grid-4 {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.9rem;
-      margin-top: 1.1rem;
-    }
-
     .card {
-      background: rgba(250, 248, 244, 0.72);
-      border: 1px solid var(--line);
-      border-radius: 1.1rem;
-      padding: 1.15rem 1.25rem;
-      backdrop-filter: blur(6px);
+      background: rgba(250,248,244,.74); border: 1px solid var(--line);
+      border-radius: .95rem; padding: .85rem 1rem; backdrop-filter: blur(6px);
     }
-
-    .card h3 {
-      font-size: 0.95rem;
-      font-weight: 800;
-      margin-bottom: 0.35rem;
-    }
-
-    .card p, .card li {
-      font-size: 0.9rem;
-      color: var(--ink-soft);
-      line-height: 1.45;
-    }
-
-    .card ul { padding-left: 1.1rem; }
-    .card li + li { margin-top: 0.3rem; }
-
-    .pain {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.85rem;
-      margin-top: 1.4rem;
-    }
-
-    .pain .card {
-      border-left: 4px solid var(--coral);
-    }
-
+    .card h3 { font-size: .88rem; font-weight: 800; margin-bottom: .25rem; }
+    .card p, .card li { font-size: .82rem; color: var(--ink-soft); line-height: 1.4; }
+    .card ul { padding-left: 1rem; }
+    .card li + li { margin-top: .22rem; }
     .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      padding: 0.35rem 0.75rem;
-      border-radius: 999px;
-      background: rgba(31, 111, 120, 0.1);
-      color: var(--sea);
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
+      display: inline-flex; align-items: center; gap: .35rem;
+      padding: .3rem .65rem; border-radius: 999px;
+      background: rgba(31,111,120,.1); color: var(--sea);
+      font-size: .72rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase;
     }
-
-    .pill.ok {
-      background: rgba(42, 154, 154, 0.14);
-      color: #0f5e5e;
-    }
-
+    .pill.ok { background: rgba(42,154,154,.14); color: #0f5e5e; }
     .team {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 0.75rem;
-      margin-top: 1.5rem;
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: .65rem;
+      margin-top: 1.2rem; max-width: 980px;
     }
-
-    .person {
-      text-align: center;
-    }
-
+    .person { text-align: center; }
     .person img {
-      width: 100%;
-      aspect-ratio: 1;
-      object-fit: cover;
-      border-radius: 1rem;
-      border: 2px solid rgba(11, 31, 42, 0.08);
-      box-shadow: var(--shadow);
-      background: var(--sand-dim);
+      width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: .9rem;
+      border: 2px solid rgba(11,31,42,.08); box-shadow: var(--shadow); background: var(--sand-dim);
     }
-
-    .person .ph {
-      width: 100%;
-      aspect-ratio: 1;
-      border-radius: 1rem;
-      display: grid;
-      place-items: center;
-      background: linear-gradient(145deg, var(--ink-soft), var(--sea));
-      color: var(--foam);
-      font-family: "Instrument Serif", serif;
-      font-size: 1.8rem;
-      box-shadow: var(--shadow);
-    }
-
-    .person strong {
-      display: block;
-      margin-top: 0.55rem;
-      font-size: 0.78rem;
-      line-height: 1.25;
-    }
-
-    .person span {
-      display: block;
-      font-size: 0.68rem;
-      color: var(--muted);
-      font-weight: 600;
-      margin-top: 0.15rem;
-    }
-
+    .person strong { display: block; margin-top: .45rem; font-size: .74rem; line-height: 1.2; }
+    .person span { display: block; font-size: .66rem; color: rgba(250,248,244,.7); font-weight: 600; margin-top: .1rem; }
+    .cover .person span { color: rgba(250,248,244,.72); }
+    .cover .person strong { color: var(--foam); }
     .hero-visual {
-      border-radius: 1.25rem;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      border: 1px solid var(--line);
-      background: var(--ink);
-      aspect-ratio: 16/10;
+      border-radius: 1.1rem; overflow: hidden; box-shadow: var(--shadow);
+      border: 1px solid var(--line); background: var(--ink); aspect-ratio: 16/10;
     }
-
-    .hero-visual img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: top left;
-      display: block;
+    .hero-visual img { width: 100%; height: 100%; object-fit: cover; object-position: top left; display: block; }
+    .pains {
+      display: grid; grid-template-columns: 1fr 1fr; gap: .55rem; margin-top: .85rem;
     }
-
+    .pains .card { border-left: 3px solid var(--coral); padding: .7rem .85rem; }
+    .pains .card h3 { font-size: .8rem; }
+    .pains .card p { font-size: .76rem; }
+    .num {
+      display: inline-grid; place-items: center; width: 1.25rem; height: 1.25rem;
+      border-radius: 999px; background: rgba(196,92,74,.14); color: var(--coral);
+      font-size: .68rem; font-weight: 800; margin-right: .3rem;
+    }
+    .map {
+      display: grid; grid-template-columns: 1fr 1fr; gap: .55rem; margin-top: .8rem;
+    }
+    .map .card { border-left: 3px solid var(--sea); }
+    .arch {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: .55rem; margin-top: .7rem;
+    }
+    .arch .card .tag {
+      font-size: .62rem; font-weight: 800; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--amber); margin-bottom: .35rem;
+    }
+    .stack {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: .55rem; margin-top: .75rem;
+    }
+    .releases {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: .65rem; margin-top: .75rem;
+    }
+    .releases .card h3 { color: var(--sea); font-size: .95rem; margin-bottom: .45rem; }
     .shots {
-      display: grid;
-      grid-template-columns: 1.4fr 1fr;
-      gap: 0.85rem;
-      flex: 1;
-      min-height: 0;
+      display: grid; grid-template-columns: 1.35fr 1fr; gap: .65rem; flex: 1; min-height: 0;
     }
-
     .shots .main, .shots .side img {
-      border-radius: 0.9rem;
-      overflow: hidden;
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow);
-      background: var(--ink);
+      border-radius: .8rem; overflow: hidden; border: 1px solid var(--line);
+      box-shadow: var(--shadow); background: var(--ink);
     }
-
     .shots .main { height: 100%; }
     .shots .main img, .shots .side img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: top left;
-      display: block;
+      width: 100%; height: 100%; object-fit: cover; object-position: top left; display: block;
     }
-
-    .shots .side {
-      display: grid;
-      grid-template-rows: 1fr 1fr;
-      gap: 0.85rem;
-      min-height: 0;
-    }
-
+    .shots .side { display: grid; grid-template-rows: 1fr 1fr; gap: .65rem; min-height: 0; }
     .codebox {
-      margin-top: 1rem;
-      background: var(--ink);
-      color: #d7e7ef;
-      border-radius: 0.9rem;
-      padding: 0.95rem 1.1rem;
+      margin-top: .7rem; background: var(--ink); color: #d7e7ef;
+      border-radius: .8rem; padding: .75rem .9rem;
       font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-      font-size: 0.82rem;
-      line-height: 1.55;
-      box-shadow: var(--shadow);
+      font-size: .74rem; line-height: 1.5; box-shadow: var(--shadow);
     }
-
     .codebox .ok { color: #7ddec0; }
-
-    .arch {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.75rem;
-      margin-top: 1.25rem;
+    table.comp {
+      width: 100%; border-collapse: separate; border-spacing: 0; margin-top: .7rem;
+      font-size: .78rem; overflow: hidden; border-radius: .9rem; border: 1px solid var(--line);
+      background: rgba(250,248,244,.8);
     }
-
-    .arch .card {
-      min-height: 9.5rem;
-      background: linear-gradient(180deg, rgba(250,248,244,0.9), rgba(231,223,210,0.75));
+    table.comp th, table.comp td {
+      text-align: left; padding: .65rem .75rem; border-bottom: 1px solid var(--line);
+      vertical-align: top; line-height: 1.35;
     }
-
-    .arch .card .tag {
-      font-size: 0.68rem;
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--amber);
-      margin-bottom: 0.5rem;
+    table.comp th {
+      background: var(--ink); color: var(--foam); font-size: .7rem;
+      letter-spacing: .08em; text-transform: uppercase;
     }
-
-    .compare {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      margin-top: 1.2rem;
+    table.comp tr:last-child td { border-bottom: 0; }
+    table.comp td strong { color: var(--ink); }
+    .values {
+      display: grid; grid-template-columns: 1fr 1fr; gap: .55rem; margin-top: .75rem;
     }
-
-    .compare .card.win {
-      border: 1px solid rgba(42, 154, 154, 0.35);
-      background: linear-gradient(160deg, rgba(42,154,154,0.12), rgba(250,248,244,0.85));
+    .values .card { border-left: 3px solid var(--amber); }
+    .check {
+      display: grid; grid-template-columns: 1fr 1fr; gap: .4rem .8rem; margin-top: .7rem;
+      font-size: .82rem; font-weight: 600;
     }
-
-    .big-quote {
+    .check li { list-style: none; padding: .45rem .65rem; border-radius: .65rem;
+      background: rgba(250,248,244,.75); border: 1px solid var(--line); }
+    .check .ok { color: #0f5e5e; }
+    .check .warn { color: #8a5a12; }
+    .quote {
       font-family: "Instrument Serif", Georgia, serif;
-      font-size: clamp(1.7rem, 3.2vw, 2.5rem);
-      line-height: 1.2;
-      max-width: 22ch;
-      margin: 0.4rem 0 1rem;
+      font-size: clamp(1.25rem, 2.4vw, 1.85rem); line-height: 1.25;
+      max-width: 28ch; margin: .6rem 0 0;
     }
-
-    .big-quote em { color: var(--sea); font-style: italic; }
-
-    .hud {
-      position: fixed;
-      right: 1.25rem;
-      bottom: 1.1rem;
-      z-index: 20;
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
-      color: var(--foam);
-      font-size: 0.78rem;
-      font-weight: 700;
-      background: rgba(11, 31, 42, 0.82);
-      backdrop-filter: blur(8px);
-      padding: 0.45rem 0.7rem;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .hud button {
-      border: 0;
-      background: rgba(255,255,255,0.1);
-      color: var(--foam);
-      width: 2rem;
-      height: 2rem;
-      border-radius: 999px;
-      cursor: pointer;
-      font-weight: 800;
-    }
-
-    .hud button:hover { background: rgba(232, 165, 75, 0.85); color: var(--ink); }
-
-    .progress {
-      position: fixed;
-      left: 0; top: 0; height: 3px; z-index: 30;
-      background: linear-gradient(90deg, var(--amber-bright), var(--sea-bright));
-      width: 10%;
-      transition: width 280ms ease;
-    }
-
-    .cover-bg {
+    .quote em { color: var(--sea); font-style: italic; }
+    .cover {
       background:
-        linear-gradient(120deg, rgba(11,31,42,0.92) 0%, rgba(22,52,69,0.88) 45%, rgba(31,111,120,0.75) 100%),
+        linear-gradient(120deg, rgba(11,31,42,.93) 0%, rgba(22,52,69,.88) 45%, rgba(31,111,120,.78) 100%),
         url("../mockups/screenshots/index.png") center/cover;
       color: var(--foam);
     }
-
-    .cover-bg .kicker { color: var(--amber-bright); }
-    .cover-bg .lede { color: rgba(250,248,244,0.82); }
-    .cover-bg .meta { border-top-color: rgba(255,255,255,0.15); color: rgba(250,248,244,0.65); }
-    .cover-bg h1 { max-width: 16ch; }
-
-    .list-tight { margin-top: 1rem; display: grid; gap: 0.55rem; }
-    .list-tight li {
-      list-style: none;
-      padding: 0.7rem 0.9rem;
-      border-radius: 0.8rem;
-      background: rgba(250,248,244,0.7);
-      border: 1px solid var(--line);
-      font-weight: 600;
-      font-size: 0.95rem;
+    .cover .kicker { color: var(--amber-bright); }
+    .cover .lede { color: rgba(250,248,244,.84); }
+    .cover .meta { border-top-color: rgba(255,255,255,.15); color: rgba(250,248,244,.65); }
+    .hud {
+      position: fixed; right: 1.1rem; bottom: 1rem; z-index: 20;
+      display: flex; align-items: center; gap: .55rem; color: var(--foam);
+      font-size: .74rem; font-weight: 800; background: rgba(11,31,42,.84);
+      backdrop-filter: blur(8px); padding: .4rem .65rem; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.08);
     }
-
-    .list-tight li b { color: var(--sea); margin-right: 0.35rem; }
-
+    .hud button {
+      border: 0; background: rgba(255,255,255,.1); color: var(--foam);
+      width: 1.85rem; height: 1.85rem; border-radius: 999px; cursor: pointer; font-weight: 800;
+    }
+    .hud button:hover { background: rgba(232,165,75,.9); color: var(--ink); }
+    .progress {
+      position: fixed; left: 0; top: 0; height: 3px; z-index: 30;
+      background: linear-gradient(90deg, var(--amber-bright), var(--sea-bright));
+      width: 10%; transition: width .28s ease;
+    }
+    .note {
+      margin-top: .55rem; font-size: .75rem; color: var(--muted); font-weight: 600;
+    }
     @media (max-width: 980px) {
-      .grid-2, .compare, .shots, .pain, .arch, .team, .grid-3, .grid-4 { grid-template-columns: 1fr 1fr; }
-      .team { grid-template-columns: repeat(3, 1fr); }
-      .arch { grid-template-columns: 1fr 1fr; }
-    }
-
-    @media (max-width: 700px) {
-      .grid-2, .compare, .shots, .pain, .arch, .team, .grid-3, .grid-4 { grid-template-columns: 1fr; }
-      .shots { display: none; }
-    }
-
-    @media print {
-      html, body { overflow: visible; height: auto; background: white; }
-      .hud, .progress { display: none !important; }
-      .slide {
-        display: flex !important;
-        position: relative;
-        page-break-after: always;
-        min-height: 100vh;
-        animation: none;
+      .grid-2, .pains, .map, .arch, .stack, .releases, .shots, .values, .check, .team {
+        grid-template-columns: 1fr 1fr;
       }
+      .team { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media print {
+      html, body { overflow: visible; height: auto; background: #fff; }
+      .hud, .progress { display: none !important; }
+      .slide { display: flex !important; position: relative; page-break-after: always; min-height: 100vh; animation: none; }
     }
   </style>
 </head>
@@ -448,197 +237,158 @@
   <div class="progress" id="progress"></div>
   <div class="deck" id="deck">
 
-    <!-- 1 -->
-    <section class="slide cover-bg active" data-title="Portada">
+    <!-- 1 Portada -->
+    <section class="slide cover active" data-title="Portada">
       <div class="brand-mark"><span class="dot"></span> TravelOS AI</div>
-      <p class="kicker" style="margin-top:2rem">Proyecto Integrador 2 · Sprint 0 · Sustentación</p>
-      <h1>El sistema operativo de la agencia de viajes</h1>
-      <p class="lede" style="margin-top:1.1rem">
-        Definición de producto, arquitectura, mockups y backlog — <strong>aprobados por el Product Owner</strong>.
+      <p class="kicker" style="margin-top:1.6rem">Proyecto Integrador 2 · Sprint 0 · Pitch 5–8 min</p>
+      <h1>El sistema operativo inteligente de la agencia</h1>
+      <p class="lede" style="margin-top:1rem">
+        Sustentación de definición: problemática, solución, arquitectura, stack, MVP, prototipos y ventaja competitiva.
+        Artefactos de producto <strong>aprobados por el PO</strong> — Juan Manuel Restrepo Molina (Punto D' Partida).
       </p>
-      <div class="team" style="margin-top:2rem; max-width: 920px;">
-        <div class="person">
-          <img src="../team/jeronimo.jpg" alt="Jerónimo Restrepo" />
-          <strong>Jerónimo Restrepo</strong><span>SM + DevSecOps</span>
-        </div>
-        <div class="person">
-          <img src="../team/santiago.jpg" alt="Santiago Arboleda" />
-          <strong>Santiago Arboleda</strong><span>Frontend</span>
-        </div>
-        <div class="person">
-          <img src="../team/samuel.jpg" alt="Samuel Madrid" />
-          <strong>Samuel Madrid</strong><span>Backend</span>
-        </div>
-        <div class="person">
-          <div class="ph">MM</div>
-          <strong>Miguel Mercado</strong><span>QA</span>
-        </div>
-        <div class="person">
-          <img src="../team/juanjose.jpg" alt="Juan José Palacio" />
-          <strong>Juan José Palacio</strong><span>UX/UI</span>
-        </div>
+      <div class="team">
+        <div class="person"><img src="../team/jeronimo.jpg" alt="Jerónimo" /><strong>Jerónimo Restrepo</strong><span>SM + DevSecOps</span></div>
+        <div class="person"><img src="../team/santiago.jpg" alt="Santiago" /><strong>Santiago Arboleda</strong><span>Frontend</span></div>
+        <div class="person"><img src="../team/samuel.jpg" alt="Samuel" /><strong>Samuel Madrid</strong><span>Backend</span></div>
+        <div class="person"><img src="../team/miguel.jpg" alt="Miguel" /><strong>Miguel Mercado</strong><span>QA</span></div>
+        <div class="person"><img src="../team/juanjose.jpg" alt="Juan José" /><strong>Juan José Palacio</strong><span>UX/UI</span></div>
       </div>
       <div class="meta">
-        <span>PO: Juan Manuel Restrepo Molina · Punto D' Partida</span>
+        <span>Guion ampliado desde Sustentación Sprint 0</span>
         <span>EAFIT · Grupo 2</span>
       </div>
     </section>
 
-    <!-- 2 -->
-    <section class="slide" data-title="Problema">
+    <!-- 2 Problemática -->
+    <section class="slide" data-title="Problemática">
       <p class="kicker">01 · Problemática</p>
-      <h2>Las agencias pierden el viaje antes de cotizarlo</h2>
-      <p class="lede">Operan con WhatsApp, Excel, Drive y PDFs desconectados. El viajero cotiza con varias agencias a la vez; quien responde tarde, pierde.</p>
-      <div class="pain">
-        <div class="card"><h3>Respuesta lenta</h3><p>Leads que llegan de noche o en pico se enfrían en horas.</p></div>
-        <div class="card"><h3>Cotización manual</h3><p>Armar una propuesta implica saltar entre 4–6 herramientas.</p></div>
-        <div class="card"><h3>Conocimiento atrapado</h3><p>Si el asesor se va, se va la memoria del cliente.</p></div>
-        <div class="card"><h3>Cero visibilidad</h3><p>Sin embudo, sin CAC, sin rentabilidad por destino o asesor.</p></div>
+      <h2>Ocho dolores que hoy rompen a la agencia SMB en LATAM</h2>
+      <p class="lede">El viajero cotiza con varias agencias a la vez. Quien responde tarde o cotiza lento, pierde el viaje — aunque tenga mejor producto.</p>
+      <div class="pains">
+        <div class="card"><h3><span class="num">1</span>Respuesta lenta = cliente perdido</h3><p>El lead digital se va con el primero que contesta; demoras de horas matan la conversión.</p></div>
+        <div class="card"><h3><span class="num">2</span>Cotizaciones lentas</h3><p>Tarifas, PDFs, itinerarios a mano y vaivén por WhatsApp: horas. Con IA: minutos.</p></div>
+        <div class="card"><h3><span class="num">3</span>Información dispersa</h3><p>Excel + WhatsApp + correo + Drive + PDFs sueltos. Sin fuente única de verdad.</p></div>
+        <div class="card"><h3><span class="num">4</span>Sin seguimiento estructurado</h3><p>Leads fríos se pierden por falta de nurturing y recordatorios sistemáticos.</p></div>
+        <div class="card"><h3><span class="num">5</span>Fuga de conocimiento</h3><p>Si el asesor se va, se lleva tono, políticas e historial del cliente.</p></div>
+        <div class="card"><h3><span class="num">6</span>Trabajo repetitivo</h3><p>Documentos, requisitos y links administrativos consumen tiempo vendible.</p></div>
+        <div class="card"><h3><span class="num">7</span>Métricas opacas</h3><p>El gerente no ve conversión, CAC, destinos rentables ni desempeño por asesor.</p></div>
+        <div class="card"><h3><span class="num">8</span>Inmediatez móvil</h3><p>El viajero espera WhatsApp/app; el email lento ya no es el canal principal.</p></div>
       </div>
-      <div class="meta">
-        <span class="brand-mark"><span class="dot"></span> TravelOS AI</span>
-        <span>Sprint 0 · Diapositiva 2 / 10</span>
-      </div>
+      <p class="note">Nota de pitch: reforzar con 1–2 cifras del sector (tiempo de respuesta / % leads perdidos).</p>
+      <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>2 / 10</span></div>
     </section>
 
-    <!-- 3 -->
+    <!-- 3 Solución -->
     <section class="slide" data-title="Solución">
       <div class="grid-2">
         <div>
-          <p class="kicker">02 · Solución</p>
-          <p class="big-quote">No es un CRM. No es un chatbot. Es el <em>centro de operaciones</em> de la agencia.</p>
-          <p class="lede">TravelOS AI: SaaS multi-tenant con IA — CRM inteligente, cotizador e itinerarios, portal del viajero, automatizaciones y dashboard gerencial, con marca blanca.</p>
-          <div style="margin-top:1.2rem; display:flex; gap:0.5rem; flex-wrap:wrap;">
+          <p class="kicker">02 · Solución propuesta</p>
+          <h2>No es un CRM ni un chatbot: es el SO de la agencia</h2>
+          <p class="lede">TravelOS AI centraliza ventas, operación y servicio con IA integrada — marca blanca y conocimiento propio por agencia.</p>
+          <div class="map">
+            <div class="card"><h3>CRM inteligente</h3><p>Centraliza leads/clientes → ataca dispersión y seguimiento.</p></div>
+            <div class="card"><h3>Cotizador IA (NL)</h3><p>Opciones de viaje en minutos → ataca cotización lenta.</p></div>
+            <div class="card"><h3>Agente / copiloto IA</h3><p>Prioriza y responde 24/7 → ataca respuesta lenta.</p></div>
+            <div class="card"><h3>Automatizaciones</h3><p>Nurturing de leads fríos → ataca fuga comercial.</p></div>
+            <div class="card"><h3>Knowledge por agencia</h3><p>Tono, políticas, FAQs → ataca fuga de conocimiento.</p></div>
+            <div class="card"><h3>Portal + dashboard</h3><p>Inmediatez al viajero + KPIs reales al gerente.</p></div>
+          </div>
+          <div style="margin-top:.8rem;display:flex;gap:.45rem;flex-wrap:wrap;">
             <span class="pill ok">Aprobado por PO</span>
-            <span class="pill">MVP piloto</span>
-            <span class="pill">LATAM · WhatsApp-first</span>
+            <span class="pill">Multi-tenant</span>
+            <span class="pill">WhatsApp-first LATAM</span>
           </div>
         </div>
-        <div class="hero-visual">
-          <img src="../mockups/screenshots/index.png" alt="Panel TravelOS AI" />
-        </div>
+        <div class="hero-visual"><img src="../mockups/screenshots/index.png" alt="Panel TravelOS" /></div>
       </div>
-      <div class="meta">
-        <span class="brand-mark"><span class="dot"></span> TravelOS AI</span>
-        <span>Sprint 0 · Diapositiva 3 / 10</span>
-      </div>
+      <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>3 / 10</span></div>
     </section>
 
-    <!-- 4 -->
-    <section class="slide" data-title="Usuarios">
-      <p class="kicker">03 · Flujos de valor</p>
-      <h2>Tres usuarios. Un sistema.</h2>
-      <div class="grid-3">
-        <div class="card">
-          <h3>Asesor</h3>
-          <ul>
-            <li>Lead priorizado por IA</li>
-            <li>Cotiza en lenguaje natural</li>
-            <li>Arma itinerario y envía PDF</li>
-            <li>Seguimiento en el embudo</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>Gerente</h3>
-          <ul>
-            <li>KPIs de conversión</li>
-            <li>Desempeño por asesor</li>
-            <li>Alertas y oportunidades</li>
-            <li>Visión de rentabilidad</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>Viajero</h3>
-          <ul>
-            <li>Portal con itinerario</li>
-            <li>Documentos y estado</li>
-            <li>Chat / soporte</li>
-            <li>Pagos (roadmap)</li>
-          </ul>
-        </div>
-      </div>
-      <div class="meta">
-        <span class="brand-mark"><span class="dot"></span> TravelOS AI</span>
-        <span>Sprint 0 · Diapositiva 4 / 10</span>
-      </div>
-    </section>
-
-    <!-- 5 -->
-    <section class="slide" data-title="MVP">
-      <p class="kicker">04 · Alcance MVP</p>
-      <h2>Piloto estable, no ciencia ficción</h2>
-      <div class="compare">
-        <div class="card win">
-          <h3>Incluido en MVP</h3>
-          <ul>
-            <li>Multi-tenant + auth + RBAC</li>
-            <li>CRM (leads, pipeline, tareas)</li>
-            <li>Cotizador NL + PDF</li>
-            <li>Itinerario por días</li>
-            <li>Portal viajero básico</li>
-            <li>Dashboard KPIs</li>
-            <li>Automatizaciones simples</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>Post-MVP / roadmap</h3>
-          <ul>
-            <li>Voz / telefonía IA</li>
-            <li>GDS productivos</li>
-            <li>Connectors nativos redes</li>
-            <li>Motor financiero completo</li>
-            <li>Remarketing avanzado</li>
-          </ul>
-        </div>
-      </div>
-      <p class="lede" style="margin-top:1rem">Backlog: <strong>24 historias · 4 épicas</strong> en GitHub Issues, planificadas en Sprints 1–3.</p>
-      <div class="meta">
-        <span class="brand-mark"><span class="dot"></span> TravelOS AI</span>
-        <span>Sprint 0 · Diapositiva 5 / 10</span>
-      </div>
-    </section>
-
-    <!-- 6 -->
+    <!-- 4 Arquitectura -->
     <section class="slide" data-title="Arquitectura">
-      <p class="kicker">05 · Arquitectura</p>
-      <h2>Multi-tenant, API-first, listo para IA</h2>
+      <p class="kicker">03 · Arquitectura de la solución</p>
+      <h2>Modular, multi-tenant, con aislamiento estricto por <em style="font-family:Instrument Serif;color:var(--sea)">agencyId</em></h2>
+      <p class="lede">Escala por agencia sin mezclar datos ni conocimiento. Lo pesado (PDF, IA) va a colas para no trabar la UI.</p>
       <div class="arch">
-        <div class="card"><div class="tag">Clientes</div><h3>Web agencia + Portal</h3><p>Next.js · roles gerente/asesor/viajero</p></div>
-        <div class="card"><div class="tag">API</div><h3>Core NestJS</h3><p>Auth, CRM, cotizaciones, itinerarios, tenancy</p></div>
-        <div class="card"><div class="tag">Datos</div><h3>Postgres + Redis</h3><p>Prisma · pgvector · colas BullMQ</p></div>
-        <div class="card"><div class="tag">IA</div><h3>Capa LLM</h3><p>OpenAI · knowledge por agencia</p></div>
+        <div class="card"><div class="tag">Frontend</div><h3>Next.js 15 + Tailwind</h3><p>Web asesores/gerente + portal viajero. Base visual del prototipo Vite.</p></div>
+        <div class="card"><div class="tag">Backend</div><h3>NestJS + módulos de dominio</h3><p>CRM, cotizador, tenancy, auditoría. Lógica de negocio tipada.</p></div>
+        <div class="card"><div class="tag">Datos</div><h3>PostgreSQL + Prisma</h3><p>Modelo relacional multi-tenant. pgvector para RAG por agencia.</p></div>
+        <div class="card"><div class="tag">Async</div><h3>Redis + BullMQ</h3><p>Workers para PDF, IA y emails sin bloquear requests.</p></div>
+        <div class="card"><div class="tag">IA</div><h3>OpenAI + RAG</h3><p>Cotización NL y copiloto; knowledge filtrado por agencyId.</p></div>
+        <div class="card"><div class="tag">Storage</div><h3>Object storage</h3><p>Documentos, PDFs de cotización e itinerarios.</p></div>
+        <div class="card"><div class="tag">Auth</div><h3>JWT + RBAC</h3><p>Roles: asesor, gerente/admin, viajero.</p></div>
+        <div class="card"><div class="tag">Ops</div><h3>CI + health + audit</h3><p>Monorepo, GitHub Actions, trazas de acciones sensibles.</p></div>
       </div>
-      <ul class="list-tight" style="grid-template-columns:1fr 1fr; display:grid;">
-        <li><b>RNF</b> Seguridad, aislamiento de tenant, observabilidad</li>
-        <li><b>Integraciones MVP</b> Email, storage; WhatsApp/pagos en stub</li>
-      </ul>
-      <div class="meta">
-        <span class="brand-mark"><span class="dot"></span> TravelOS AI</span>
-        <span>Sprint 0 · Diapositiva 6 / 10</span>
-      </div>
+      <p class="note">Por qué así: aislamiento de datos, UI responsive bajo carga, stack moderno y documentado (diferencial vs cajas negras del mercado).</p>
+      <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>4 / 10</span></div>
     </section>
 
-    <!-- 7 -->
-    <section class="slide" data-title="Stack">
-      <p class="kicker">06 · Stack tecnológico</p>
-      <h2>TypeScript de punta a punta</h2>
-      <div class="grid-4">
-        <div class="card"><h3>Frontend</h3><p>Next.js 15 · React · Tailwind · TanStack Query</p></div>
-        <div class="card"><h3>Backend</h3><p>NestJS · Prisma · PostgreSQL · Redis</p></div>
-        <div class="card"><h3>IA</h3><p>OpenAI · embeddings · pgvector</p></div>
-        <div class="card"><h3>DevSecOps</h3><p>Docker · GitHub Actions · Sentry</p></div>
+    <!-- 5 Stack -->
+    <section class="slide" data-title="Tecnologías">
+      <p class="kicker">04 · Tecnologías</p>
+      <h2>TypeScript de punta a punta, listo para el MVP académico y el piloto</h2>
+      <div class="stack">
+        <div class="card"><h3>Frontend</h3><p>Next.js 15 · Tailwind CSS · (prototipo Vite HTML reutilizable)</p></div>
+        <div class="card"><h3>Backend</h3><p>NestJS · Zod (validación compartida)</p></div>
+        <div class="card"><h3>Datos</h3><p>PostgreSQL · Prisma ORM</p></div>
+        <div class="card"><h3>Async</h3><p>Redis · BullMQ</p></div>
+        <div class="card"><h3>IA</h3><p>OpenAI (desde Release 2) · RAG por tenant</p></div>
+        <div class="card"><h3>Auth</h3><p>JWT · RBAC</p></div>
+        <div class="card"><h3>Storage</h3><p>Object storage (docs / PDFs)</p></div>
+        <div class="card"><h3>DevSecOps</h3><p>CI · monorepo · health checks · auditoría</p></div>
       </div>
-      <p class="lede" style="margin-top:1.2rem">Base visual ya construida en prototipo Vite + HTML + Tailwind — el frontend <strong>reutiliza</strong> ese código, no rediseña desde cero.</p>
-      <div class="meta">
-        <span class="brand-mark"><span class="dot"></span> TravelOS AI</span>
-        <span>Sprint 0 · Diapositiva 7 / 10</span>
+      <div class="card" style="margin-top:.85rem;">
+        <h3>Decisión consciente vs alternativas</h3>
+        <p>Django/Laravel/Firebase evaluados: priorizamos alineación al prototipo React/Tailwind del equipo, consultas relacionales fuertes para CRM/finanzas, y un stack transparente para la rúbrica académica.</p>
       </div>
+      <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>5 / 10</span></div>
     </section>
 
-    <!-- 8 -->
-    <section class="slide" data-title="Mockups">
-      <p class="kicker">07 · Prototipo · demo en vivo</p>
-      <h2>Mockups listos y corriendo en local</h2>
+    <!-- 6 MVP Releases -->
+    <section class="slide" data-title="MVP">
+      <p class="kicker">05 · Funcionalidades principales (MVP)</p>
+      <h2>Tres releases = tres sprints de construcción</h2>
+      <div class="releases">
+        <div class="card">
+          <h3>Release 1 — Fundación + CRM</h3>
+          <p style="font-size:.72rem;color:var(--muted);font-weight:700;margin-bottom:.4rem;">SPRINT 1 · ~25% MVP</p>
+          <ul>
+            <li>Registro de agencia (tenant) + login seguro</li>
+            <li>RBAC + marca blanca básica</li>
+            <li>Leads: CRUD, pipeline visual, tareas, filtros, asignación</li>
+            <li>Auditoría + CI + health checks</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Release 2 — Cotizador IA + Knowledge</h3>
+          <p style="font-size:.72rem;color:var(--muted);font-weight:700;margin-bottom:.4rem;">SPRINT 2 · ~65% MVP</p>
+          <ul>
+            <li>Cotización en lenguaje natural</li>
+            <li>Comparación de opciones + export PDF</li>
+            <li>Constructor de itinerario día a día</li>
+            <li>Copiloto de priorización de leads</li>
+            <li>Carga de knowledge (políticas, tono, FAQs)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Release 3 — Portal + BI</h3>
+          <p style="font-size:.72rem;color:var(--muted);font-weight:700;margin-bottom:.4rem;">SPRINT 3 · 100% MVP</p>
+          <ul>
+            <li>Portal viajero: itinerario, docs, chat</li>
+            <li>Dashboard KPIs (ventas, conversión, asesores, destinos)</li>
+            <li>Automatización de seguimiento a leads fríos</li>
+            <li>Piloto con Punto D' Partida</li>
+          </ul>
+        </div>
+      </div>
+      <p class="lede" style="margin-top:.85rem;">Backlog ya en GitHub: <strong>24 historias de usuario · 4 épicas</strong>, con planning de Sprint 1 detallado.</p>
+      <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>6 / 10</span></div>
+    </section>
+
+    <!-- 7 Prototipos -->
+    <section class="slide" data-title="Prototipos">
+      <p class="kicker">06 · Prototipos</p>
+      <h2>Mockups interactivos listos — y demuestran en local</h2>
       <div class="grid-2" style="align-items:stretch;">
         <div class="shots">
           <div class="main"><img src="../mockups/screenshots/crm.png" alt="CRM" /></div>
@@ -648,78 +398,89 @@
           </div>
         </div>
         <div>
-          <p class="lede">Pantallas: Panel, CRM, Cotizador NL, Itinerario, Centro de Agentes.</p>
+          <p class="lede">Prototipo HTML reutilizable como base del frontend real:</p>
+          <p class="lede" style="margin-top:.4rem;font-size:.9rem;"><code>index.html</code> · <code>crm.html</code> · <code>cotizador.html</code> · <code>itinerario.html</code> · <code>agentes.html</code></p>
           <div class="codebox">
-            <div># Verificado en esta máquina</div>
-            <div>cd TravelOS-AI-Ecosystem</div>
-            <div>npm run dev -- --host 127.0.0.1 --port 5173</div>
-            <div class="ok">✓ /              200  Panel</div>
-            <div class="ok">✓ /crm.html      200  CRM</div>
-            <div class="ok">✓ /cotizador.html 200</div>
-            <div class="ok">✓ /itinerario.html 200</div>
-            <div class="ok">✓ /agentes.html  200</div>
+            <div>cd TravelOS-AI-Ecosystem && npm run dev</div>
+            <div class="ok">✓ Panel / CRM / Cotizador / Itinerario / Agentes → HTTP 200</div>
+            <div>http://127.0.0.1:5173</div>
           </div>
-          <p class="lede" style="margin-top:0.9rem; font-size:0.95rem;">
-            Demo: <strong>http://127.0.0.1:5173</strong><br />
-            Repo: nickamam08/TravelOS-AI-Ecosystem
-          </p>
-          <span class="pill ok" style="margin-top:0.8rem;">Aceptación PO de mockups ✓</span>
+          <div class="card" style="margin-top:.7rem;">
+            <h3>Estado de aceptación</h3>
+            <p>Mockups y alcance de prototipo <strong>aprobados por el PO</strong>. Casos de prueba iniciales documentados. FE/UX migran este HTML a Next.js (no rediseño desde cero).</p>
+          </div>
         </div>
       </div>
-      <div class="meta">
-        <span class="brand-mark"><span class="dot"></span> TravelOS AI</span>
-        <span>Sprint 0 · Diapositiva 8 / 10</span>
-      </div>
+      <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>7 / 10</span></div>
     </section>
 
-    <!-- 9 -->
+    <!-- 8 Competencia -->
     <section class="slide" data-title="Competencia">
-      <p class="kicker">08 · Competencia</p>
-      <h2>Herramientas puntuales vs ecosistema</h2>
-      <div class="compare">
-        <div class="card">
-          <h3>Mercado actual</h3>
-          <ul>
-            <li><strong>TravelJoy / Travefy</strong> — itinerarios, poco CRM LATAM</li>
-            <li><strong>Chatbots aislados</strong> — sin cotización ni embudo</li>
-            <li><strong>CRMs genéricos</strong> — no hablan turismo ni WhatsApp-first</li>
-            <li><strong>Excel + WhatsApp</strong> — el “stack” real de la pyme</li>
-          </ul>
-        </div>
-        <div class="card win">
-          <h3>Ventaja TravelOS AI</h3>
-          <ul>
-            <li>Ecosistema completo (no punto-solución)</li>
-            <li>WhatsApp-first para LATAM</li>
-            <li>IA que aprende tono/políticas por agencia</li>
-            <li>Portal del viajero integrado al cierre</li>
-            <li>Marca blanca para el piloto comercial</li>
-          </ul>
-        </div>
-      </div>
-      <div class="meta">
-        <span class="brand-mark"><span class="dot"></span> TravelOS AI</span>
-        <span>Sprint 0 · Diapositiva 9 / 10</span>
-      </div>
+      <p class="kicker">07 · Análisis de competencia</p>
+      <h2>Buenas piezas sueltas ≠ sistema operativo de agencia</h2>
+      <table class="comp">
+        <thead>
+          <tr><th>Competidor</th><th>Fortaleza</th><th>Debilidad vs TravelOS</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>TravelJoy</strong></td>
+            <td>CRM completo, pagos, copiloto IA</td>
+            <td>No es SO integral; débil en IA por agencia, portal profundo y foco LATAM/WhatsApp</td>
+          </tr>
+          <tr>
+            <td><strong>Travefy</strong></td>
+            <td>Itinerarios visuales, líderes de mercado, comisiones</td>
+            <td>Agente de ventas IA más débil; sin cotización NL ni knowledge aislado por agencia</td>
+          </tr>
+          <tr>
+            <td><strong>Chatbots turísticos</strong></td>
+            <td>Respuesta rápida, WhatsApp nativo</td>
+            <td>Sin CRM real, docs, métricas ni retención de conocimiento; memoria corta</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="lede" style="margin-top:.85rem;">El mercado empuja punto-soluciones. Nosotros cerramos el loop completo de la agencia.</p>
+      <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>8 / 10</span></div>
     </section>
 
-    <!-- 10 -->
-    <section class="slide" data-title="Cierre">
-      <p class="kicker">09 · Roadmap & cierre</p>
-      <h2>De la definición al piloto</h2>
-      <div class="grid-3">
-        <div class="card"><h3>Sprint 1</h3><p>Fundación + CRM · ~25% MVP</p></div>
-        <div class="card"><h3>Sprint 2</h3><p>Cotizador + itinerarios · ~65%</p></div>
-        <div class="card"><h3>Sprint 3</h3><p>Portal + insights + piloto · 100%</p></div>
+    <!-- 9 Ventaja -->
+    <section class="slide" data-title="Ventaja">
+      <p class="kicker">08 · Ventaja competitiva</p>
+      <h2>Por qué ganamos el pitch frente a “otro chatbot” o “otro CRM”</h2>
+      <div class="values">
+        <div class="card"><h3>1. Loop cerrado</h3><p>WhatsApp-first + portal + CRM + cotizador en un solo producto.</p></div>
+        <div class="card"><h3>2. IA con knowledge propio</h3><p>No un copiloto genérico: políticas, tono y FAQs por agencia (RAG + agencyId).</p></div>
+        <div class="card"><h3>3. Marca blanca real</h3><p>Logo, dominio, app — diferencial comercial fuerte en LATAM.</p></div>
+        <div class="card"><h3>4. Stack transparente</h3><p>Arquitectura moderna y documentada (ventaja académica y de confianza).</p></div>
+        <div class="card" style="grid-column:1/-1;"><h3>5. Arquitectura asíncrona</h3><p>Colas para PDF/IA/email: evitamos la latencia típica de “smart import / copiloto” que congela la UI en competidores.</p></div>
       </div>
-      <ul class="list-tight" style="margin-top:1.2rem;">
-        <li><b>✓</b> Definición, arquitectura, mockups y backlog — <strong>aprobados por el PO</strong></li>
-        <li><b>✓</b> Guion de sustentación listo · mockups demoables en local</li>
-        <li><b>→</b> Pedido al PO: validar piloto con Punto D' Partida al cerrar Sprint 3</li>
+      <p class="quote">No competimos por ser el chatbot más rápido ni el CRM más bonito — competimos por ser el <em>sistema operativo completo</em> que hoy ninguna agencia LATAM tiene.</p>
+      <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>9 / 10</span></div>
+    </section>
+
+    <!-- 10 Cierre -->
+    <section class="slide" data-title="Cierre">
+      <p class="kicker">09 · Cierre del Sprint 0</p>
+      <h2>Definición lista. Siguiente paso: construir el piloto.</h2>
+      <ul class="check">
+        <li class="ok">✓ Repositorios</li>
+        <li class="ok">✓ Wiki</li>
+        <li class="ok">✓ Definición del producto</li>
+        <li class="ok">✓ Diseño de arquitectura</li>
+        <li class="ok">✓ Mockups de interfaces</li>
+        <li class="ok">✓ Backlog (24 HU / 4 épicas)</li>
+        <li class="ok">✓ Planning Sprint 1</li>
+        <li class="ok">✓ Presentación (este deck)</li>
+        <li class="ok">✓ Aceptación de prototipo por PO</li>
+        <li class="warn">⚠ Evidencias gráficas de meetings</li>
+        <li class="warn">⚠ Firma / escaneo acta inicial (MOU)</li>
+        <li class="ok">→ Pedido al PO: piloto al cerrar Sprint 3</li>
       </ul>
+      <p class="lede" style="margin-top:.9rem;">Repo y Wiki: <strong>github.com/Jeronimo0228/travel-OS</strong> · Demo mockups: <strong>127.0.0.1:5173</strong></p>
       <div class="meta">
-        <span>Wiki · Issues · github.com/Jeronimo0228/travel-OS</span>
-        <span>Gracias</span>
+        <span>Gracias — ¿preguntas?</span>
+        <span>10 / 10</span>
       </div>
     </section>
   </div>
@@ -736,7 +497,6 @@
       const progress = document.getElementById("progress");
       const counter = document.getElementById("counter");
       let i = 0;
-
       function show(n) {
         i = Math.max(0, Math.min(slides.length - 1, n));
         slides.forEach((s, idx) => s.classList.toggle("active", idx === i));
@@ -744,21 +504,14 @@
         progress.style.width = ((i + 1) / slides.length * 100) + "%";
         document.title = "TravelOS AI — " + (slides[i].dataset.title || "Sprint 0");
       }
-
       document.getElementById("prev").addEventListener("click", () => show(i - 1));
       document.getElementById("next").addEventListener("click", () => show(i + 1));
-
       window.addEventListener("keydown", (e) => {
-        if (["ArrowRight", "PageDown", " ", "Enter"].includes(e.key)) {
-          e.preventDefault();
-          show(i + 1);
-        } else if (["ArrowLeft", "PageUp", "Backspace"].includes(e.key)) {
-          e.preventDefault();
-          show(i - 1);
-        } else if (e.key === "Home") show(0);
+        if (["ArrowRight", "PageDown", " ", "Enter"].includes(e.key)) { e.preventDefault(); show(i + 1); }
+        else if (["ArrowLeft", "PageUp", "Backspace"].includes(e.key)) { e.preventDefault(); show(i - 1); }
+        else if (e.key === "Home") show(0);
         else if (e.key === "End") show(slides.length - 1);
       });
-
       let touchX = null;
       window.addEventListener("touchstart", (e) => { touchX = e.changedTouches[0].screenX; }, { passive: true });
       window.addEventListener("touchend", (e) => {
@@ -767,7 +520,6 @@
         if (Math.abs(dx) > 50) show(i + (dx < 0 ? 1 : -1));
         touchX = null;
       }, { passive: true });
-
       show(0);
     })();
   </script>

@@ -1,52 +1,36 @@
 # Sprint 0 — Presentación / Sustentación
 
-## Deck (10 diapositivas)
+## Deck ampliado (10 diapositivas)
 
-Archivo: [`sprint-0-deck.html`](./sprint-0-deck.html)
+- [`sprint-0-deck.html`](./sprint-0-deck.html) — deck visual (pitch 5–8 min)
+- [`guion-sustentacion-sprint-0.pdf`](./guion-sustentacion-sprint-0.pdf) — guion fuente del equipo
 
 ### Cómo presentarlo
 
-Desde la raíz del repo (para que carguen fotos y screenshots):
-
 ```bash
-cd "/path/to/travel-OS"
+cd travel-OS
 python3 -m http.server 8765
-# Abrir:
 # http://127.0.0.1:8765/documentation/presentation/sprint-0-deck.html
 ```
 
-Controles: `→` / espacio (siguiente), `←` (anterior), o botones abajo a la derecha.  
-Imprimir / PDF: `Ctrl+P` → “Guardar como PDF” (cada slide es una página).
+Controles: `→` / espacio · `←` · botones. PDF: `Ctrl+P`.
 
-### Contenido (guion)
+### Contenido (alineado al guion)
 
-1. Portada + equipo  
-2. Problemática  
-3. Solución TravelOS AI  
-4. Flujos (asesor / gerente / viajero)  
-5. Alcance MVP  
-6. Arquitectura  
-7. Stack  
-8. Mockups + demo local verificada  
-9. Competencia  
-10. Roadmap + aprobación PO  
+1. Portada + equipo completo  
+2. 8 dolores (problemática)  
+3. Solución mapeada a cada dolor  
+4. Arquitectura multi-tenant (`agencyId`, colas, RAG)  
+5. Stack tecnológico  
+6. MVP en 3 releases / sprints  
+7. Prototipos + demo local verificada  
+8. Competencia (TravelJoy / Travefy / chatbots)  
+9. Ventaja competitiva + frase de cierre  
+10. Checklist Sprint 0 + pedido al PO  
 
-## Demo de mockups en local (verificado)
-
-Prototipo Vite (código fuente HTML, no solo screenshots):
+### Demo mockups
 
 ```bash
 cd "$HOME/Documentos/Semestre 6/_external/TravelOS-AI-Ecosystem"
-npm install
 npm run dev -- --host 127.0.0.1 --port 5173
 ```
-
-| Ruta | Pantalla | Check local |
-|---|---|---|
-| http://127.0.0.1:5173/ | Panel | 200 |
-| http://127.0.0.1:5173/crm.html | CRM | 200 |
-| http://127.0.0.1:5173/cotizador.html | Cotizador | 200 |
-| http://127.0.0.1:5173/itinerario.html | Itinerario | 200 |
-| http://127.0.0.1:5173/agentes.html | Agentes | 200 |
-
-Guía de reutilización en FE: [`../plans/MOCKUP-CODE-SOURCE.md`](../plans/MOCKUP-CODE-SOURCE.md)
