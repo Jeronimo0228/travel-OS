@@ -22,6 +22,8 @@
       --muted: #6b7c86;
       --line: rgba(11, 31, 42, 0.12);
       --shadow: 0 22px 50px rgba(11, 31, 42, 0.16);
+      --pad-y: clamp(0.7rem, 1.6vh, 1.4rem);
+      --pad-x: clamp(1rem, 2.2vw, 2rem);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body {
@@ -31,164 +33,200 @@
     .deck { height: 100vh; width: 100vw; position: relative; }
     .slide {
       position: absolute; inset: 0; display: none;
-      padding: clamp(1.4rem, 3.2vw, 2.6rem) clamp(1.6rem, 4.2vw, 3.6rem);
+      padding: var(--pad-y) var(--pad-x);
+      padding-bottom: calc(var(--pad-y) + 2.4rem);
       background:
         radial-gradient(1100px 520px at 92% -8%, rgba(42,154,154,.16), transparent 55%),
         radial-gradient(800px 420px at -8% 110%, rgba(212,146,58,.12), transparent 50%),
         linear-gradient(160deg, var(--foam) 0%, var(--sand) 55%, var(--sand-dim) 100%);
       overflow: hidden;
     }
-    .slide.active { display: flex; flex-direction: column; animation: rise .4s cubic-bezier(.2,.8,.2,1); }
-    @keyframes rise { from { opacity:0; transform:translateY(14px);} to { opacity:1; transform:none;} }
+    .slide.active { display: flex; flex-direction: column; animation: rise .35s cubic-bezier(.2,.8,.2,1); }
+    @keyframes rise { from { opacity:0; transform:translateY(10px);} to { opacity:1; transform:none;} }
     .slide::before {
       content:""; position:absolute; inset:0; pointer-events:none; mix-blend-mode:multiply;
       background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
     }
     .slide > * { position: relative; z-index: 1; }
+    .fill { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
     .kicker {
-      font-size: .72rem; letter-spacing: .16em; text-transform: uppercase;
-      font-weight: 800; color: var(--sea); margin-bottom: .55rem;
+      font-size: clamp(0.78rem, 1.15vw, 1rem); letter-spacing: .16em; text-transform: uppercase;
+      font-weight: 800; color: var(--sea); margin-bottom: 0.35rem;
     }
     h1, h2 {
       font-family: "Instrument Serif", Georgia, serif; font-weight: 400;
-      line-height: 1.05; letter-spacing: -.02em;
+      line-height: 1.02; letter-spacing: -.025em;
     }
-    h1 { font-size: clamp(2.4rem, 5.4vw, 4.3rem); max-width: 16ch; }
-    h2 { font-size: clamp(1.7rem, 3.4vw, 2.7rem); max-width: 28ch; margin-bottom: .7rem; }
+    h1 { font-size: clamp(2.8rem, 6.2vw, 5.4rem); max-width: none; width: min(100%, 20ch); }
+    h2 { font-size: clamp(2rem, 4.2vw, 3.5rem); max-width: none; width: min(100%, 34ch); margin-bottom: 0.45rem; }
     .lede {
-      font-size: clamp(.95rem, 1.35vw, 1.12rem); color: var(--ink-soft);
-      max-width: 62ch; line-height: 1.5; font-weight: 500;
+      font-size: clamp(1.05rem, 1.7vw, 1.35rem); color: var(--ink-soft);
+      max-width: none; width: min(100%, 72ch); line-height: 1.45; font-weight: 500;
     }
     .meta {
-      margin-top: auto; display: flex; justify-content: space-between; align-items: end;
-      gap: .8rem; padding-top: .9rem; border-top: 1px solid var(--line);
-      font-size: .78rem; color: var(--muted); font-weight: 700;
+      margin-top: auto; flex-shrink: 0;
+      display: flex; justify-content: space-between; align-items: end;
+      gap: .8rem; padding-top: 0.55rem; border-top: 1px solid var(--line);
+      font-size: clamp(0.8rem, 1.1vw, 0.95rem); color: var(--muted); font-weight: 700;
     }
     .brand-mark {
-      display: inline-flex; align-items: center; gap: .5rem;
-      font-weight: 800; letter-spacing: -.03em; font-size: .95rem;
+      display: inline-flex; align-items: center; gap: .55rem;
+      font-weight: 800; letter-spacing: -.03em;
+      font-size: clamp(1rem, 1.5vw, 1.25rem);
     }
     .brand-mark .dot {
-      width: .65rem; height: .65rem; border-radius: 999px;
+      width: .75rem; height: .75rem; border-radius: 999px;
       background: linear-gradient(135deg, var(--amber-bright), var(--sea-bright));
       box-shadow: 0 0 0 3px rgba(232,165,75,.18);
     }
     .grid-2 {
-      display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(1rem, 2.5vw, 2rem);
-      flex: 1; align-items: center; min-height: 0;
+      display: grid; grid-template-columns: 1.05fr .95fr;
+      gap: clamp(0.8rem, 1.8vw, 1.6rem);
+      flex: 1; align-items: stretch; min-height: 0;
     }
     .card {
-      background: rgba(250,248,244,.74); border: 1px solid var(--line);
-      border-radius: .95rem; padding: .85rem 1rem; backdrop-filter: blur(6px);
+      background: rgba(250,248,244,.78); border: 1px solid var(--line);
+      border-radius: 1rem; padding: clamp(0.75rem, 1.4vh, 1.15rem) clamp(0.85rem, 1.2vw, 1.25rem);
+      backdrop-filter: blur(6px); height: 100%;
     }
-    .card h3 { font-size: .88rem; font-weight: 800; margin-bottom: .25rem; }
-    .card p, .card li { font-size: .82rem; color: var(--ink-soft); line-height: 1.4; }
-    .card ul { padding-left: 1rem; }
-    .card li + li { margin-top: .22rem; }
+    .card h3 { font-size: clamp(0.95rem, 1.35vw, 1.2rem); font-weight: 800; margin-bottom: .3rem; }
+    .card p, .card li { font-size: clamp(0.88rem, 1.2vw, 1.08rem); color: var(--ink-soft); line-height: 1.38; }
+    .card ul { padding-left: 1.1rem; }
+    .card li + li { margin-top: .28rem; }
     .pill {
       display: inline-flex; align-items: center; gap: .35rem;
-      padding: .3rem .65rem; border-radius: 999px;
+      padding: .4rem .8rem; border-radius: 999px;
       background: rgba(31,111,120,.1); color: var(--sea);
-      font-size: .72rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase;
+      font-size: clamp(0.75rem, 1vw, 0.88rem); font-weight: 800; letter-spacing: .04em; text-transform: uppercase;
     }
     .pill.ok { background: rgba(42,154,154,.14); color: #0f5e5e; }
     .team {
-      display: grid; grid-template-columns: repeat(5, 1fr); gap: .65rem;
-      margin-top: 1.2rem; max-width: 980px;
+      display: grid; grid-template-columns: repeat(5, 1fr);
+      gap: clamp(0.7rem, 1.4vw, 1.25rem);
+      margin-top: auto; width: 100%; max-width: none; flex: 1;
+      align-content: end; padding-top: 1rem;
     }
-    .person { text-align: center; }
+    .person { text-align: center; min-height: 0; display: flex; flex-direction: column; }
     .person img {
-      width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: .9rem;
+      width: 100%; flex: 1; min-height: 0; max-height: min(38vh, 280px);
+      aspect-ratio: 1; object-fit: cover; border-radius: 1.1rem;
       border: 2px solid rgba(11,31,42,.08); box-shadow: var(--shadow); background: var(--sand-dim);
     }
-    .person strong { display: block; margin-top: .45rem; font-size: .74rem; line-height: 1.2; }
-    .person span { display: block; font-size: .66rem; color: rgba(250,248,244,.7); font-weight: 600; margin-top: .1rem; }
-    .cover .person span { color: rgba(250,248,244,.72); }
+    .person strong {
+      display: block; margin-top: .55rem;
+      font-size: clamp(0.85rem, 1.2vw, 1.05rem); line-height: 1.2;
+    }
+    .person span {
+      display: block; font-size: clamp(0.75rem, 1.05vw, 0.92rem);
+      color: rgba(250,248,244,.75); font-weight: 600; margin-top: .15rem;
+    }
+    .cover .person span { color: rgba(250,248,244,.75); }
     .cover .person strong { color: var(--foam); }
     .hero-visual {
-      border-radius: 1.1rem; overflow: hidden; box-shadow: var(--shadow);
-      border: 1px solid var(--line); background: var(--ink); aspect-ratio: 16/10;
+      border-radius: 1.15rem; overflow: hidden; box-shadow: var(--shadow);
+      border: 1px solid var(--line); background: var(--ink);
+      height: 100%; min-height: 0; aspect-ratio: auto;
     }
     .hero-visual img { width: 100%; height: 100%; object-fit: cover; object-position: top left; display: block; }
     .pains {
-      display: grid; grid-template-columns: 1fr 1fr; gap: .55rem; margin-top: .85rem;
+      display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(4, 1fr);
+      gap: clamp(0.45rem, 1vh, 0.75rem); margin-top: 0.55rem; flex: 1; min-height: 0;
     }
-    .pains .card { border-left: 3px solid var(--coral); padding: .7rem .85rem; }
-    .pains .card h3 { font-size: .8rem; }
-    .pains .card p { font-size: .76rem; }
+    .pains .card { border-left: 4px solid var(--coral); display: flex; flex-direction: column; justify-content: center; }
+    .pains .card h3 { font-size: clamp(0.95rem, 1.35vw, 1.2rem); }
+    .pains .card p { font-size: clamp(0.85rem, 1.15vw, 1.05rem); }
     .num {
-      display: inline-grid; place-items: center; width: 1.25rem; height: 1.25rem;
+      display: inline-grid; place-items: center;
+      width: 1.45rem; height: 1.45rem;
       border-radius: 999px; background: rgba(196,92,74,.14); color: var(--coral);
-      font-size: .68rem; font-weight: 800; margin-right: .3rem;
+      font-size: .78rem; font-weight: 800; margin-right: .35rem;
     }
     .map {
-      display: grid; grid-template-columns: 1fr 1fr; gap: .55rem; margin-top: .8rem;
+      display: grid; grid-template-columns: 1fr 1fr; gap: clamp(0.45rem, 1vh, 0.7rem);
+      margin-top: 0.55rem; flex: 1; min-height: 0;
     }
-    .map .card { border-left: 3px solid var(--sea); }
+    .map .card { border-left: 4px solid var(--sea); display: flex; flex-direction: column; justify-content: center; }
     .arch {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: .55rem; margin-top: .7rem;
+      display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: 1fr 1fr;
+      gap: clamp(0.5rem, 1vh, 0.8rem); margin-top: 0.55rem; flex: 1; min-height: 0;
     }
+    .arch .card { display: flex; flex-direction: column; justify-content: center; }
     .arch .card .tag {
-      font-size: .62rem; font-weight: 800; letter-spacing: .12em;
+      font-size: clamp(0.68rem, 0.95vw, 0.82rem); font-weight: 800; letter-spacing: .12em;
       text-transform: uppercase; color: var(--amber); margin-bottom: .35rem;
     }
     .stack {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: .55rem; margin-top: .75rem;
+      display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: 1fr 1fr;
+      gap: clamp(0.5rem, 1vh, 0.8rem); margin-top: 0.55rem; flex: 1; min-height: 0;
     }
+    .stack .card { display: flex; flex-direction: column; justify-content: center; }
     .releases {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: .65rem; margin-top: .75rem;
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: clamp(0.6rem, 1.2vw, 1rem); margin-top: 0.55rem; flex: 1; min-height: 0;
     }
-    .releases .card h3 { color: var(--sea); font-size: .95rem; margin-bottom: .45rem; }
+    .releases .card { display: flex; flex-direction: column; }
+    .releases .card h3 { color: var(--sea); font-size: clamp(1.05rem, 1.5vw, 1.35rem); margin-bottom: .45rem; }
+    .releases .card ul { flex: 1; }
     .shots {
-      display: grid; grid-template-columns: 1.35fr 1fr; gap: .65rem; flex: 1; min-height: 0;
+      display: grid; grid-template-columns: 1.4fr 1fr;
+      gap: clamp(0.55rem, 1.2vw, 0.9rem); flex: 1; min-height: 0; height: 100%;
     }
-    .shots .main, .shots .side img {
-      border-radius: .8rem; overflow: hidden; border: 1px solid var(--line);
-      box-shadow: var(--shadow); background: var(--ink);
+    .shots .main, .shots .side > * {
+      border-radius: 0.95rem; overflow: hidden; border: 1px solid var(--line);
+      box-shadow: var(--shadow); background: var(--ink); min-height: 0;
     }
     .shots .main { height: 100%; }
     .shots .main img, .shots .side img {
       width: 100%; height: 100%; object-fit: cover; object-position: top left; display: block;
     }
-    .shots .side { display: grid; grid-template-rows: 1fr 1fr; gap: .65rem; min-height: 0; }
+    .shots .side { display: grid; grid-template-rows: 1fr 1fr; gap: clamp(0.55rem, 1.2vw, 0.9rem); min-height: 0; height: 100%; }
     .codebox {
-      margin-top: .7rem; background: var(--ink); color: #d7e7ef;
-      border-radius: .8rem; padding: .75rem .9rem;
+      margin-top: 0.65rem; background: var(--ink); color: #d7e7ef;
+      border-radius: .95rem; padding: clamp(0.85rem, 1.5vh, 1.2rem) 1.1rem;
       font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-      font-size: .74rem; line-height: 1.5; box-shadow: var(--shadow);
+      font-size: clamp(0.85rem, 1.2vw, 1.05rem); line-height: 1.55; box-shadow: var(--shadow);
     }
     .codebox .ok { color: #7ddec0; }
     table.comp {
-      width: 100%; border-collapse: separate; border-spacing: 0; margin-top: .7rem;
-      font-size: .78rem; overflow: hidden; border-radius: .9rem; border: 1px solid var(--line);
-      background: rgba(250,248,244,.8);
+      width: 100%; border-collapse: separate; border-spacing: 0; margin-top: 0.55rem;
+      font-size: clamp(0.95rem, 1.35vw, 1.2rem); overflow: hidden; border-radius: 1rem;
+      border: 1px solid var(--line); background: rgba(250,248,244,.85);
+      flex: 1;
     }
     table.comp th, table.comp td {
-      text-align: left; padding: .65rem .75rem; border-bottom: 1px solid var(--line);
-      vertical-align: top; line-height: 1.35;
+      text-align: left; padding: clamp(0.85rem, 1.6vh, 1.25rem) clamp(0.9rem, 1.3vw, 1.25rem);
+      border-bottom: 1px solid var(--line); vertical-align: middle; line-height: 1.35;
     }
     table.comp th {
-      background: var(--ink); color: var(--foam); font-size: .7rem;
+      background: var(--ink); color: var(--foam);
+      font-size: clamp(0.78rem, 1.05vw, 0.95rem);
       letter-spacing: .08em; text-transform: uppercase;
     }
     table.comp tr:last-child td { border-bottom: 0; }
     table.comp td strong { color: var(--ink); }
     .values {
-      display: grid; grid-template-columns: 1fr 1fr; gap: .55rem; margin-top: .75rem;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: clamp(0.5rem, 1vh, 0.8rem); margin-top: 0.5rem; flex: 1; min-height: 0;
     }
-    .values .card { border-left: 3px solid var(--amber); }
+    .values .card { border-left: 4px solid var(--amber); display: flex; flex-direction: column; justify-content: center; }
     .check {
-      display: grid; grid-template-columns: 1fr 1fr; gap: .4rem .8rem; margin-top: .7rem;
-      font-size: .82rem; font-weight: 600;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: clamp(0.4rem, 0.9vh, 0.65rem) clamp(0.6rem, 1.2vw, 1rem);
+      margin-top: 0.55rem; flex: 1; min-height: 0;
+      font-size: clamp(0.95rem, 1.35vw, 1.2rem); font-weight: 650;
+      align-content: stretch;
     }
-    .check li { list-style: none; padding: .45rem .65rem; border-radius: .65rem;
-      background: rgba(250,248,244,.75); border: 1px solid var(--line); }
+    .check li {
+      list-style: none; padding: clamp(0.55rem, 1.1vh, 0.9rem) 0.85rem;
+      border-radius: .8rem; background: rgba(250,248,244,.8); border: 1px solid var(--line);
+      display: flex; align-items: center;
+    }
     .check .ok { color: #0f5e5e; }
     .check .warn { color: #8a5a12; }
     .quote {
       font-family: "Instrument Serif", Georgia, serif;
-      font-size: clamp(1.25rem, 2.4vw, 1.85rem); line-height: 1.25;
-      max-width: 28ch; margin: .6rem 0 0;
+      font-size: clamp(1.45rem, 2.8vw, 2.25rem); line-height: 1.22;
+      max-width: none; width: min(100%, 36ch); margin: 0.55rem 0 0;
     }
     .quote em { color: var(--sea); font-style: italic; }
     .cover {
@@ -198,33 +236,38 @@
       color: var(--foam);
     }
     .cover .kicker { color: var(--amber-bright); }
-    .cover .lede { color: rgba(250,248,244,.84); }
-    .cover .meta { border-top-color: rgba(255,255,255,.15); color: rgba(250,248,244,.65); }
+    .cover .lede { color: rgba(250,248,244,.88); width: min(100%, 58ch); }
+    .cover .meta { border-top-color: rgba(255,255,255,.15); color: rgba(250,248,244,.68); }
+    .cover h1 { width: min(100%, 18ch); }
     .hud {
-      position: fixed; right: 1.1rem; bottom: 1rem; z-index: 20;
+      position: fixed; right: 1rem; bottom: 0.75rem; z-index: 20;
       display: flex; align-items: center; gap: .55rem; color: var(--foam);
-      font-size: .74rem; font-weight: 800; background: rgba(11,31,42,.84);
-      backdrop-filter: blur(8px); padding: .4rem .65rem; border-radius: 999px;
+      font-size: .8rem; font-weight: 800; background: rgba(11,31,42,.88);
+      backdrop-filter: blur(8px); padding: .45rem .7rem; border-radius: 999px;
       border: 1px solid rgba(255,255,255,.08);
     }
     .hud button {
-      border: 0; background: rgba(255,255,255,.1); color: var(--foam);
-      width: 1.85rem; height: 1.85rem; border-radius: 999px; cursor: pointer; font-weight: 800;
+      border: 0; background: rgba(255,255,255,.12); color: var(--foam);
+      width: 2rem; height: 2rem; border-radius: 999px; cursor: pointer; font-weight: 800;
     }
     .hud button:hover { background: rgba(232,165,75,.9); color: var(--ink); }
     .progress {
-      position: fixed; left: 0; top: 0; height: 3px; z-index: 30;
+      position: fixed; left: 0; top: 0; height: 4px; z-index: 30;
       background: linear-gradient(90deg, var(--amber-bright), var(--sea-bright));
       width: 10%; transition: width .28s ease;
     }
     .note {
-      margin-top: .55rem; font-size: .75rem; color: var(--muted); font-weight: 600;
+      margin-top: 0.4rem; font-size: clamp(0.8rem, 1.05vw, 0.95rem);
+      color: var(--muted); font-weight: 600; flex-shrink: 0;
     }
-    @media (max-width: 980px) {
-      .grid-2, .pains, .map, .arch, .stack, .releases, .shots, .values, .check, .team {
-        grid-template-columns: 1fr 1fr;
-      }
+    @media (max-width: 1100px) {
+      .arch, .stack { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(4, auto); }
+      .releases { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 900px) {
+      .grid-2, .pains, .map, .shots, .values, .check, .team { grid-template-columns: 1fr 1fr; }
       .team { grid-template-columns: repeat(3, 1fr); }
+      .pains { grid-template-rows: none; }
     }
     @media print {
       html, body { overflow: visible; height: auto; background: #fff; }
@@ -240,13 +283,13 @@
     <!-- 1 Portada -->
     <section class="slide cover active" data-title="Portada">
       <div class="brand-mark"><span class="dot"></span> TravelOS AI</div>
-      <p class="kicker" style="margin-top:1.6rem">Proyecto Integrador 2 · Sprint 0 · Pitch 5–8 min</p>
+      <p class="kicker" style="margin-top:0.8rem">Proyecto Integrador 2 · Sprint 0 · Pitch 5–8 min</p>
       <h1>El sistema operativo inteligente de la agencia</h1>
-      <p class="lede" style="margin-top:1rem">
+      <p class="lede" style="margin-top:0.65rem">
         Sustentación de definición: problemática, solución, arquitectura, stack, MVP, prototipos y ventaja competitiva.
         Artefactos de producto <strong>aprobados por el PO</strong> — Juan Manuel Restrepo Molina (Punto D' Partida).
       </p>
-      <div class="team">
+      <div class="team fill">
         <div class="person"><img src="../team/jeronimo.jpg" alt="Jerónimo" /><strong>Jerónimo Restrepo</strong><span>SM + DevSecOps</span></div>
         <div class="person"><img src="../team/santiago.jpg" alt="Santiago" /><strong>Santiago Arboleda</strong><span>Frontend</span></div>
         <div class="person"><img src="../team/samuel.jpg" alt="Samuel" /><strong>Samuel Madrid</strong><span>Backend</span></div>
@@ -264,7 +307,7 @@
       <p class="kicker">01 · Problemática</p>
       <h2>Ocho dolores que hoy rompen a la agencia SMB en LATAM</h2>
       <p class="lede">El viajero cotiza con varias agencias a la vez. Quien responde tarde o cotiza lento, pierde el viaje — aunque tenga mejor producto.</p>
-      <div class="pains">
+      <div class="pains fill">
         <div class="card"><h3><span class="num">1</span>Respuesta lenta = cliente perdido</h3><p>El lead digital se va con el primero que contesta; demoras de horas matan la conversión.</p></div>
         <div class="card"><h3><span class="num">2</span>Cotizaciones lentas</h3><p>Tarifas, PDFs, itinerarios a mano y vaivén por WhatsApp: horas. Con IA: minutos.</p></div>
         <div class="card"><h3><span class="num">3</span>Información dispersa</h3><p>Excel + WhatsApp + correo + Drive + PDFs sueltos. Sin fuente única de verdad.</p></div>
@@ -280,12 +323,12 @@
 
     <!-- 3 Solución -->
     <section class="slide" data-title="Solución">
-      <div class="grid-2">
-        <div>
+      <div class="grid-2 fill">
+        <div class="fill">
           <p class="kicker">02 · Solución propuesta</p>
           <h2>No es un CRM ni un chatbot: es el SO de la agencia</h2>
           <p class="lede">TravelOS AI centraliza ventas, operación y servicio con IA integrada — marca blanca y conocimiento propio por agencia.</p>
-          <div class="map">
+          <div class="map fill">
             <div class="card"><h3>CRM inteligente</h3><p>Centraliza leads/clientes → ataca dispersión y seguimiento.</p></div>
             <div class="card"><h3>Cotizador IA (NL)</h3><p>Opciones de viaje en minutos → ataca cotización lenta.</p></div>
             <div class="card"><h3>Agente / copiloto IA</h3><p>Prioriza y responde 24/7 → ataca respuesta lenta.</p></div>
@@ -309,7 +352,8 @@
       <p class="kicker">03 · Arquitectura de la solución</p>
       <h2>Modular, multi-tenant, con aislamiento estricto por <em style="font-family:Instrument Serif;color:var(--sea)">agencyId</em></h2>
       <p class="lede">Escala por agencia sin mezclar datos ni conocimiento. Lo pesado (PDF, IA) va a colas para no trabar la UI.</p>
-      <div class="arch">
+      <div class="fill">
+      <div class="arch fill">
         <div class="card"><div class="tag">Frontend</div><h3>Next.js 15 + Tailwind</h3><p>Web asesores/gerente + portal viajero. Base visual del prototipo Vite.</p></div>
         <div class="card"><div class="tag">Backend</div><h3>NestJS + módulos de dominio</h3><p>CRM, cotizador, tenancy, auditoría. Lógica de negocio tipada.</p></div>
         <div class="card"><div class="tag">Datos</div><h3>PostgreSQL + Prisma</h3><p>Modelo relacional multi-tenant. pgvector para RAG por agencia.</p></div>
@@ -320,6 +364,7 @@
         <div class="card"><div class="tag">Ops</div><h3>CI + health + audit</h3><p>Monorepo, GitHub Actions, trazas de acciones sensibles.</p></div>
       </div>
       <p class="note">Por qué así: aislamiento de datos, UI responsive bajo carga, stack moderno y documentado (diferencial vs cajas negras del mercado).</p>
+      </div>
       <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>4 / 10</span></div>
     </section>
 
@@ -327,7 +372,7 @@
     <section class="slide" data-title="Tecnologías">
       <p class="kicker">04 · Tecnologías</p>
       <h2>TypeScript de punta a punta, listo para el MVP académico y el piloto</h2>
-      <div class="stack">
+      <div class="stack fill">
         <div class="card"><h3>Frontend</h3><p>Next.js 15 · Tailwind CSS · (prototipo Vite HTML reutilizable)</p></div>
         <div class="card"><h3>Backend</h3><p>NestJS · Zod (validación compartida)</p></div>
         <div class="card"><h3>Datos</h3><p>PostgreSQL · Prisma ORM</p></div>
@@ -348,7 +393,7 @@
     <section class="slide" data-title="MVP">
       <p class="kicker">05 · Funcionalidades principales (MVP)</p>
       <h2>Tres releases = tres sprints de construcción</h2>
-      <div class="releases">
+      <div class="releases fill">
         <div class="card">
           <h3>Release 1 — Fundación + CRM</h3>
           <p style="font-size:.72rem;color:var(--muted);font-weight:700;margin-bottom:.4rem;">SPRINT 1 · ~25% MVP</p>
@@ -389,7 +434,7 @@
     <section class="slide" data-title="Prototipos">
       <p class="kicker">06 · Prototipos</p>
       <h2>Mockups interactivos listos — y demuestran en local</h2>
-      <div class="grid-2" style="align-items:stretch;">
+      <div class="grid-2 fill">
         <div class="shots">
           <div class="main"><img src="../mockups/screenshots/crm.png" alt="CRM" /></div>
           <div class="side">
@@ -418,6 +463,7 @@
     <section class="slide" data-title="Competencia">
       <p class="kicker">07 · Análisis de competencia</p>
       <h2>Buenas piezas sueltas ≠ sistema operativo de agencia</h2>
+      <div class="fill">
       <table class="comp">
         <thead>
           <tr><th>Competidor</th><th>Fortaleza</th><th>Debilidad vs TravelOS</th></tr>
@@ -440,7 +486,8 @@
           </tr>
         </tbody>
       </table>
-      <p class="lede" style="margin-top:.85rem;">El mercado empuja punto-soluciones. Nosotros cerramos el loop completo de la agencia.</p>
+      <p class="lede" style="margin-top:.65rem;">El mercado empuja punto-soluciones. Nosotros cerramos el loop completo de la agencia.</p>
+      </div>
       <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>8 / 10</span></div>
     </section>
 
@@ -448,7 +495,7 @@
     <section class="slide" data-title="Ventaja">
       <p class="kicker">08 · Ventaja competitiva</p>
       <h2>Por qué ganamos el pitch frente a “otro chatbot” o “otro CRM”</h2>
-      <div class="values">
+      <div class="values fill">
         <div class="card"><h3>1. Loop cerrado</h3><p>WhatsApp-first + portal + CRM + cotizador en un solo producto.</p></div>
         <div class="card"><h3>2. IA con knowledge propio</h3><p>No un copiloto genérico: políticas, tono y FAQs por agencia (RAG + agencyId).</p></div>
         <div class="card"><h3>3. Marca blanca real</h3><p>Logo, dominio, app — diferencial comercial fuerte en LATAM.</p></div>
@@ -463,7 +510,7 @@
     <section class="slide" data-title="Cierre">
       <p class="kicker">09 · Cierre del Sprint 0</p>
       <h2>Definición lista. Siguiente paso: construir el piloto.</h2>
-      <ul class="check">
+      <ul class="check fill">
         <li class="ok">✓ Repositorios</li>
         <li class="ok">✓ Wiki</li>
         <li class="ok">✓ Definición del producto</li>
