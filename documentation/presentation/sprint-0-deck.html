@@ -602,6 +602,111 @@
     .stage .tech-slide .tech-grid .card p { font-size: 20px !important; }
     .stage .tech-slide .tech-note h3 { font-size: 24px !important; }
     .stage .tech-slide .tech-note p { font-size: 19px !important; }
+
+    /* ===== Slide 7 Prototipos ===== */
+    .proto-slide .proto-layout {
+      display: grid;
+      grid-template-columns: 1.55fr 1fr;
+      gap: 1rem;
+      flex: 1;
+      min-height: 0;
+      margin-top: 0.4rem;
+    }
+    .proto-gallery {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 0.7rem;
+      min-height: 0;
+      height: 100%;
+    }
+    .proto-gallery figure {
+      margin: 0;
+      border-radius: 1rem;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      background: var(--ink);
+      position: relative;
+      min-height: 0;
+    }
+    .proto-gallery figure.hero {
+      grid-row: 1 / span 2;
+    }
+    .proto-gallery img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top left;
+      display: block;
+    }
+    .proto-gallery figcaption {
+      position: absolute;
+      left: 0.7rem;
+      bottom: 0.7rem;
+      padding: 0.35rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(11,31,42,.82);
+      color: var(--foam);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    .proto-side {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      min-height: 0;
+      height: 100%;
+    }
+    .proto-side .lede { width: 100%; }
+    .proto-files {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+    .proto-files span {
+      display: inline-flex;
+      padding: 0.4rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(31,111,120,.1);
+      color: var(--sea);
+      font-size: 0.85rem;
+      font-weight: 800;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    .proto-side .codebox {
+      flex: 0 0 auto;
+      margin-top: 0;
+      font-size: 1rem;
+      padding: 1rem 1.15rem;
+    }
+    .proto-checks {
+      display: grid;
+      gap: 0.5rem;
+      flex: 1;
+    }
+    .proto-checks .card {
+      border-left: 4px solid var(--sea);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0.95rem 1.1rem;
+      height: auto;
+      flex: 1;
+    }
+    .proto-checks h3 { font-size: 1.1rem !important; margin-bottom: 0.25rem; }
+    .proto-checks p { font-size: 0.98rem !important; }
+
+    .stage .proto-slide { padding: 36px 56px 56px !important; }
+    .stage .proto-slide h2 { font-size: 48px !important; width: min(100%, 28ch) !important; }
+    .stage .proto-slide .lede { font-size: 22px !important; width: min(100%, 70ch) !important; }
+    .stage .proto-gallery figcaption { font-size: 15px !important; padding: 0.45rem 0.85rem !important; }
+    .stage .proto-files span { font-size: 16px !important; padding: 0.5rem 0.85rem !important; }
+    .stage .proto-side .codebox { font-size: 20px !important; padding: 1.15rem 1.3rem !important; }
+    .stage .proto-checks h3 { font-size: 24px !important; }
+    .stage .proto-checks p { font-size: 19px !important; }
   </style>
 </head>
 <body>
@@ -820,36 +925,65 @@
       <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>6 / 10</span></div>
     </section>
 
-
     <!-- 7 Prototipos -->
-    <section class="slide" data-title="Prototipos">
+    <section class="slide proto-slide" data-title="Prototipos">
       <p class="kicker">06 · Prototipos</p>
-      <h2>Mockups interactivos listos — y demuestran en local</h2>
-      <div class="grid-2 fill">
-        <div class="shots">
-          <div class="main"><img src="../mockups/screenshots/crm.png" alt="CRM" /></div>
-          <div class="side">
+      <h2>Mockups interactivos listos — y corren en local</h2>
+      <p class="lede">Prototipo HTML + Tailwind reutilizable como base del frontend Next.js. No es un rediseño desde cero: es el mismo producto visual ya aprobado.</p>
+
+      <div class="proto-layout fill">
+        <div class="proto-gallery">
+          <figure class="hero">
+            <img src="../mockups/screenshots/index.png" alt="Panel TravelOS AI" />
+            <figcaption>Panel · index.html</figcaption>
+          </figure>
+          <figure>
+            <img src="../mockups/screenshots/crm.png" alt="CRM" />
+            <figcaption>CRM</figcaption>
+          </figure>
+          <figure>
             <img src="../mockups/screenshots/cotizador.png" alt="Cotizador" />
-            <img src="../mockups/screenshots/itinerario.png" alt="Itinerario" />
-          </div>
+            <figcaption>Cotizador</figcaption>
+          </figure>
         </div>
-        <div>
-          <p class="lede">Prototipo HTML reutilizable como base del frontend real:</p>
-          <p class="lede" style="margin-top:.4rem;font-size:.9rem;"><code>index.html</code> · <code>crm.html</code> · <code>cotizador.html</code> · <code>itinerario.html</code> · <code>agentes.html</code></p>
+
+        <div class="proto-side">
+          <div class="proto-files">
+            <span>index.html</span>
+            <span>crm.html</span>
+            <span>cotizador.html</span>
+            <span>itinerario.html</span>
+            <span>agentes.html</span>
+          </div>
+
           <div class="codebox">
-            <div>cd TravelOS-AI-Ecosystem && npm run dev</div>
-            <div class="ok">✓ Estilos locales (sin CDN Tailwind) · HTTP 200</div>
-            <div class="ok">✓ Panel / CRM / Cotizador / Itinerario / Agentes</div>
+            <div>cd TravelOS-AI-Ecosystem</div>
+            <div>npm run css && npm run dev</div>
+            <div class="ok">✓ Estilos locales (sin CDN) · HTTP 200</div>
+            <div class="ok">✓ Panel · CRM · Cotizador · Itinerario · Agentes</div>
             <div>http://127.0.0.1:5173</div>
           </div>
-          <div class="card" style="margin-top:.7rem;">
-            <h3>Estado de aceptación</h3>
-            <p>Mockups y alcance de prototipo <strong>aprobados por el PO</strong>. Casos de prueba iniciales documentados. FE/UX migran este HTML a Next.js (no rediseño desde cero).</p>
+
+          <div class="proto-checks">
+            <div class="card">
+              <h3>Aceptación PO</h3>
+              <p>Mockups y alcance del prototipo <strong>aprobados</strong> por Juan Manuel Restrepo Molina.</p>
+            </div>
+            <div class="card">
+              <h3>Siguiente paso FE / UX</h3>
+              <p>Migrar este HTML a Next.js. Screenshots validan; <strong>el código del prototipo manda</strong>.</p>
+            </div>
+            <div class="card">
+              <h3>En la demo</h3>
+              <p>Abrir el prototipo en vivo y recorrer Panel → CRM → Cotizador → Itinerario.</p>
+            </div>
           </div>
         </div>
       </div>
+
       <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>7 / 10</span></div>
     </section>
+
 
     <!-- 8 Competencia -->
     <section class="slide" data-title="Competencia">
