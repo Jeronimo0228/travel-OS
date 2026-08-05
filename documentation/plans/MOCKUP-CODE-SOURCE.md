@@ -10,15 +10,20 @@ Frontend and UX must **review and reuse that code** when implementing `apps/web`
 | GitHub | https://github.com/nickamam08/TravelOS-AI-Ecosystem |
 | Clone SSH | `git@github.com:nickamam08/TravelOS-AI-Ecosystem.git` |
 | Local copy (outside monorepo) | `Documentos/Semestre 6/_external/TravelOS-AI-Ecosystem` |
-| Prototype stack | Vite + multi-page HTML + Tailwind CDN + Material Symbols |
+| Prototype stack | Vite + multi-page HTML + **local Tailwind CSS** + Material Symbols |
 | Delivery screenshots | `documentation/mockups/screenshots/` (visual check; **source HTML wins**) |
+
+> **Note:** `cdn.tailwindcss.com` often fails (blocked/404). Local clone uses compiled `public/styles.css` instead of the Play CDN.
 
 ```bash
 mkdir -p "$HOME/Documentos/Semestre 6/_external"
 git clone git@github.com:nickamam08/TravelOS-AI-Ecosystem.git \
   "$HOME/Documentos/Semestre 6/_external/TravelOS-AI-Ecosystem"
 cd "$HOME/Documentos/Semestre 6/_external/TravelOS-AI-Ecosystem"
-npm install && npm run dev
+npm install
+# If styles look broken, rebuild local CSS:
+# npx tailwindcss -i ./styles.input.css -o ./public/styles.css --minify
+npm run dev
 ```
 
 ## Screen → source file
