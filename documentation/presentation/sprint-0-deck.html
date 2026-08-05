@@ -710,6 +710,102 @@
     .stage .proto-side .codebox { font-size: 20px !important; padding: 1.15rem 1.3rem !important; }
     .stage .proto-checks h3 { font-size: 24px !important; }
     .stage .proto-checks p { font-size: 19px !important; }
+
+    /* ===== Slide 8 Competencia ===== */
+    .comp-slide .comp-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.9rem;
+      flex: 1;
+      min-height: 0;
+      margin-top: 0.45rem;
+    }
+    .comp-card {
+      background: rgba(250,248,244,.88);
+      border: 1px solid var(--line);
+      border-radius: 1.15rem;
+      padding: 1.25rem 1.35rem;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow);
+      min-height: 0;
+      height: 100%;
+    }
+    .comp-card .who {
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: #b8751f;
+      margin-bottom: 0.35rem;
+    }
+    .comp-card h3 {
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: 2rem;
+      font-weight: 400;
+      line-height: 1.1;
+      margin-bottom: 0.85rem;
+    }
+    .comp-card .block {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.55rem;
+      min-height: 0;
+    }
+    .comp-card .block + .block {
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px dashed var(--line);
+    }
+    .comp-card .label {
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--sea);
+    }
+    .comp-card .label.weak { color: var(--coral); }
+    .comp-card p {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--ink-soft);
+      line-height: 1.4;
+    }
+    .comp-foot {
+      margin-top: 0.8rem;
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 0.8rem;
+      flex: 0 0 auto;
+    }
+    .comp-foot .card {
+      border-left: 4px solid var(--amber);
+      padding: 1.05rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 110px;
+      height: 100%;
+    }
+    .comp-foot .card.win {
+      border-left-color: var(--sea);
+      background: linear-gradient(160deg, rgba(42,154,154,.12), rgba(250,248,244,.9));
+    }
+    .comp-foot h3 { font-size: 1.2rem !important; margin-bottom: 0.3rem; }
+    .comp-foot p { font-size: 1.02rem !important; }
+
+    .stage .comp-slide { padding: 36px 56px 56px !important; }
+    .stage .comp-slide h2 { font-size: 48px !important; width: min(100%, 30ch) !important; }
+    .stage .comp-slide .lede { font-size: 22px !important; width: min(100%, 70ch) !important; }
+    .stage .comp-card h3 { font-size: 40px !important; }
+    .stage .comp-card p { font-size: 21px !important; }
+    .stage .comp-card .who,
+    .stage .comp-card .label { font-size: 15px !important; }
+    .stage .comp-foot h3 { font-size: 24px !important; }
+    .stage .comp-foot p { font-size: 20px !important; }
+    .stage .comp-foot .card { min-height: 120px; }
   </style>
 </head>
 <body>
@@ -987,38 +1083,69 @@
       <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>7 / 10</span></div>
     </section>
 
-
     <!-- 8 Competencia -->
-    <section class="slide" data-title="Competencia">
+    <section class="slide comp-slide" data-title="Competencia">
       <p class="kicker">07 · Análisis de competencia</p>
       <h2>Buenas piezas sueltas ≠ sistema operativo de agencia</h2>
-      <div class="fill">
-      <table class="comp">
-        <thead>
-          <tr><th>Competidor</th><th>Fortaleza</th><th>Debilidad vs TravelOS</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>TravelJoy</strong></td>
-            <td>CRM completo, pagos, copiloto IA</td>
-            <td>No es SO integral; débil en IA por agencia, portal profundo y foco LATAM/WhatsApp</td>
-          </tr>
-          <tr>
-            <td><strong>Travefy</strong></td>
-            <td>Itinerarios visuales, líderes de mercado, comisiones</td>
-            <td>Agente de ventas IA más débil; sin cotización NL ni knowledge aislado por agencia</td>
-          </tr>
-          <tr>
-            <td><strong>Chatbots turísticos</strong></td>
-            <td>Respuesta rápida, WhatsApp nativo</td>
-            <td>Sin CRM real, docs, métricas ni retención de conocimiento; memoria corta</td>
-          </tr>
-        </tbody>
-      </table>
-      <p class="lede" style="margin-top:.65rem;">El mercado empuja punto-soluciones. Nosotros cerramos el loop completo de la agencia.</p>
+      <p class="lede">El mercado empuja punto-soluciones. TravelOS AI cierra el loop completo: WhatsApp-first + CRM + cotizador + portal + knowledge por agencia.</p>
+
+      <div class="fill col">
+        <div class="comp-grid">
+          <article class="comp-card">
+            <div class="who">Competidor</div>
+            <h3>TravelJoy</h3>
+            <div class="block">
+              <div class="label">Fortaleza</div>
+              <p>CRM completo, pagos y copiloto IA. Buena ejecución como herramienta de gestión.</p>
+            </div>
+            <div class="block">
+              <div class="label weak">Debilidad vs TravelOS</div>
+              <p>No es un SO integral. Débil en IA por agencia, portal profundo y foco LATAM / WhatsApp-first.</p>
+            </div>
+          </article>
+
+          <article class="comp-card">
+            <div class="who">Competidor</div>
+            <h3>Travefy</h3>
+            <div class="block">
+              <div class="label">Fortaleza</div>
+              <p>Itinerarios visuales fuertes, marca conocida y modelo con comisiones.</p>
+            </div>
+            <div class="block">
+              <div class="label weak">Debilidad vs TravelOS</div>
+              <p>Agente de ventas IA más débil. Sin cotización en lenguaje natural ni knowledge aislado por agencia.</p>
+            </div>
+          </article>
+
+          <article class="comp-card">
+            <div class="who">Competidor</div>
+            <h3>Chatbots turísticos</h3>
+            <div class="block">
+              <div class="label">Fortaleza</div>
+              <p>Respuesta rápida y WhatsApp nativo. Buen “primer contacto”.</p>
+            </div>
+            <div class="block">
+              <div class="label weak">Debilidad vs TravelOS</div>
+              <p>Sin CRM real, documentos, métricas ni retención de conocimiento. Memoria corta.</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="comp-foot">
+          <div class="card win">
+            <h3>Nuestra lectura</h3>
+            <p>No competimos por ser el chatbot más rápido ni el CRM más bonito. Competimos por ser el <strong>sistema operativo completo</strong> que hoy ninguna agencia LATAM tiene.</p>
+          </div>
+          <div class="card">
+            <h3>Implicación para el MVP</h3>
+            <p>Priorizamos el loop cerrado demostrable: lead → cotización → itinerario → portal → KPI.</p>
+          </div>
+        </div>
       </div>
+
       <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>8 / 10</span></div>
     </section>
+
 
     <!-- 9 Ventaja -->
     <section class="slide" data-title="Ventaja">
