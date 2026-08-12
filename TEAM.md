@@ -1,33 +1,37 @@
-# Team instructions — coding phase
+# Team instructions — Sprint 1
 
-Sprint 0 product artifacts are **approved by the PO**. Implementation remains.
+Sprint 0 definition is done and PO-approved. **Sprint 1 = implement HUs by role.**
 
 ## Everyone
 
 1. Clone `Jeronimo0228/travel-OS` and run Quick start in `README.md`.
-2. Read `AGENTS.md` once.
+2. Read `AGENTS.md` and `documentation/sprint-1/CHECKLIST.md`.
 3. Open **your** file under `documentation/plans/sprint-1/<role>.md`.
-4. Paste the coding-agent prompt into Cursor and implement assigned Issues.
-5. Open a PR referencing the Issue numbers. Keep CI green.
+4. Pick Issues from milestone Sprint 1; implement on `feature/HU-XX-…` branches.
+5. Link CP from `documentation/sprint-1/functional-tests/` and keep CI green.
+6. Open PR → review → merge.
 
-## Frontend & UX (extra)
+## Deliverables already prepared (do not re-do unless updating)
 
-Clone and run the prototype; reuse its HTML/Tailwind:
-
-→ `documentation/plans/MOCKUP-CODE-SOURCE.md`  
-→ https://github.com/nickamam08/TravelOS-AI-Ecosystem
+| Artefacto | Path / Wiki |
+|---|---|
+| Plan de negocios | `documentation/sprint-1/business-plan.md` · Wiki 14 |
+| Pruebas funcionales (diseño) | `documentation/sprint-1/functional-tests/` · Wiki 15 |
+| Calidad software | `documentation/sprint-1/software-quality.md` · Wiki 16 |
+| Presentación guion | `documentation/sprint-1/presentation/` · Wiki 17 |
 
 ## Role map
 
-| Person | Role | Plan | Photo |
-|---|---|---|---|
-| Jerónimo Restrepo | SM + DevSecOps | `documentation/plans/sprint-1/devsecops.md` | `documentation/team/jeronimo.jpg` |
-| Santiago Arboleda | Frontend | `documentation/plans/sprint-1/frontend.md` | `documentation/team/santiago.jpg` |
-| Samuel Madrid | Backend | `documentation/plans/sprint-1/backend.md` | `documentation/team/samuel.jpg` |
-| Miguel Mercado | QA | `documentation/plans/sprint-1/qa.md` | `documentation/team/miguel.jpg` |
-| Juan José Palacio | UX/UI | `documentation/plans/sprint-1/ux.md` | `documentation/team/juanjose.jpg` |
+| Person | Role | Plan |
+|---|---|---|
+| Jerónimo Restrepo | SM + DevSecOps | `documentation/plans/sprint-1/devsecops.md` |
+| Santiago Arboleda | Frontend | `documentation/plans/sprint-1/frontend.md` |
+| Samuel Madrid | Backend | `documentation/plans/sprint-1/backend.md` |
+| Miguel Mercado | QA | `documentation/plans/sprint-1/qa.md` |
+| Juan José Palacio | UX/UI | `documentation/plans/sprint-1/ux.md` |
 
-## Still human (admin evidence only)
+## Still human
 
-- Upload ceremony graphic evidence under `documentation/ceremonies/evidence/`
-- Upload signed kickoff acta scan
+- Execute CPs when HU code lands → `EXECUTION-LOG.md` + bugs `type:bug`
+- Upload ceremony evidence screenshots under `documentation/ceremonies/evidence/`
+- Branch protection on `main` (optional extra)
