@@ -10,6 +10,8 @@ export function AiAssistantWidget() {
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
+        aria-label={open ? "Cerrar asistente IA" : "Abrir asistente IA"}
+        aria-expanded={open}
         className="w-14 h-14 bg-primary text-white rounded-full shadow-xl flex items-center justify-center hover:scale-105 active:scale-95 transition-all group overflow-hidden relative"
       >
         <div className="absolute inset-0 bg-gradient-to-tr from-secondary to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -32,6 +34,7 @@ export function AiAssistantWidget() {
             <button
               type="button"
               onClick={() => setOpen(false)}
+              aria-label="Cerrar asistente"
               className="opacity-70 hover:opacity-100"
             >
               <span className="material-symbols-outlined">close</span>
@@ -48,13 +51,18 @@ export function AiAssistantWidget() {
           </div>
           <div className="p-4 bg-white/50 border-t border-white/30">
             <div className="flex gap-2">
+              <label className="sr-only" htmlFor="ai-widget-input">
+                Pregunta a la IA
+              </label>
               <input
+                id="ai-widget-input"
                 type="text"
                 placeholder="Pregunta a la IA..."
                 className="flex-grow bg-white border border-outline-variant rounded-lg px-3 py-2 font-body-custom text-body-sm outline-none focus:ring-2 focus:ring-secondary-container"
               />
               <button
                 type="button"
+                aria-label="Enviar mensaje"
                 className="bg-secondary text-white p-2 rounded-lg"
               >
                 <span className="material-symbols-outlined">send</span>

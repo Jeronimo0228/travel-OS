@@ -1,4 +1,7 @@
-import { funnelStages } from "./mock-data";
+"use client";
+
+import { useCrmStore } from "./CrmStoreProvider";
+import { funnelStageOrder } from "./mock-data";
 
 const columnOverlay = [
   "bg-secondary/5 group-hover:bg-secondary/10",
@@ -8,7 +11,18 @@ const columnOverlay = [
 ];
 
 export function SalesFunnel() {
-  const lastIndex = funnelStages.length - 1;
+  const { leads } = useCrmStore();
+  const lastIndex = funnelStageOrder.length - 1;
+
+  const total = leads.filter((lead) =>
+    funnelStageOrder.some((stage) => stage.stage === lead.stage),
+  ).length;
+
+  const funnelStages = funnelStageOrder.map((stage) => {
+    const count = leads.filter((lead) => lead.stage === stage.stage).length;
+    const percent = total > 0 ? Math.round((count / total) * 100) : 0;
+    return { ...stage, count, percent };
+  });
 
   return (
     <section className="col-span-12 lg:col-span-8">

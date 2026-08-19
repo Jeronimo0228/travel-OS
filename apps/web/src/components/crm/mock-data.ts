@@ -54,16 +54,53 @@ export const stageBadge: Record<(typeof leadStages)[number], string> = {
   PERDIDO: "Perdido",
 };
 
-export const funnelStages: Array<{
+export const funnelStageOrder: Array<{
   stage: (typeof leadStages)[number];
   label: string;
-  count: number;
-  percent: number;
 }> = [
-  { stage: "PROSPECTO", label: "Prospectos", count: 82, percent: 45 },
-  { stage: "COTIZANDO", label: "Cotizando", count: 34, percent: 28 },
-  { stage: "CIERRE", label: "Cierre", count: 19, percent: 18 },
-  { stage: "GANADO", label: "Ganados", count: 7, percent: 9 },
+  { stage: "PROSPECTO", label: "Prospectos" },
+  { stage: "COTIZANDO", label: "Cotizando" },
+  { stage: "CIERRE", label: "Cierre" },
+  { stage: "GANADO", label: "Ganados" },
+];
+
+export type Task = {
+  id: string;
+  leadId: string;
+  title: string;
+  dueDate: string; // ISO yyyy-mm-dd
+  done: boolean;
+};
+
+export const mockTasks: Task[] = [
+  {
+    id: "task-1",
+    leadId: "lead-1",
+    title: "Enviar borrador de itinerario a Elena",
+    dueDate: "2026-08-22",
+    done: false,
+  },
+  {
+    id: "task-2",
+    leadId: "lead-2",
+    title: "Llamada de retención con Marcus",
+    dueDate: "2026-08-14",
+    done: false,
+  },
+  {
+    id: "task-3",
+    leadId: "lead-3",
+    title: "Confirmar pago recibido con Sarah",
+    dueDate: "2026-08-10",
+    done: true,
+  },
+  {
+    id: "task-4",
+    leadId: "lead-1",
+    title: "Agendar seguimiento post-envío",
+    dueDate: "2026-08-30",
+    done: false,
+  },
 ];
 
 export const coPilotInsights = [

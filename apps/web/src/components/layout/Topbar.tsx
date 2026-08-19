@@ -9,10 +9,14 @@ export function Topbar({
     <header className="bg-surface-container-lowest sticky top-0 z-40 border-b border-outline-variant shadow-sm flex justify-between items-center h-16 px-container-margin w-full">
       <div className="flex items-center gap-4 flex-1">
         <div className="relative w-full max-w-md focus-within:ring-2 focus-within:ring-secondary-container rounded-lg overflow-hidden">
+          <label className="sr-only" htmlFor="topbar-search">
+            {searchPlaceholder}
+          </label>
           <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">
             search
           </span>
           <input
+            id="topbar-search"
             type="text"
             placeholder={searchPlaceholder}
             className="w-full bg-surface-container-low border-none pl-10 pr-4 py-2 font-body-custom text-body-sm outline-none rounded-full"
@@ -35,6 +39,7 @@ export function Topbar({
         <div className="flex items-center gap-2 border-l border-outline-variant pl-4">
           <button
             type="button"
+            aria-label="Notificaciones"
             className="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-all relative"
           >
             <span className="material-symbols-outlined">notifications</span>

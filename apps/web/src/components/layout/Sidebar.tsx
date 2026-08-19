@@ -3,20 +3,31 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { navItems } from "./nav-items";
+import { useTenantBranding } from "@/components/branding/TenantBrandingProvider";
 
 export function Sidebar() {
   const pathname = usePathname();
+  const { branding } = useTenantBranding();
 
   return (
     <nav className="bg-primary dark:bg-tertiary-container h-full w-64 flex flex-col fixed left-0 top-0 border-r border-outline-variant py-6 z-50">
       <div className="px-6 mb-8 flex items-center gap-3">
-        <div className="w-10 h-10 bg-secondary rounded-lg flex items-center justify-center shrink-0">
-          <span
-            className="material-symbols-outlined text-white"
-            style={{ fontVariationSettings: "'FILL' 1" }}
-          >
-            smart_toy
-          </span>
+        <div className="w-10 h-10 bg-secondary rounded-lg flex items-center justify-center shrink-0 overflow-hidden">
+          {branding.logoUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={branding.logoUrl}
+              alt="Logo de la agencia"
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <span
+              className="material-symbols-outlined text-white"
+              style={{ fontVariationSettings: "'FILL' 1" }}
+            >
+              smart_toy
+            </span>
+          )}
         </div>
         <div>
           <h1 className="font-headline text-headline-md font-bold text-on-primary">
@@ -63,13 +74,13 @@ export function Sidebar() {
           <span className="material-symbols-outlined">add</span>
           Nuevo Itinerario
         </button>
-        <a
-          href="#"
+        <Link
+          href="/settings/branding"
           className="text-on-primary-container hover:bg-primary-container/50 rounded-lg mx-2 my-1 flex items-center gap-3 px-4 py-2 transition-colors duration-200"
         >
           <span className="material-symbols-outlined">settings</span>
           <span className="font-body-custom text-label-md">Configuración</span>
-        </a>
+        </Link>
         <a
           href="#"
           className="text-on-primary-container hover:bg-primary-container/50 rounded-lg mx-2 my-1 flex items-center gap-3 px-4 py-2 transition-colors duration-200"
