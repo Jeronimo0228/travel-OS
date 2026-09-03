@@ -1,6 +1,7 @@
 "use client";
 
 import { leadStages } from "@travelos/shared";
+import { Avatar } from "@/components/shared/Avatar";
 import { useCrmStore } from "./CrmStoreProvider";
 import { EmptyState } from "./EmptyState";
 import { stageBadge, type MockLead } from "./mock-data";
@@ -96,7 +97,7 @@ export function ClientsTable({ leads, onEdit }: ClientsTableProps) {
                     >
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-full overflow-hidden bg-surface-container" />
+                          <Avatar name={lead.name} />
                           <div>
                             <p className="font-body-custom text-label-md text-primary">
                               {lead.name}

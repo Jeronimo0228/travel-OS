@@ -12,7 +12,7 @@ export function AiAssistantWidget() {
         onClick={() => setOpen((prev) => !prev)}
         aria-label={open ? "Cerrar asistente IA" : "Abrir asistente IA"}
         aria-expanded={open}
-        className="w-14 h-14 bg-primary text-white rounded-full shadow-xl flex items-center justify-center hover:scale-105 active:scale-95 transition-all group overflow-hidden relative"
+        className="w-14 h-14 bg-primary text-white rounded-full shadow-xl flex items-center justify-center hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-container transition-all group overflow-hidden relative"
       >
         <div className="absolute inset-0 bg-gradient-to-tr from-secondary to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity" />
         <span className="material-symbols-outlined relative z-10 text-[28px]">
@@ -35,7 +35,7 @@ export function AiAssistantWidget() {
               type="button"
               onClick={() => setOpen(false)}
               aria-label="Cerrar asistente"
-              className="opacity-70 hover:opacity-100"
+              className="opacity-70 hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white rounded"
             >
               <span className="material-symbols-outlined">close</span>
             </button>
@@ -63,7 +63,7 @@ export function AiAssistantWidget() {
               <button
                 type="button"
                 aria-label="Enviar mensaje"
-                className="bg-secondary text-white p-2 rounded-lg"
+                className="bg-secondary text-white p-2 rounded-lg active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-transform"
               >
                 <span className="material-symbols-outlined">send</span>
               </button>

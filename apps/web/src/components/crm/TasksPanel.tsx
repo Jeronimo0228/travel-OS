@@ -1,6 +1,7 @@
 "use client";
 
 import { useCrmStore } from "./CrmStoreProvider";
+import { EmptyState } from "./EmptyState";
 
 function isOverdue(dueDate: string, done: boolean) {
   if (done) return false;
@@ -39,9 +40,11 @@ export function TasksPanel() {
         </div>
 
         {sorted.length === 0 ? (
-          <p className="p-6 font-body-custom text-body-sm text-on-surface-variant">
-            No hay tareas registradas.
-          </p>
+          <EmptyState
+            icon="task_alt"
+            title="Sin tareas pendientes"
+            description="Cuando añadas un seguimiento o recordatorio a un prospecto, aparecerá aquí."
+          />
         ) : (
           <ul className="divide-y divide-outline-variant">
             {sorted.map((task) => {

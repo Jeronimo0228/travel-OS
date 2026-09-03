@@ -54,7 +54,7 @@ function CrmContent() {
           <button
             type="button"
             onClick={openCreateDialog}
-            className="px-4 py-2 bg-primary text-on-primary rounded-lg font-body-custom text-label-md flex items-center gap-2 hover:opacity-90 transition-opacity"
+            className="px-4 py-2 bg-primary text-on-primary rounded-lg font-body-custom text-label-md flex items-center gap-2 hover:opacity-90 active:scale-[0.98] transition-all"
           >
             <span className="material-symbols-outlined text-[18px]">
               person_add

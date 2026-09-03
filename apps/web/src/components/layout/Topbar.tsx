@@ -1,6 +1,12 @@
+import { Avatar } from "@/components/shared/Avatar";
+
 type TopbarProps = {
   searchPlaceholder?: string;
 };
+
+// TODO: replace with the authenticated user's real name once session data
+// exists (pairs with the login work in apps/web/src/lib/auth.ts).
+const CURRENT_USER_NAME = "Usuario Demo";
 
 export function Topbar({
   searchPlaceholder = "Buscar itinerarios, agentes o insights...",
@@ -26,7 +32,7 @@ export function Topbar({
       <div className="flex items-center gap-4">
         <button
           type="button"
-          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-secondary to-tertiary-fixed-dim text-white rounded-full font-body-custom text-label-md shadow-lg shadow-secondary/20 hover:scale-105 transition-transform"
+          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-secondary to-tertiary-fixed-dim text-white rounded-full font-body-custom text-label-md shadow-lg shadow-secondary/20 hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-container transition-transform"
         >
           <span
             className="material-symbols-outlined text-[20px]"
@@ -40,12 +46,18 @@ export function Topbar({
           <button
             type="button"
             aria-label="Notificaciones"
-            className="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-all relative"
+            className="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-all relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-container"
           >
             <span className="material-symbols-outlined">notifications</span>
             <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-alert-coral rounded-full" />
           </button>
-          <div className="w-10 h-10 rounded-full bg-surface-container-high border-2 border-white overflow-hidden cursor-pointer" />
+          <button
+            type="button"
+            aria-label={`Perfil de ${CURRENT_USER_NAME}`}
+            className="rounded-full border-2 border-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-container"
+          >
+            <Avatar name={CURRENT_USER_NAME} />
+          </button>
         </div>
       </div>
     </header>

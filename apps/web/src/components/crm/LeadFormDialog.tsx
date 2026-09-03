@@ -236,7 +236,7 @@ export function LeadFormDialog({ open, lead, onClose }: LeadFormDialogProps) {
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-primary text-on-primary rounded-lg font-body-custom text-label-md hover:opacity-90 transition-opacity"
+              className="px-4 py-2 bg-primary text-on-primary rounded-lg font-body-custom text-label-md hover:opacity-90 active:scale-[0.98] transition-all"
             >
               {isEdit ? "Guardar cambios" : "Añadir Prospecto"}
             </button>

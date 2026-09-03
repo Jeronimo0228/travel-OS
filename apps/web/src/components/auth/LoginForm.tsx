@@ -97,8 +97,13 @@ export function LoginForm() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full px-4 py-2 bg-secondary text-on-secondary rounded-lg font-body-custom text-label-md hover:opacity-90 transition-opacity disabled:opacity-60"
+        className="w-full px-4 py-2 bg-secondary text-on-secondary rounded-lg font-body-custom text-label-md flex items-center justify-center gap-2 hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-60"
       >
+        {loading && (
+          <span className="material-symbols-outlined text-[18px] animate-spin" aria-hidden="true">
+            progress_activity
+          </span>
+        )}
         {loading ? "Ingresando..." : "Iniciar sesión"}
       </button>
     </form>
