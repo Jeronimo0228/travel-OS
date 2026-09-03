@@ -78,12 +78,24 @@ Bloqueantes (no aprobar PR sin resolver):
 - [ ] El botón que abre/cierra el drawer del asistente IA expone `aria-expanded` y `aria-controls`.
 
 No bloqueantes / revisar:
-- [ ] Contraste de `on-primary-container` (`#7c839b`) sobre fondo `primary` (`#000000`) en el sidebar —
-      validar con herramienta de contraste (parece bajo para texto pequeño).
+- [x] Contraste de `on-primary-container` (`#7c839b`) sobre fondo `primary` (`#000000`) en el sidebar —
+      calculado (WCAG 2.1, fórmula de luminancia relativa): **ratio ≈ 5.58:1**. Pasa AA para texto normal
+      (mínimo 4.5:1) y AA para texto grande, pero **no pasa AAA** (7:1). No es bloqueante para el PR, pero
+      si Frontend usa este color en labels pequeños del sidebar, dejarlo documentado como deuda de AAA.
 - [ ] Los pines del mapa (`index.html`) comunican estado solo por color (sin texto ni patrón) — si se
       reemplaza por mapa real, agregar alternativa textual/iconográfica.
 - [ ] Foco visible (`focus-visible`) en links del sidebar y filas de la tabla — no está definido explícitamente
       en el CSS del prototipo, Frontend debe añadirlo al migrar a React (no asumir que el navegador lo resuelve solo).
+
+## 4b. Verificación de fuente (re-auditoría contra HTML)
+
+Re-chequeados los hallazgos anteriores directamente sobre `index.html`/`crm.html` línea por línea antes del
+handoff a Frontend (ninguno era suposición):
+- `data-alt` en vez de `alt`: confirmado en 4 imágenes de `crm.html` (líneas 201, 369, 401, 433).
+- `fontFamily`/`fontSize` completos: confirmado solo en `crm.html` (línea 83), ausente en `index.html`.
+- Cero atributos `aria-*` en ambos archivos: confirmado (0 resultados).
+- Inputs de búsqueda solo con `placeholder`, sin `<label>`: confirmado en ambos archivos.
+- "Análisis AI" (index.html:177) vs "Análisis IA" (crm.html:194): confirmado, estandarizar a **"Análisis IA"**.
 
 ## 5. Handoff a Sprint 2
 
