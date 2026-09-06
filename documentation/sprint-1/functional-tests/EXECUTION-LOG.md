@@ -21,3 +21,12 @@
 | CP OK | — |
 | CP FAIL | — |
 | Bugs abiertos | 0 |
+
+## Bloqueadores Sprint 1
+
+### HU-01, HU-02, HU-07 (Auth & Multi-tenant)
+**Status:** ⏳ Waiting for Backend (Samuel)
+**Reason:** Routes `/api/auth/register-agency` and `/api/auth/login` not implemented
+**Test file:** apps/api/test/e2e/auth.e2e-spec.ts
+**Tests:** 9 failing (expected 404, waiting for routes)
+**Resolution:** Once Samuel implements HU-01 & HU-02, re-run tests
