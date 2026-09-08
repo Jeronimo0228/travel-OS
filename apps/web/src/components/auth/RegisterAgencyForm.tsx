@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { registerAgencySchema, type RegisterAgencyInput } from "@travelos/shared";
 import { registerAgency, AuthError } from "@/lib/auth";
+import { useSession } from "./SessionProvider";
 
 const inputClass =
   "w-full border border-outline-variant rounded-lg px-3 py-2 text-body-sm outline-none focus:ring-2 focus:ring-secondary-container bg-surface-container-lowest";
@@ -45,6 +46,7 @@ const emptyForm: FormState = {
 
 export function RegisterAgencyForm() {
   const router = useRouter();
+  const { setUser } = useSession();
   const [form, setForm] = useState<FormState>(emptyForm);
   const [slugTouched, setSlugTouched] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
@@ -83,14 +85,18 @@ export function RegisterAgencyForm() {
 
     setLoading(true);
     try {
-      await registerAgency(result.data);
-      router.push("/login");
+      const { user } = await registerAgency(result.data);
+      setUser(user);
+      router.push("/crm");
     } catch (error) {
-      setFormError(
-        error instanceof AuthError
-          ? error.message
-          : "Ocurrió un error inesperado. Intenta de nuevo.",
-      );
+      if (error instanceof AuthError) {
+        setFormError(error.message);
+        if (error.fieldErrors) {
+          setErrors(error.fieldErrors as Partial<Record<keyof FormState, string>>);
+        }
+      } else {
+        setFormError("Ocurrió un error inesperado. Intenta de nuevo.");
+      }
     } finally {
       setLoading(false);
     }

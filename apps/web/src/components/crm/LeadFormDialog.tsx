@@ -7,12 +7,14 @@ import {
   leadStages,
   type CreateLeadInput,
 } from "@travelos/shared";
+import type { Lead } from "@/lib/leads";
+import { ApiError } from "@/lib/api-client";
 import { useCrmStore } from "./CrmStoreProvider";
-import { stageBadge, type MockLead } from "./mock-data";
+import { stageBadge } from "./mock-data";
 
 type LeadFormDialogProps = {
   open: boolean;
-  lead: MockLead | null;
+  lead: Lead | null;
   onClose: () => void;
 };
 
@@ -43,10 +45,13 @@ export function LeadFormDialog({ open, lead, onClose }: LeadFormDialogProps) {
   const { addLead, updateLead } = useCrmStore();
   const [form, setForm] = useState<FormState>(emptyForm);
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
+  const [formError, setFormError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     if (!open) return;
     setErrors({});
+    setFormError(null);
     setForm(
       lead
         ? {
@@ -69,8 +74,9 @@ export function LeadFormDialog({ open, lead, onClose }: LeadFormDialogProps) {
     setForm((prev) => ({ ...prev, [key]: value }));
   }
 
-  function handleSubmit(event: React.FormEvent) {
+  async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
+    setFormError(null);
 
     const payload: CreateLeadInput = {
       name: form.name,
@@ -93,13 +99,28 @@ export function LeadFormDialog({ open, lead, onClose }: LeadFormDialogProps) {
       setErrors(fieldErrors);
       return;
     }
+    setErrors({});
 
-    if (isEdit && lead) {
-      updateLead(lead.id, result.data);
-    } else {
-      addLead(result.data as CreateLeadInput);
+    setSubmitting(true);
+    try {
+      if (isEdit && lead) {
+        await updateLead(lead.id, result.data);
+      } else {
+        await addLead(result.data as CreateLeadInput);
+      }
+      onClose();
+    } catch (error) {
+      if (error instanceof ApiError) {
+        setFormError(error.message);
+        if (error.fieldErrors) {
+          setErrors(error.fieldErrors as Partial<Record<keyof FormState, string>>);
+        }
+      } else {
+        setFormError("Ocurrió un error inesperado. Intenta de nuevo.");
+      }
+    } finally {
+      setSubmitting(false);
     }
-    onClose();
   }
 
   return (
@@ -226,6 +247,15 @@ export function LeadFormDialog({ open, lead, onClose }: LeadFormDialogProps) {
             />
           </div>
 
+          {formError && (
+            <p
+              role="alert"
+              className="bg-error-container text-on-error-container text-body-sm rounded-lg px-3 py-2"
+            >
+              {formError}
+            </p>
+          )}
+
           <div className="flex justify-end gap-3 pt-2">
             <button
               type="button"
@@ -236,8 +266,14 @@ export function LeadFormDialog({ open, lead, onClose }: LeadFormDialogProps) {
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-primary text-on-primary rounded-lg font-body-custom text-label-md hover:opacity-90 active:scale-[0.98] transition-all"
+              disabled={submitting}
+              className="px-4 py-2 bg-primary text-on-primary rounded-lg font-body-custom text-label-md flex items-center gap-2 hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-60"
             >
+              {submitting && (
+                <span className="material-symbols-outlined text-[18px] animate-spin" aria-hidden="true">
+                  progress_activity
+                </span>
+              )}
               {isEdit ? "Guardar cambios" : "Añadir Prospecto"}
             </button>
           </div>

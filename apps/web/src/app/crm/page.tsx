@@ -5,18 +5,17 @@ import { AppShell } from "@/components/layout/AppShell";
 import { CoPilotPanel } from "@/components/crm/CoPilotPanel";
 import { SalesFunnel } from "@/components/crm/SalesFunnel";
 import { ClientsTable } from "@/components/crm/ClientsTable";
-import { TasksPanel } from "@/components/crm/TasksPanel";
 import { CrmFilters, type StageFilter } from "@/components/crm/CrmFilters";
 import { LeadFormDialog } from "@/components/crm/LeadFormDialog";
 import { CrmStoreProvider, useCrmStore } from "@/components/crm/CrmStoreProvider";
-import type { MockLead } from "@/components/crm/mock-data";
+import type { Lead } from "@/lib/leads";
 
 function CrmContent() {
-  const { leads } = useCrmStore();
+  const { leads, loading, error, refetch } = useCrmStore();
   const [search, setSearch] = useState("");
   const [stageFilter, setStageFilter] = useState<StageFilter>("ALL");
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [editingLead, setEditingLead] = useState<MockLead | null>(null);
+  const [editingLead, setEditingLead] = useState<Lead | null>(null);
 
   const filteredLeads = useMemo(() => {
     return leads.filter((lead) => {
@@ -33,7 +32,7 @@ function CrmContent() {
     setDialogOpen(true);
   }
 
-  function openEditDialog(lead: MockLead) {
+  function openEditDialog(lead: Lead) {
     setEditingLead(lead);
     setDialogOpen(true);
   }
@@ -74,8 +73,13 @@ function CrmContent() {
       <div className="grid grid-cols-12 gap-6">
         <CoPilotPanel />
         <SalesFunnel />
-        <ClientsTable leads={filteredLeads} onEdit={openEditDialog} />
-        <TasksPanel />
+        <ClientsTable
+          leads={filteredLeads}
+          loading={loading}
+          error={error}
+          onRetry={refetch}
+          onEdit={openEditDialog}
+        />
       </div>
 
       <LeadFormDialog

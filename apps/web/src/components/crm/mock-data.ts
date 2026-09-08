@@ -1,50 +1,8 @@
-import { leadStages, type CreateLeadInput } from "@travelos/shared";
+import { leadStages } from "@travelos/shared";
 
-export type Sentiment = "satisfecho" | "neutral" | "urgente";
-
-export type MockLead = CreateLeadInput & {
-  id: string;
-  tripType: string;
-  sentimentScore: number;
-  sentiment: Sentiment;
-  nextAction: string;
-};
-
-export const mockLeads: MockLead[] = [
-  {
-    id: "lead-1",
-    name: "Camila Restrepo",
-    destination: "Kenia",
-    notes: "Cliente de alto patrimonio, viaja con family office",
-    stage: "COTIZANDO",
-    tripType: "Safari de Lujo (Kenia)",
-    sentimentScore: 97,
-    sentiment: "satisfecho",
-    nextAction: "Enviar Borrador Itinerario",
-  },
-  {
-    id: "lead-2",
-    name: "Andrés Gómez",
-    destination: "Bora Bora",
-    notes: "Cuenta corporativa recurrente, tercer viaje del año",
-    stage: "PROSPECTO",
-    tripType: "Escapada a Bora Bora",
-    sentimentScore: 39,
-    sentiment: "urgente",
-    nextAction: "Llamada de Retención Necesaria",
-  },
-  {
-    id: "lead-3",
-    name: "Valentina Ríos",
-    destination: "Alpes",
-    notes: "Referida por Camila Restrepo",
-    stage: "GANADO",
-    tripType: "Semana de Esquí Alpino",
-    sentimentScore: 81,
-    sentiment: "neutral",
-    nextAction: "Pago Recibido",
-  },
-];
+// Presentational-only content with no backing feature in Sprint 1's
+// backend scope — part of the approved crm.html mockup, kept as static
+// flavor rather than invented from real data.
 
 export const stageBadge: Record<(typeof leadStages)[number], string> = {
   PROSPECTO: "Prospecto",
@@ -62,45 +20,6 @@ export const funnelStageOrder: Array<{
   { stage: "COTIZANDO", label: "Cotizando" },
   { stage: "CIERRE", label: "Cierre" },
   { stage: "GANADO", label: "Ganados" },
-];
-
-export type Task = {
-  id: string;
-  leadId: string;
-  title: string;
-  dueDate: string; // ISO yyyy-mm-dd
-  done: boolean;
-};
-
-export const mockTasks: Task[] = [
-  {
-    id: "task-1",
-    leadId: "lead-1",
-    title: "Enviar borrador de itinerario a Camila",
-    dueDate: "2026-08-22",
-    done: false,
-  },
-  {
-    id: "task-2",
-    leadId: "lead-2",
-    title: "Llamada de retención con Andrés",
-    dueDate: "2026-08-14",
-    done: false,
-  },
-  {
-    id: "task-3",
-    leadId: "lead-3",
-    title: "Confirmar pago recibido con Valentina",
-    dueDate: "2026-08-10",
-    done: true,
-  },
-  {
-    id: "task-4",
-    leadId: "lead-1",
-    title: "Agendar seguimiento post-envío",
-    dueDate: "2026-08-30",
-    done: false,
-  },
 ];
 
 export const coPilotInsights = [

@@ -1,16 +1,25 @@
+"use client";
+
+import { useRouter } from "next/navigation";
 import { Avatar } from "@/components/shared/Avatar";
+import { useSession } from "@/components/auth/SessionProvider";
 
 type TopbarProps = {
   searchPlaceholder?: string;
 };
 
-// TODO: replace with the authenticated user's real name once session data
-// exists (pairs with the login work in apps/web/src/lib/auth.ts).
-const CURRENT_USER_NAME = "Usuario Demo";
-
 export function Topbar({
   searchPlaceholder = "Buscar itinerarios, agentes o insights...",
 }: TopbarProps) {
+  const { user, logout } = useSession();
+  const router = useRouter();
+  const displayName = user?.name ?? "Invitado";
+
+  async function handleLogout() {
+    await logout();
+    router.push("/login");
+  }
+
   return (
     <header className="bg-surface-container-lowest sticky top-0 z-40 border-b border-outline-variant shadow-sm flex justify-between items-center h-16 px-container-margin w-full">
       <div className="flex items-center gap-4 flex-1">
@@ -51,12 +60,20 @@ export function Topbar({
             <span className="material-symbols-outlined">notifications</span>
             <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-alert-coral rounded-full" />
           </button>
+          <div
+            title={user ? `${user.name} · ${user.role}` : undefined}
+            aria-label={`Perfil de ${displayName}`}
+            className="rounded-full border-2 border-white"
+          >
+            <Avatar name={displayName} />
+          </div>
           <button
             type="button"
-            aria-label={`Perfil de ${CURRENT_USER_NAME}`}
-            className="rounded-full border-2 border-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-container"
+            onClick={handleLogout}
+            aria-label="Cerrar sesión"
+            className="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-container"
           >
-            <Avatar name={CURRENT_USER_NAME} />
+            <span className="material-symbols-outlined">logout</span>
           </button>
         </div>
       </div>

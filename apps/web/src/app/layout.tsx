@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
+import { SessionProvider } from "@/components/auth/SessionProvider";
 import "./globals.css";
 
 const bodyFont = Inter({
@@ -34,7 +35,7 @@ export default function RootLayout({
       <body
         className={`${bodyFont.variable} ${headlineFont.variable} font-body-custom antialiased bg-surface text-on-surface`}
       >
-        {children}
+        <SessionProvider>{children}</SessionProvider>
       </body>
     </html>
   );

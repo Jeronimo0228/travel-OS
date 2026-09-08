@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { loginSchema } from "@travelos/shared";
 import { login, AuthError } from "@/lib/auth";
+import { useSession } from "./SessionProvider";
 
 const inputClass =
   "w-full border border-outline-variant rounded-lg px-3 py-2 text-body-sm outline-none focus:ring-2 focus:ring-secondary-container bg-surface-container-lowest";
@@ -12,6 +13,7 @@ const labelClass =
 
 export function LoginForm() {
   const router = useRouter();
+  const { setUser } = useSession();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fieldErrors, setFieldErrors] = useState<{ email?: string; password?: string }>({});
@@ -36,7 +38,8 @@ export function LoginForm() {
 
     setLoading(true);
     try {
-      await login(result.data);
+      const { user } = await login(result.data);
+      setUser(user);
       router.push("/crm");
     } catch (error) {
       setFormError(
