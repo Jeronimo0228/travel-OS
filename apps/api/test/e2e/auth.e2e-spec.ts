@@ -27,6 +27,10 @@ function registerPayload(overrides: Partial<Record<string, string>> = {}) {
   const slug = uniqueSlug();
   return {
     agencyName: `QA Agency ${slug}`,
+    // Agency.nit is @unique in schema.prisma — tying it to the same unique
+    // slug (instead of a fixed "nit-12345") keeps every registration in this
+    // suite collision-free, since several tests register more than one agency.
+    nit: `nit-${slug}`,
     slug,
     adminEmail: `${slug}@example.com`,
     adminPassword: 'S3cure-Passw0rd!',
@@ -39,6 +43,18 @@ function expectStatusIn(res: { status: number }, allowed: number[]) {
   if (!allowed.includes(res.status)) {
     throw new Error(`Expected status in [${allowed.join(', ')}], got ${res.status}`);
   }
+}
+
+// AuthController never puts the JWT in the JSON body — it's set as the
+// httpOnly cookie `travelos_access_token` (see auth.controller.ts /
+// auth.constants.ts). Pull it out of Set-Cookie so tests can still send it
+// as a Bearer header (jwt.strategy.ts accepts both extractors).
+function extractAccessToken(res: {
+  headers: Record<string, string | string[] | undefined>;
+}): string | undefined {
+  const raw = res.headers['set-cookie'];
+  const cookies = Array.isArray(raw) ? raw : raw ? [raw] : [];
+  return cookies[0]?.split('travelos_access_token=')[1]?.split(';')[0];
 }
 
 describe('Auth (e2e) — HU-01 register, HU-02 login, HU-07 tenant isolation', () => {
@@ -81,8 +97,10 @@ describe('Auth (e2e) — HU-01 register, HU-02 login, HU-07 tenant isolation', (
         .send(payload)
         .expect(201);
 
+      // Nota: Backend solo devuelve { user }, no { agency }.
+      // Si se espera retornar la agencia, coordinar con Samuel en backend.
       expect(res.body).toMatchObject({
-        agency: { name: payload.agencyName, slug: payload.slug },
+        user: { email: payload.adminEmail, role: 'ADMIN' },
       });
       // The password (hashed or plain) must never round-trip to the client.
       const raw = JSON.stringify(res.body);
@@ -145,10 +163,9 @@ describe('Auth (e2e) — HU-01 register, HU-02 login, HU-07 tenant isolation', (
         .send({ email: payload.adminEmail, password: payload.adminPassword })
         .expect(200);
 
-      // ASSUMPTION: the token is returned as `accessToken`. Update this once
-      // the backend team confirms the login response DTO.
-      expect(typeof res.body.accessToken).toBe('string');
-      expect(res.body.accessToken.split('.')).toHaveLength(3); // header.payload.signature
+      const token = extractAccessToken(res);
+      expect(typeof token).toBe('string');
+      expect(token?.split('.')).toHaveLength(3); // header.payload.signature
     });
 
     it('CP-02-02: wrong password is rejected with 401', async () => {
@@ -163,7 +180,7 @@ describe('Auth (e2e) — HU-01 register, HU-02 login, HU-07 tenant isolation', (
         .send({ email: payload.adminEmail, password: 'wrong-password' })
         .expect(401);
 
-      expect(res.body.accessToken).toBeUndefined();
+      expect(extractAccessToken(res)).toBeUndefined();
     });
 
     it('CP-02-02b: unknown email fails with the same generic message as wrong password (no user enumeration)', async () => {
@@ -216,8 +233,8 @@ describe('Auth (e2e) — HU-01 register, HU-02 login, HU-07 tenant isolation', (
         .send({ email: agencyB.adminEmail, password: agencyB.adminPassword })
         .expect(200);
 
-      const tokenA: string = loginA.body.accessToken;
-      const tokenB: string = loginB.body.accessToken;
+      const tokenA = extractAccessToken(loginA) as string;
+      const tokenB = extractAccessToken(loginB) as string;
 
       // A creates a lead inside its own tenant.
       const createRes = await request(app.getHttpServer())
@@ -234,7 +251,7 @@ describe('Auth (e2e) — HU-01 register, HU-02 login, HU-07 tenant isolation', (
         .set('Authorization', `Bearer ${tokenB}`)
         .expect(200);
       expect(
-        (listAsB.body as Array<{ id: string }>).find((l) => l.id === leadId),
+        (listAsB.body.items as Array<{ id: string }>).find((l) => l.id === leadId),
       ).toBeUndefined();
 
       // ...nor fetch it directly...
@@ -243,12 +260,12 @@ describe('Auth (e2e) — HU-01 register, HU-02 login, HU-07 tenant isolation', (
         .set('Authorization', `Bearer ${tokenB}`);
       expectStatusIn(getAsB, [403, 404]);
 
-      // ...nor edit it.
-      const patchAsB = await request(app.getHttpServer())
-        .patch(`/api/leads/${leadId}`)
+      // ...nor edit it. (leads.controller.ts only exposes PUT, not PATCH)
+      const putAsB = await request(app.getHttpServer())
+        .put(`/api/leads/${leadId}`)
         .set('Authorization', `Bearer ${tokenB}`)
         .send({ name: 'Hijacked' });
-      expectStatusIn(patchAsB, [403, 404]);
+      expectStatusIn(putAsB, [403, 404]);
 
       // Sanity check: isolation is scoped to B, A can still see its own lead.
       const listAsA = await request(app.getHttpServer())
@@ -256,7 +273,7 @@ describe('Auth (e2e) — HU-01 register, HU-02 login, HU-07 tenant isolation', (
         .set('Authorization', `Bearer ${tokenA}`)
         .expect(200);
       expect(
-        (listAsA.body as Array<{ id: string }>).some((l) => l.id === leadId),
+        (listAsA.body.items as Array<{ id: string }>).some((l) => l.id === leadId),
       ).toBe(true);
     });
   });
