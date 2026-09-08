@@ -24,6 +24,7 @@ enum LeadStage {
 model Agency {
   id           String   @id @default(cuid())
   name         String
+  nit          String   @unique
   slug         String   @unique
   logoUrl      String?
   primaryColor String   @default("#4648d4")
