@@ -41,7 +41,7 @@ function expectStatusIn(res: { status: number }, allowed: number[]) {
   }
 }
 
-describe('Auth (e2e) — HU-01 register-agency, HU-02 login, HU-07 tenant isolation', () => {
+describe('Auth (e2e) — HU-01 register, HU-02 login, HU-07 tenant isolation', () => {
   let app: INestApplication<App>;
   let prisma: PrismaService;
 
@@ -72,12 +72,12 @@ describe('Auth (e2e) — HU-01 register-agency, HU-02 login, HU-07 tenant isolat
     await app.close();
   });
 
-  describe('POST /api/auth/register-agency (HU-01)', () => {
+  describe('POST /api/auth/register (HU-01)', () => {
     it('CP-01-01: valid data creates an isolated tenant and its admin user', async () => {
       const payload = registerPayload();
 
       const res = await request(app.getHttpServer())
-        .post('/api/auth/register-agency')
+        .post('/api/auth/register')
         .send(payload)
         .expect(201);
 
@@ -96,12 +96,12 @@ describe('Auth (e2e) — HU-01 register-agency, HU-02 login, HU-07 tenant isolat
     it('CP-01-02: duplicate slug is rejected and no second tenant is created', async () => {
       const payload = registerPayload();
       await request(app.getHttpServer())
-        .post('/api/auth/register-agency')
+        .post('/api/auth/register')
         .send(payload)
         .expect(201);
 
       const res = await request(app.getHttpServer())
-        .post('/api/auth/register-agency')
+        .post('/api/auth/register')
         .send({ ...payload, adminEmail: `second-${payload.adminEmail}` });
       expectStatusIn(res, [400, 409]);
       expect(res.body.message).toBeDefined();
@@ -114,7 +114,7 @@ describe('Auth (e2e) — HU-01 register-agency, HU-02 login, HU-07 tenant isolat
       const payload = registerPayload({ adminEmail: 'not-an-email' });
 
       await request(app.getHttpServer())
-        .post('/api/auth/register-agency')
+        .post('/api/auth/register')
         .send(payload)
         .expect(400);
 
@@ -124,7 +124,7 @@ describe('Auth (e2e) — HU-01 register-agency, HU-02 login, HU-07 tenant isolat
 
     it('CP-01-03b: missing required fields fails validation (400)', async () => {
       const res = await request(app.getHttpServer())
-        .post('/api/auth/register-agency')
+        .post('/api/auth/register')
         .send({})
         .expect(400);
 
@@ -136,7 +136,7 @@ describe('Auth (e2e) — HU-01 register-agency, HU-02 login, HU-07 tenant isolat
     it('CP-02-01: valid credentials return a JWT access token', async () => {
       const payload = registerPayload();
       await request(app.getHttpServer())
-        .post('/api/auth/register-agency')
+        .post('/api/auth/register')
         .send(payload)
         .expect(201);
 
@@ -154,7 +154,7 @@ describe('Auth (e2e) — HU-01 register-agency, HU-02 login, HU-07 tenant isolat
     it('CP-02-02: wrong password is rejected with 401', async () => {
       const payload = registerPayload();
       await request(app.getHttpServer())
-        .post('/api/auth/register-agency')
+        .post('/api/auth/register')
         .send(payload)
         .expect(201);
 
@@ -174,7 +174,7 @@ describe('Auth (e2e) — HU-01 register-agency, HU-02 login, HU-07 tenant isolat
 
       const payload = registerPayload();
       await request(app.getHttpServer())
-        .post('/api/auth/register-agency')
+        .post('/api/auth/register')
         .send(payload)
         .expect(201);
       const wrongPasswordRes = await request(app.getHttpServer())
@@ -199,11 +199,11 @@ describe('Auth (e2e) — HU-01 register-agency, HU-02 login, HU-07 tenant isolat
       const agencyA = registerPayload();
       const agencyB = registerPayload();
       await request(app.getHttpServer())
-        .post('/api/auth/register-agency')
+        .post('/api/auth/register')
         .send(agencyA)
         .expect(201);
       await request(app.getHttpServer())
-        .post('/api/auth/register-agency')
+        .post('/api/auth/register')
         .send(agencyB)
         .expect(201);
 

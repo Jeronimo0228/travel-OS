@@ -64,7 +64,7 @@ describe('Leads (e2e) — HU-07 create/edit, HU-11 list/filter, delete (undocume
   // Registers agency + logs in, returns the bearer token for its admin user.
   async function registerAndLogin(payload: ReturnType<typeof registerPayload>) {
     await request(app.getHttpServer())
-      .post('/api/auth/register-agency')
+      .post('/api/auth/register')
       .send(payload)
       .expect(201);
 

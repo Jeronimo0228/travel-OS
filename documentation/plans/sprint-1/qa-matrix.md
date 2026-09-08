@@ -10,7 +10,7 @@ IDs siguen la numeración ya usada en `CP-HU-*.md` (`CP-01-01`, no `CP-HU-01-01`
 
 | CP | AC | Caso | Test automatizado | Status |
 |---|---|---|---|---|
-| CP-01-01 | AC-01 | Registro exitoso crea tenant aislado | `auth.e2e-spec.ts` › `CP-01-01` | ❌ 404 (no existe `POST /api/auth/register-agency`) |
+| CP-01-01 | AC-01 | Registro exitoso crea tenant aislado | `auth.e2e-spec.ts` › `CP-01-01` | ❌ 404 (no existe `POST /api/auth/register`) |
 | CP-01-02 | AC-02 | Slug/email duplicado rechazado, sin segundo tenant | `auth.e2e-spec.ts` › `CP-01-02` | ❌ 404 |
 | CP-01-03 | AC-03 | Email inválido → error de validación, sin create | `auth.e2e-spec.ts` › `CP-01-03` | ❌ 404 |
 | CP-01-03b *(QA extra, no está en CP-HU-01.md)* | AC-03 | Campos obligatorios vacíos → 400 | `auth.e2e-spec.ts` › `CP-01-03b` | ❌ 404 |
@@ -56,4 +56,4 @@ IDs siguen la numeración ya usada en `CP-HU-*.md` (`CP-01-01`, no `CP-HU-01-01`
 2. **CP-02-03** (logout) no puede automatizarse sin que Backend defina el mecanismo de invalidación de sesión (JWT stateless no tiene logout nativo).
 3. **CP-11-03** (estado vacío en filtros) no tiene test — falta confirmar la forma de la respuesta.
 4. **Eliminar lead** no tiene AC/CP formal en ningún `CP-HU-*.md` — se escribieron tests igual (completitud REST) pero se recomienda que el PO lo formalice.
-5. Inconsistencia de contrato: `documentation/plans/sprint-1/backend.md` dice `POST /api/auth/register-agency`, pero `apps/web/src/lib/auth.ts` llama a `POST /api/auth/register`. Los tests usan `register-agency` (el nombre documentado en el plan de Backend); confirmar antes de implementar.
+5. ~~Inconsistencia de contrato entre `backend.md` (`register-agency`) y `apps/web/src/lib/auth.ts` (`register`).~~ **Resuelto**: la ruta acordada es `POST /api/auth/register` (confirmado 2026-09-08); los e2e ya se actualizaron. Pendiente: alinear `documentation/plans/sprint-1/backend.md`, que todavía menciona `register-agency`.
