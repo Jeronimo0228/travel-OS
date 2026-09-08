@@ -27,6 +27,7 @@ function slugify(value: string) {
 
 type FormState = {
   agencyName: string;
+  nit: string;
   slug: string;
   adminName: string;
   adminEmail: string;
@@ -35,6 +36,7 @@ type FormState = {
 
 const emptyForm: FormState = {
   agencyName: "",
+  nit: "",
   slug: "",
   adminName: "",
   adminEmail: "",
@@ -110,6 +112,20 @@ export function RegisterAgencyForm() {
         {errors.agencyName && (
           <p className="text-alert-coral text-body-sm mt-1">{errors.agencyName}</p>
         )}
+      </div>
+
+      <div>
+        <label className={labelClass} htmlFor="register-nit">
+          NIT
+        </label>
+        <input
+          id="register-nit"
+          type="text"
+          className={inputClass}
+          value={form.nit}
+          onChange={(event) => setForm((prev) => ({ ...prev, nit: event.target.value }))}
+        />
+        {errors.nit && <p className="text-alert-coral text-body-sm mt-1">{errors.nit}</p>}
       </div>
 
       <div>
