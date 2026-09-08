@@ -1,28 +1,33 @@
 # Presentación / Sustentación — Sprint 1
 
-## Para el cliente (review / pitch corto)
+## Deck
 
-1. Sprint goal: fundación multi-tenant + CRM usable  
-2. Demo de lo implementado (cuando cada rol complete sus HU)  
-3. Deuda / pendientes explícitos  
-4. Pedido al PO para Sprint 2  
+Abrir en navegador (pantalla completa con `F`):
 
-## Para el profesor (obligatorio)
+[`documentation/presentation/sprint-1-deck.html`](../../presentation/sprint-1-deck.html)
 
-| Área | Contenido |
+Servir local si hace falta:
+
+```bash
+python3 -m http.server 8765 --directory documentation/presentation
+# http://127.0.0.1:8765/sprint-1-deck.html
+```
+
+## Guion (10–12 min)
+
+1. Portada + agenda (1 min)  
+2. Rúbrica y sprint goal (1 min)  
+3. **Demo en vivo** (4–5 min) — ver slide “Demo script”  
+4. Plan de negocios resumen (1–2 min)  
+5. Pruebas + calidad/CI (2 min)  
+6. Feedback PO + cierre / Sprint 2 (1 min)  
+
+## Para el profesor
+
+| Área | Artefacto |
 |---|---|
-| Desarrollo | Demo MVP Sprint 1 (HU cerradas) |
-| Plan de Negocios | Resumen ejecutivo (Sección 1) |
-| Pruebas | Diseño CP por HU + ejecución/bugs reportados |
-| Calidad | ESLint/Prettier/CI + naming + GitHub Flow |
-
-## Guion sugerido (10–12 min)
-
-1. Contexto y sprint goal (1 min)  
-2. Demo código (4 min) — **responsabilidad de roles FE/BE**  
-3. Plan de negocios — resumen (2 min)  
-4. Pruebas funcionales — muestra HU→CP→bug (2 min)  
-5. Calidad software — CI + estándares (2 min)  
-6. Cierre y siguientes sprints (1 min)  
-
-Deck HTML (opcional ampliar): usar estructura de `documentation/presentation/sprint-0-deck.html` como plantilla visual.
+| Desarrollo | Demo HU #1–#9, #11, #12 |
+| Plan de Negocios | `business-plan.md` |
+| Pruebas | `functional-tests/` + `EXECUTION-LOG.md` |
+| Calidad | CI + `software-quality.md` |
+| Ceremonias | `actas-sprint-1-semanales.pdf` |

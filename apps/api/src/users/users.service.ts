@@ -10,6 +10,20 @@ export class UsersService {
     private readonly auditService: AuditService,
   ) {}
 
+  list(agencyId: string) {
+    return this.prisma.user.findMany({
+      where: { agencyId },
+      select: {
+        id: true,
+        agencyId: true,
+        email: true,
+        name: true,
+        role: true,
+      },
+      orderBy: [{ role: 'asc' }, { name: 'asc' }],
+    });
+  }
+
   async changeRole(
     agencyId: string,
     actorId: string,

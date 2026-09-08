@@ -6,6 +6,7 @@ export const auditActions = [
   'ROLE_CHANGE',
   'LEAD_ASSIGN',
   'LEAD_DELETE',
+  'BRANDING_UPDATE',
 ] as const;
 
 export const listAuditLogsQuerySchema = z.object({

@@ -18,6 +18,7 @@ export type Lead = {
 export type ListLeadsParams = {
   stage?: (typeof leadStages)[number];
   name?: string;
+  assigneeId?: string;
   skip?: number;
   take?: number;
 };
@@ -26,6 +27,7 @@ export function listLeads(params: ListLeadsParams = {}) {
   const query = new URLSearchParams();
   if (params.stage) query.set("stage", params.stage);
   if (params.name) query.set("name", params.name);
+  if (params.assigneeId) query.set("assigneeId", params.assigneeId);
   if (params.skip !== undefined) query.set("skip", String(params.skip));
   if (params.take !== undefined) query.set("take", String(params.take));
 
@@ -33,6 +35,13 @@ export function listLeads(params: ListLeadsParams = {}) {
   return apiFetch<{ items: Lead[]; total: number }>(
     `/api/leads${qs ? `?${qs}` : ""}`,
   );
+}
+
+export function assignLead(id: string, assigneeId: string) {
+  return apiFetch<Lead>(`/api/leads/${id}/assignee`, {
+    method: "PUT",
+    body: JSON.stringify({ assigneeId }),
+  });
 }
 
 export function createLead(input: CreateLeadInput) {

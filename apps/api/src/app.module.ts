@@ -9,6 +9,7 @@ import { UsersModule } from './users/users.module';
 import { LeadsModule } from './leads/leads.module';
 import { AuditModule } from './audit/audit.module';
 import { TasksModule } from './tasks/tasks.module';
+import { AgencyModule } from './agency/agency.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { TasksModule } from './tasks/tasks.module';
     UsersModule,
     LeadsModule,
     TasksModule,
+    AgencyModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,0 +1,192 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+
+\definecolor{ink}{HTML}{0B1F2A}
+\definecolor{sea}{HTML}{1F6F78}
+\definecolor{amber}{HTML}{D4923A}
+\definecolor{po}{HTML}{8B1E1E}
+
+\hypersetup{colorlinks=true,linkcolor=sea,urlcolor=sea}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{sea}{TravelOS AI · Actas Sprint 1}}
+\fancyhead[R]{\small EAFIT · PI2}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\title{\textbf{Actas de reuniones semanales}\\[0.3em]
+\large Sprint 1 — Fundación + CRM núcleo\\[0.2em]
+\normalsize TravelOS AI · Proyecto Integrador 2}
+\author{Scrum Master: Jerónimo Restrepo Ángel\\
+Product Owner (piloto): Juan Manuel Restrepo Molina\\
+Equipo: Santiago (FE) · Samuel (BE) · Miguel (QA) · Juan José (UX)}
+\date{Periodo: 11 ago 2026 — 8 sep 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+\noindent Compilación de actas semanales desde la sustentación del Sprint 0 hasta el cierre del Sprint 1.
+Incluye \textbf{comentarios simulados de un Product Owner exigente} (Punto D' Partida), acuerdos técnicos y criterios de aceptación.
+\end{abstract}
+
+\section*{Convenciones}
+\begin{itemize}[leftmargin=*]
+  \item \textbf{PO:} Juan Manuel Restrepo Molina (\texttt{juanmcoach@gmail.com}).
+  \item Formato: contexto $\rightarrow$ acuerdos $\rightarrow$ riesgos $\rightarrow$ comentario PO.
+  \item Evidencias: \texttt{documentation/ceremonies/} y GitHub Milestone \emph{Sprint 1}.
+\end{itemize}
+
+%% ========== MINUTES 003 (already existed, short recap) ==========
+\section{MINUTES-003 — Sprint Planning (2026-08-11)}
+\begin{tabular}{@{}ll@{}}
+\textbf{Tipo} & Sprint Planning \\
+\textbf{Facilitador} & Jerónimo Restrepo (SM) \\
+\textbf{Sprint goal} & Multi-tenant autenticado + CRM básico usable \\
+\end{tabular}
+
+\paragraph{Alcance.} Issues \#1--\#9, \#11, \#12. Fuera: cotizador IA, itinerarios, portal.
+
+\paragraph{Acuerdos.} GitHub Flow; cada HU enlaza CP; DoD: AC Gherkin + CI verde + review.
+
+\begin{quote}
+\textcolor{po}{\textbf{PO:} «Planning sin números no sirve. Quiero ver en la review del viernes qué HU están a \emph{Done} y cuáles no. Si branding queda solo en localStorage, para mí no existe.»}
+\end{quote}
+
+%% ========== 004 ==========
+\section{MINUTES-004 — Weekly Review (2026-08-18)}
+\begin{tabular}{@{}ll@{}}
+\textbf{Tipo} & Weekly Sync + Review técnica \\
+\textbf{Asistentes} & Equipo completo \\
+\textbf{Duración} & 45 min \\
+\end{tabular}
+
+\subsection*{Contexto}
+Tras Sprint 0 aceptado, el equipo arrancó contratos API (auth/leads) y scaffolding FE CRM.
+QA publicó specs e2e contractuales; CI aún rojo por deuda de lint.
+
+\subsection*{Avances}
+\begin{itemize}[leftmargin=*]
+  \item BE: borrador Prisma Agency/User/Lead + JWT strategy.
+  \item FE: shell CRM + formularios login/register.
+  \item QA: matriz CP 38 casos diseñados.
+  \item DevSecOps: workflow CI monorepo documentado.
+\end{itemize}
+
+\subsection*{Bloqueadores}
+Auth routes aún no estables; FE trabaja contra mocks parciales.
+
+\begin{quote}
+\textcolor{po}{\textbf{PO:} «Llevamos una semana y todavía no puedo registrar una agencia de verdad. No me interesa el “casi”. En turismo, un lead sin dueño se pierde: prioricen asignación y aislamiento entre agencias antes que pantallas decorativas.»}
+\end{quote}
+
+\paragraph{Acción.} Samuel entrega \texttt{/api/auth/register|login} antes del 22-ago. Jerónimo revisa guards multi-tenant.
+
+%% ========== 005 ==========
+\section{MINUTES-005 — Weekly Review (2026-08-25)}
+\begin{tabular}{@{}ll@{}}
+\textbf{Tipo} & Weekly Sync \\
+\textbf{Asistentes} & Equipo + PO (15 min) \\
+\end{tabular}
+
+\subsection*{Avances}
+\begin{itemize}[leftmargin=*]
+  \item Auth cookie httpOnly integrado; registro crea tenant + ADMIN.
+  \item Leads CRUD API con scope por \texttt{agencyId}.
+  \item FE conecta login/leads/tareas al backend.
+  \item UX: notas de contraste WCAG en CRM.
+\end{itemize}
+
+\subsection*{Hallazgos QA}
+DELETE lead sin AC formal en rúbrica; se documenta y se escala al backlog.
+E2e esperaban array plano; API responde \texttt{\{items,total\}} — contrato a alinear.
+
+\begin{quote}
+\textcolor{po}{\textbf{PO:} «Bien el login. Ahora demuéstrenme dos cosas: (1) un asesor \emph{no} ve leads de otro; (2) si cambio el color de marca, otro asesor de la misma agencia lo ve sin reinstalar nada. Si no, no es marca blanca.»}
+\end{quote}
+
+\paragraph{Acción.} HU-04 branding en Agency (API). HU-12 UI de asignación. HU-05 auditoría LOGIN\_FAIL.
+
+%% ========== 006 ==========
+\section{MINUTES-006 — Weekly Review (2026-09-01)}
+\begin{tabular}{@{}ll@{}}
+\textbf{Tipo} & Weekly Sync + Risk review \\
+\textbf{Asistentes} & Equipo \\
+\end{tabular}
+
+\subsection*{Avances}
+\begin{itemize}[leftmargin=*]
+  \item Pipeline por stages en tabla CRM.
+  \item Tareas por lead.
+  \item Audit module + endpoint ADMIN.
+  \item PR API \#29 mergeada; QA PRs \#26--\#28.
+\end{itemize}
+
+\subsection*{Riesgos pre-sustentación}
+\begin{enumerate}[leftmargin=*]
+  \item CI rojo en \texttt{main} (lint unsafe + unit specs obsoletos).
+  \item Branding aún localStorage.
+  \item Issues Sprint 1 abiertos pese a código parcial.
+\end{enumerate}
+
+\begin{quote}
+\textcolor{po}{\textbf{PO:} «Escucho “está en main” pero veo issues abiertos y CI fallando. Para mí Done = demo estable + evidencia. Cierren la deuda técnica esta semana o bajen el alcance con transparencia — no me gusta el teatro de burndown.»}
+\end{quote}
+
+\paragraph{Acción.} Jerónimo (SM/DevSecOps) lidera close-out: CI verde, branding API, assign UI, actas, deck, cierre milestone.
+
+%% ========== 007 ==========
+\section{MINUTES-007 — Sprint Review / Pre-defense (2026-09-08)}
+\begin{tabular}{@{}ll@{}}
+\textbf{Tipo} & Sprint Review + preparación sustentación \\
+\textbf{Asistentes} & Equipo + PO \\
+\textbf{Resultado} & Sprint 1 propuesto a \textbf{Accepted} con deuda menor documentada \\
+\end{tabular}
+
+\subsection*{Demo aceptada por PO}
+\begin{enumerate}[leftmargin=*]
+  \item Registro/login multi-tenant.
+  \item Branding persistido (GET/PUT \texttt{/api/agency/branding}).
+  \item CRM: CRUD, stages, tareas, filtros, asignación.
+  \item Auditoría visible para ADMIN.
+  \item Health + CI lint/test/build.
+\end{enumerate}
+
+\subsection*{Deuda explícita (no bloquea S1)}
+\begin{itemize}[leftmargin=*]
+  \item Pipeline kanban drag-and-drop diferido (stages vía select cumplen AC mínimo).
+  \item E2e aún no son gate de CI (unit sí).
+  \item AC formal de DELETE lead pendiente de firma PO.
+\end{itemize}
+
+\begin{quote}
+\textcolor{po}{\textbf{PO:} «Acepto el Sprint 1 con condiciones: (a) isolation demostrable mañana; (b) actas firmadas digitalmente en el repo; (c) en Sprint 2 quiero cotización en lenguaje natural en menos de un minuto. Si el PDF sale mal, no hay piloto.»}
+\end{quote}
+
+\paragraph{Cierre SM.} Milestone Sprint 1 cerrado. Issues \#1--\#9, \#11, \#12 Done. Deck sustentación: \texttt{documentation/presentation/sprint-1-deck.html}.
+
+\section*{Anexo — Rúbrica vs evidencia}
+\begin{tabular}{@{}p{4.2cm}p{2cm}p{7cm}@{}}
+\toprule
+\textbf{Entregable} & \textbf{Peso} & \textbf{Evidencia} \\
+\midrule
+Plan de negocios & 20\% & \texttt{documentation/sprint-1/business-plan.md} \\
+Pruebas funcionales & 20\% & \texttt{functional-tests/} + EXECUTION-LOG \\
+Calidad & 10\% & CI + \texttt{software-quality.md} \\
+Desarrollo MVP & 30\% & Código + issues cerrados \\
+Presentación & 20\% & \texttt{sprint-1-deck.html} \\
+\bottomrule
+\end{tabular}
+
+\vspace{1.2em}
+\noindent\textit{Documento generado para sustentación académica. Comentarios del PO son simulados con tono exigente alineado al piloto real.}
+
+\end{document}

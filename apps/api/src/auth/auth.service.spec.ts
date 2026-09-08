@@ -1,125 +1,126 @@
-import { ConflictException } from '@nestjs/common';
+import { ConflictException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { Role } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
-import { AuthService } from './auth.service';
+import { AuditService } from '../audit/audit.service';
 import { PrismaService } from '../prisma/prisma.service';
-
-/**
- * QA NOTE — Sprint 1 (Issues #1 HU-01, #2 HU-02).
- *
- * `apps/api/src/auth/auth.service.ts` does not exist yet — the only modules
- * wired into AppModule today are Prisma and Health. Running this file will
- * currently fail at import time ("Cannot find module './auth.service'"),
- * which is a different (harder) failure mode than the e2e specs' 404s: it
- * breaks the whole suite, not just individual assertions. That is expected —
- * this file is the proposed unit-level contract for AuthService, for
- * Backend to implement against:
- *
- *   class AuthService {
- *     constructor(prisma: PrismaService, jwt: JwtService) {}
- *     hashPassword(password: string): Promise<string>
- *     validatePassword(password: string, hash: string): Promise<boolean>
- *     generateToken(payload: { sub: string; email: string; agencyId: string; role: string }): string
- *     registerAgency(input: RegisterAgencyInput): Promise<{ agency: Agency; adminUser: User }>
- *   }
- *
- * PrismaService is mocked via jest.mock() with a factory (plain automock
- * would not reproduce Prisma's runtime-generated `.user`/`.agency` model
- * delegates, since those aren't part of the module's static shape).
- * bcrypt and JwtService are used for real — hashing/token generation is
- * exactly the crypto logic under test here, mocking it would test nothing.
- */
-jest.mock('../prisma/prisma.service', () => ({
-  PrismaService: jest.fn().mockImplementation(() => ({
-    agency: { create: jest.fn(), findUnique: jest.fn() },
-    user: { create: jest.fn(), findUnique: jest.fn() },
-    $transaction: jest.fn(),
-  })),
-}));
+import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
-  let prisma: jest.Mocked<PrismaService>;
+  const findFirst = jest.fn();
+  const transaction = jest.fn();
+  const auditLog = jest.fn();
+
+  const prisma = {
+    user: { findFirst },
+    $transaction: transaction,
+  } as unknown as PrismaService;
+
+  const auditService = {
+    log: auditLog,
+  } as unknown as AuditService;
+
   let jwt: JwtService;
   let service: AuthService;
 
   beforeEach(() => {
     jest.clearAllMocks();
-    prisma = new PrismaService() as jest.Mocked<PrismaService>;
-    // Real JwtService (not mocked) so generateToken() produces a genuine,
-    // verifiable JWT instead of an opaque mock return value.
     jwt = new JwtService({ secret: 'unit-test-secret' });
-    service = new AuthService(prisma, jwt);
+    service = new AuthService(prisma, jwt, auditService);
   });
 
-  describe('hashPassword()', () => {
-    it('never returns the plaintext password', async () => {
-      const plain = 'S3cure-Passw0rd!';
-
-      const hash = await service.hashPassword(plain);
-
-      expect(hash).not.toBe(plain);
-      expect(hash).not.toContain(plain);
-      // bcrypt hash format: $2a$|$2b$|$2y$ + cost + salt/hash
-      expect(hash).toMatch(/^\$2[aby]\$\d{2}\$/);
-    });
-  });
-
-  describe('validatePassword()', () => {
-    it('returns true for the correct password against its own hash', async () => {
-      const plain = 'S3cure-Passw0rd!';
-      const hash = await bcrypt.hash(plain, 10);
-
-      await expect(service.validatePassword(plain, hash)).resolves.toBe(true);
-    });
-
-    it('returns false for an incorrect password', async () => {
-      const hash = await bcrypt.hash('S3cure-Passw0rd!', 10);
-
-      await expect(service.validatePassword('wrong-password', hash)).resolves.toBe(false);
-    });
-  });
-
-  describe('generateToken()', () => {
-    it('creates a well-formed, verifiable JWT carrying the expected claims', () => {
-      const token = service.generateToken({
-        sub: 'user-1',
-        email: 'admin@example.com',
-        agencyId: 'agency-1',
-        role: 'ADMIN',
-      });
-
-      expect(typeof token).toBe('string');
-      expect(token.split('.')).toHaveLength(3);
-
-      const decoded = jwt.verify(token);
-      expect(decoded).toMatchObject({
-        sub: 'user-1',
-        email: 'admin@example.com',
-        agencyId: 'agency-1',
-        role: 'ADMIN',
-      });
-    });
-  });
-
-  describe('registerAgency() — duplicate email/slug', () => {
-    it('throws a ConflictException when Prisma reports a unique constraint violation', async () => {
-      // Simulate Prisma's known unique-constraint error (code P2002) that a
-      // duplicate agency slug or (agencyId, email) pair would raise.
-      const uniqueViolation = Object.assign(new Error('Unique constraint failed'), {
-        code: 'P2002',
-        meta: { target: ['slug'] },
-      });
-      (prisma.$transaction as jest.Mock).mockRejectedValue(uniqueViolation);
+  describe('registerAgency()', () => {
+    it('rejects duplicate admin emails before creating the tenant', async () => {
+      findFirst.mockResolvedValue({ id: 'existing-user' });
 
       await expect(
         service.registerAgency({
           agencyName: 'Duplicada SAS',
+          nit: '900111222',
+          slug: 'duplicada',
+          adminEmail: 'admin@duplicada.com',
+          adminPassword: 'S3cure-Passw0rd!',
+          adminName: 'Admin',
+        }),
+      ).rejects.toBeInstanceOf(ConflictException);
+
+      expect(transaction).not.toHaveBeenCalled();
+    });
+
+    it('maps Prisma unique violations to ConflictException', async () => {
+      findFirst.mockResolvedValue(null);
+      transaction.mockRejectedValue(
+        Object.assign(new Error('Unique constraint failed'), {
+          code: 'P2002',
+          meta: { target: ['slug'] },
+        }),
+      );
+
+      await expect(
+        service.registerAgency({
+          agencyName: 'Duplicada SAS',
+          nit: '900111222',
           slug: 'ya-existe',
           adminEmail: 'admin@duplicada.com',
           adminPassword: 'S3cure-Passw0rd!',
           adminName: 'Admin',
         }),
-      ).rejects.toThrow(ConflictException);
+      ).rejects.toBeInstanceOf(ConflictException);
+    });
+  });
+
+  describe('login()', () => {
+    it('returns a JWT cookie payload for valid credentials', async () => {
+      const passwordHash = await bcrypt.hash('S3cure-Passw0rd!', 10);
+      findFirst.mockResolvedValue({
+        id: 'user-1',
+        agencyId: 'agency-1',
+        email: 'admin@example.com',
+        name: 'Admin',
+        role: Role.ADMIN,
+        passwordHash,
+      });
+      auditLog.mockResolvedValue(undefined);
+
+      const result = await service.login({
+        email: 'admin@example.com',
+        password: 'S3cure-Passw0rd!',
+      });
+
+      expect(result.user).toMatchObject({
+        id: 'user-1',
+        agencyId: 'agency-1',
+        email: 'admin@example.com',
+        role: Role.ADMIN,
+      });
+      expect(result.accessToken.split('.')).toHaveLength(3);
+      expect(auditLog).toHaveBeenCalledWith(
+        'agency-1',
+        'user-1',
+        'LOGIN_SUCCESS',
+      );
+    });
+
+    it('audits failed password attempts and rejects them', async () => {
+      const passwordHash = await bcrypt.hash('S3cure-Passw0rd!', 10);
+      findFirst.mockResolvedValue({
+        id: 'user-1',
+        agencyId: 'agency-1',
+        email: 'admin@example.com',
+        name: 'Admin',
+        role: Role.ADMIN,
+        passwordHash,
+      });
+      auditLog.mockResolvedValue(undefined);
+
+      await expect(
+        service.login({
+          email: 'admin@example.com',
+          password: 'wrong-password',
+        }),
+      ).rejects.toBeInstanceOf(UnauthorizedException);
+
+      expect(auditLog).toHaveBeenCalledWith('agency-1', 'user-1', 'LOGIN_FAIL');
     });
   });
 });

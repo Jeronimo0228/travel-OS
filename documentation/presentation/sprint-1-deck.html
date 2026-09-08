@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TravelOS AI — Sprint 1 | Sustentación</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #0b1f2a;
+      --ink-soft: #163445;
+      --sand: #f4efe6;
+      --sand-dim: #e7dfd2;
+      --foam: #faf8f4;
+      --amber: #d4923a;
+      --amber-bright: #e8a54b;
+      --sea: #1f6f78;
+      --sea-bright: #2a9a9a;
+      --coral: #c45c4a;
+      --muted: #6b7c86;
+      --line: rgba(11, 31, 42, 0.12);
+      --shadow: 0 22px 50px rgba(11, 31, 42, 0.16);
+      --pad-y: clamp(0.7rem, 1.6vh, 1.4rem);
+      --pad-x: clamp(1rem, 2.2vw, 2rem);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%; background: #050d12; color: var(--ink);
+      font-family: "Manrope", system-ui, sans-serif; overflow: hidden;
+    }
+    .deck { height: 100vh; width: 100vw; position: relative; }
+    .slide {
+      position: absolute; inset: 0; display: none;
+      padding: var(--pad-y) var(--pad-x);
+      padding-bottom: calc(var(--pad-y) + 2.4rem);
+      background:
+        radial-gradient(1100px 520px at 92% -8%, rgba(42,154,154,.16), transparent 55%),
+        radial-gradient(800px 420px at -8% 110%, rgba(212,146,58,.12), transparent 50%),
+        linear-gradient(160deg, var(--foam) 0%, var(--sand) 55%, var(--sand-dim) 100%);
+      overflow: hidden;
+    }
+    .slide.active { display: flex; flex-direction: column; animation: rise .35s cubic-bezier(.2,.8,.2,1); }
+    @keyframes rise { from { opacity:0; transform:translateY(10px);} to { opacity:1; transform:none;} }
+    .slide::before {
+      content:""; position:absolute; inset:0; pointer-events:none; mix-blend-mode:multiply;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    }
+    .slide > * { position: relative; z-index: 1; }
+    .fill { flex: 1 1 auto; min-height: 0; }
+    .fill.col { display: flex; flex-direction: column; }
+    .kicker {
+      font-size: clamp(0.78rem, 1.15vw, 1rem); letter-spacing: .16em; text-transform: uppercase;
+      font-weight: 800; color: var(--sea); margin-bottom: 0.35rem;
+    }
+    h1, h2 {
+      font-family: "Instrument Serif", Georgia, serif; font-weight: 400;
+      line-height: 1.02; letter-spacing: -.025em;
+    }
+    h1 { font-size: clamp(2.8rem, 6.2vw, 5.4rem); max-width: none; width: min(100%, 20ch); }
+    h2 { font-size: clamp(2rem, 4.2vw, 3.5rem); max-width: none; width: min(100%, 34ch); margin-bottom: 0.45rem; }
+    .lede {
+      font-size: clamp(1.05rem, 1.7vw, 1.35rem); color: var(--ink-soft);
+      max-width: none; width: min(100%, 72ch); line-height: 1.45; font-weight: 500;
+    }
+    .meta {
+      margin-top: auto; flex-shrink: 0;
+      display: flex; justify-content: space-between; align-items: end;
+      gap: .8rem; padding-top: 0.55rem; border-top: 1px solid var(--line);
+      font-size: clamp(0.8rem, 1.1vw, 0.95rem); color: var(--muted); font-weight: 700;
+    }
+    .brand-mark {
+      display: inline-flex; align-items: center; gap: .55rem;
+      font-weight: 800; letter-spacing: -.03em;
+      font-size: clamp(1rem, 1.5vw, 1.25rem);
+    }
+    .brand-mark .dot {
+      width: .75rem; height: .75rem; border-radius: 999px;
+      background: linear-gradient(135deg, var(--amber-bright), var(--sea-bright));
+      box-shadow: 0 0 0 3px rgba(232,165,75,.18);
+    }
+    .grid-2 {
+      display: grid; grid-template-columns: 1.05fr .95fr;
+      gap: clamp(0.8rem, 1.8vw, 1.6rem);
+      flex: 1; align-items: stretch; min-height: 0;
+    }
+    .card {
+      background: rgba(250,248,244,.78); border: 1px solid var(--line);
+      border-radius: 1rem; padding: clamp(0.75rem, 1.4vh, 1.15rem) clamp(0.85rem, 1.2vw, 1.25rem);
+      backdrop-filter: blur(6px);
+    }
+    .stack .card,
+    .pains .card,
+    .map .card,
+    .arch .card,
+    .arch-grid .card,
+    .values .card,
+    .releases .card,
+    .mvp-foot .card { height: 100%; }
+    .card h3 { font-size: clamp(0.95rem, 1.35vw, 1.2rem); font-weight: 800; margin-bottom: .3rem; }
+    .card p, .card li { font-size: clamp(0.88rem, 1.2vw, 1.08rem); color: var(--ink-soft); line-height: 1.38; }
+    .card ul { padding-left: 1.1rem; }
+    .card li + li { margin-top: .28rem; }
+    .pill {
+      display: inline-flex; align-items: center; gap: .35rem;
+      padding: .4rem .8rem; border-radius: 999px;
+      background: rgba(31,111,120,.1); color: var(--sea);
+      font-size: clamp(0.75rem, 1vw, 0.88rem); font-weight: 800; letter-spacing: .04em; text-transform: uppercase;
+    }
+    .pill.ok { background: rgba(42,154,154,.14); color: #0f5e5e; }
+    .team {
+      display: grid; grid-template-columns: repeat(5, 1fr);
+      gap: clamp(0.7rem, 1.4vw, 1.25rem);
+      margin-top: auto; width: 100%; max-width: none; flex: 1;
+      align-content: end; padding-top: 1rem;
+    }
+    .person { text-align: center; min-height: 0; display: flex; flex-direction: column; }
+    .person img {
+      width: 100%; flex: 1; min-height: 0; max-height: min(38vh, 280px);
+      aspect-ratio: 1; object-fit: cover; border-radius: 1.1rem;
+      border: 2px solid rgba(11,31,42,.08); box-shadow: var(--shadow); background: var(--sand-dim);
+    }
+    .person strong {
+      display: block; margin-top: .55rem;
+      font-size: clamp(0.85rem, 1.2vw, 1.05rem); line-height: 1.2;
+    }
+    .person span {
+      display: block; font-size: clamp(0.75rem, 1.05vw, 0.92rem);
+      color: rgba(250,248,244,.75); font-weight: 600; margin-top: .15rem;
+    }
+    .cover .person span { color: rgba(250,248,244,.75); }
+    .cover .person strong { color: var(--foam); }
+    .hero-visual {
+      border-radius: 1.15rem; overflow: hidden; box-shadow: var(--shadow);
+      border: 1px solid var(--line); background: var(--ink);
+      height: 100%; min-height: 0; aspect-ratio: auto;
+    }
+    .hero-visual img { width: 100%; height: 100%; object-fit: cover; object-position: top left; display: block; }
+    .pains {
+      display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(4, 1fr);
+      gap: clamp(0.45rem, 1vh, 0.75rem); margin-top: 0.55rem; flex: 1; min-height: 0;
+    }
+    .pains .card { border-left: 4px solid var(--coral); display: flex; flex-direction: column; justify-content: center; }
+    .pains .card h3 { font-size: clamp(0.95rem, 1.35vw, 1.2rem); }
+    .pains .card p { font-size: clamp(0.85rem, 1.15vw, 1.05rem); }
+    .num {
+      display: inline-grid; place-items: center;
+      width: 1.45rem; height: 1.45rem;
+      border-radius: 999px; background: rgba(196,92,74,.14); color: var(--coral);
+      font-size: .78rem; font-weight: 800; margin-right: .35rem;
+    }
+    .map {
+      display: grid; grid-template-columns: 1fr 1fr; gap: clamp(0.45rem, 1vh, 0.7rem);
+      margin-top: 0.55rem; flex: 1; min-height: 0;
+    }
+    .map .card { border-left: 4px solid var(--sea); display: flex; flex-direction: column; justify-content: center; }
+    .arch {
+      display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: 1fr 1fr;
+      gap: clamp(0.5rem, 1vh, 0.8rem); margin-top: 0.55rem; flex: 1; min-height: 0;
+    }
+    .arch .card { display: flex; flex-direction: column; justify-content: center; }
+    .arch .card .tag {
+      font-size: clamp(0.68rem, 0.95vw, 0.82rem); font-weight: 800; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--amber); margin-bottom: .35rem;
+    }
+    .stack {
+      display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: 1fr 1fr;
+      gap: clamp(0.5rem, 1vh, 0.8rem); margin-top: 0.55rem; flex: 1; min-height: 0;
+    }
+    .stack .card { display: flex; flex-direction: column; justify-content: center; }
+    .releases {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: clamp(0.6rem, 1.2vw, 1rem); margin-top: 0.55rem; flex: 1; min-height: 0;
+    }
+    .releases .card { display: flex; flex-direction: column; }
+    .releases .card h3 { color: var(--sea); font-size: clamp(1.05rem, 1.5vw, 1.35rem); margin-bottom: .45rem; }
+    .releases .card ul { flex: 1; }
+    .shots {
+      display: grid; grid-template-columns: 1.4fr 1fr;
+      gap: clamp(0.55rem, 1.2vw, 0.9rem); flex: 1; min-height: 0; height: 100%;
+    }
+    .shots .main, .shots .side > * {
+      border-radius: 0.95rem; overflow: hidden; border: 1px solid var(--line);
+      box-shadow: var(--shadow); background: var(--ink); min-height: 0;
+    }
+    .shots .main { height: 100%; }
+    .shots .main img, .shots .side img {
+      width: 100%; height: 100%; object-fit: cover; object-position: top left; display: block;
+    }
+    .shots .side { display: grid; grid-template-rows: 1fr 1fr; gap: clamp(0.55rem, 1.2vw, 0.9rem); min-height: 0; height: 100%; }
+    .codebox {
+      margin-top: 0.65rem; background: var(--ink); color: #d7e7ef;
+      border-radius: .95rem; padding: clamp(0.85rem, 1.5vh, 1.2rem) 1.1rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: clamp(0.85rem, 1.2vw, 1.05rem); line-height: 1.55; box-shadow: var(--shadow);
+    }
+    .codebox .ok { color: #7ddec0; }
+    table.comp {
+      width: 100%; border-collapse: separate; border-spacing: 0; margin-top: 0.55rem;
+      font-size: clamp(0.95rem, 1.35vw, 1.2rem); overflow: hidden; border-radius: 1rem;
+      border: 1px solid var(--line); background: rgba(250,248,244,.85);
+      flex: 1;
+    }
+    table.comp th, table.comp td {
+      text-align: left; padding: clamp(0.85rem, 1.6vh, 1.25rem) clamp(0.9rem, 1.3vw, 1.25rem);
+      border-bottom: 1px solid var(--line); vertical-align: middle; line-height: 1.35;
+    }
+    table.comp th {
+      background: var(--ink); color: var(--foam);
+      font-size: clamp(0.78rem, 1.05vw, 0.95rem);
+      letter-spacing: .08em; text-transform: uppercase;
+    }
+    table.comp tr:last-child td { border-bottom: 0; }
+    table.comp td strong { color: var(--ink); }
+    .values {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: clamp(0.5rem, 1vh, 0.8rem); margin-top: 0.5rem; flex: 1; min-height: 0;
+    }
+    .values .card { border-left: 4px solid var(--amber); display: flex; flex-direction: column; justify-content: center; }
+    .check {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: clamp(0.4rem, 0.9vh, 0.65rem) clamp(0.6rem, 1.2vw, 1rem);
+      margin-top: 0.55rem; flex: 1; min-height: 0;
+      font-size: clamp(0.95rem, 1.35vw, 1.2rem); font-weight: 650;
+      align-content: stretch;
+    }
+    .check li {
+      list-style: none; padding: clamp(0.55rem, 1.1vh, 0.9rem) 0.85rem;
+      border-radius: .8rem; background: rgba(250,248,244,.8); border: 1px solid var(--line);
+      display: flex; align-items: center;
+    }
+    .check .ok { color: #0f5e5e; }
+    .check .warn { color: #8a5a12; }
+    .quote {
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: clamp(1.45rem, 2.8vw, 2.25rem); line-height: 1.22;
+      max-width: none; width: min(100%, 36ch); margin: 0.55rem 0 0;
+    }
+    .quote em { color: var(--sea); font-style: italic; }
+    .cover {
+      background:
+        linear-gradient(120deg, rgba(11,31,42,.93) 0%, rgba(22,52,69,.88) 45%, rgba(31,111,120,.78) 100%),
+        url("../mockups/screenshots/index.png") center/cover;
+      color: var(--foam);
+    }
+    .cover .kicker { color: var(--amber-bright); }
+    .cover .lede { color: rgba(250,248,244,.88); width: min(100%, 58ch); }
+    .cover .meta { border-top-color: rgba(255,255,255,.15); color: rgba(250,248,244,.68); }
+    .cover h1 { width: min(100%, 18ch); }
+    .hud {
+      position: fixed; right: 1rem; bottom: 0.75rem; z-index: 20;
+      display: flex; align-items: center; gap: .55rem; color: var(--foam);
+      font-size: .8rem; font-weight: 800; background: rgba(11,31,42,.88);
+      backdrop-filter: blur(8px); padding: .45rem .7rem; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .hud button {
+      border: 0; background: rgba(255,255,255,.12); color: var(--foam);
+      width: 2rem; height: 2rem; border-radius: 999px; cursor: pointer; font-weight: 800;
+    }
+    .hud button:hover { background: rgba(232,165,75,.9); color: var(--ink); }
+    .progress {
+      position: fixed; left: 0; top: 0; height: 4px; z-index: 30;
+      background: linear-gradient(90deg, var(--amber-bright), var(--sea-bright));
+      width: 10%; transition: width .28s ease;
+    }
+    .note {
+      margin-top: 0.4rem; font-size: clamp(0.8rem, 1.05vw, 0.95rem);
+      color: var(--muted); font-weight: 600; flex-shrink: 0;
+    }
+    @media (max-width: 1100px) {
+      .arch, .stack { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(4, auto); }
+      .releases { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 900px) {
+      .grid-2, .pains, .map, .shots, .values, .check, .team { grid-template-columns: 1fr 1fr; }
+      .team { grid-template-columns: repeat(3, 1fr); }
+      .pains { grid-template-rows: none; }
+    }
+    @media print {
+      html, body { overflow: visible; height: auto; background: #fff; }
+      .hud, .progress { display: none !important; }
+      .slide { display: flex !important; position: relative; page-break-after: always; min-height: 100vh; animation: none; }
+    }
+
+    /* 16:9 stage that fills the viewport (presentation mode) */
+    .viewport {
+      width: 100vw; height: 100vh; display: grid; place-items: center;
+      background: #050d12; overflow: hidden;
+    }
+    .stage {
+      width: 1920px; height: 1080px; position: relative;
+      transform-origin: center center;
+      box-shadow: 0 30px 80px rgba(0,0,0,.45);
+      flex-shrink: 0;
+    }
+    .stage .deck { width: 100%; height: 100%; }
+    .stage .slide {
+      width: 1920px; height: 1080px;
+      padding: 48px 64px 72px;
+      font-size: 18px;
+    }
+    .stage h1 { font-size: 72px !important; width: 18ch; }
+    .stage h2 { font-size: 52px !important; width: 28ch; }
+    .stage .lede { font-size: 24px !important; width: 58ch; }
+    .stage .kicker { font-size: 16px !important; }
+    .stage .card h3 { font-size: 22px !important; }
+    .stage .card p, .stage .card li { font-size: 18px !important; }
+    .stage .pains .card h3 { font-size: 20px !important; }
+    .stage .pains .card p { font-size: 17px !important; }
+    .stage table.comp { font-size: 22px !important; }
+    .stage table.comp th { font-size: 14px !important; }
+    .stage .check { font-size: 22px !important; }
+    .stage .quote { font-size: 36px !important; width: 34ch; }
+    .stage .codebox { font-size: 20px !important; }
+    .stage .person strong { font-size: 18px !important; }
+    .stage .person span { font-size: 15px !important; }
+    .stage .person img { max-height: 280px; }
+    .stage .meta { font-size: 16px !important; }
+    .stage .brand-mark { font-size: 22px !important; }
+    .stage .note { font-size: 16px !important; }
+    .stage .pill { font-size: 14px !important; }
+    .hud .hint { opacity: .7; font-weight: 600; margin-right: .35rem; }
+
+    /* ===== Slide 4: Architecture ===== */
+    .arch-slide .lede { width: min(100%, 70ch); }
+    .arch-flow {
+      display: grid;
+      grid-template-columns: 1.1fr 24px 1.1fr 24px 1.1fr;
+      gap: 0.55rem;
+      align-items: stretch;
+      margin: 0.35rem 0 0.65rem;
+      flex: 1.15 1 0;
+      min-height: 0;
+    }
+    .arch-flow .lane {
+      background: rgba(250,248,244,.88);
+      border: 1px solid var(--line);
+      border-radius: 1rem;
+      padding: 0.9rem 1rem;
+      display: flex; flex-direction: column; justify-content: center; gap: 0.45rem;
+      height: 100%;
+    }
+    .arch-flow .lane .tag {
+      font-size: 0.82rem; font-weight: 800; letter-spacing: .12em;
+      text-transform: uppercase; color: #b8751f;
+    }
+    .arch-flow .lane h3 {
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: 1.45rem; font-weight: 400; line-height: 1.15;
+    }
+    .arch-flow .lane p { font-size: 0.95rem; color: var(--ink-soft); line-height: 1.35; }
+    .arch-flow .lane ul { margin: 0; padding-left: 1.1rem; color: var(--ink-soft); font-size: 0.92rem; }
+    .arch-flow .lane li + li { margin-top: 0.2rem; }
+    .arch-flow .arrow {
+      display: grid; place-items: center;
+      color: var(--sea); font-size: 1.6rem; font-weight: 800;
+    }
+    .arch-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.7rem;
+      flex: 1.25 1 0;
+      min-height: 0;
+    }
+    .arch-grid .card {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 1.15rem 1.2rem;
+      border-top: 4px solid var(--sea);
+    }
+    .arch-grid .card .tag {
+      font-size: 0.84rem; font-weight: 800; letter-spacing: .12em;
+      text-transform: uppercase; color: #b8751f; margin-bottom: 0.45rem;
+    }
+    .arch-grid .card h3 { font-size: 1.25rem !important; margin-bottom: 0.35rem; }
+    .arch-grid .card p { font-size: 1.02rem !important; line-height: 1.4; }
+    .arch-principles {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.65rem;
+      margin-top: 0.75rem; flex: 0 0 auto;
+    }
+    .arch-principles .card {
+      border-left: 4px solid var(--amber);
+      padding: 0.85rem 1rem;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .arch-principles h3 { font-size: 1.05rem !important; margin-bottom: 0.2rem; }
+    .arch-principles p { font-size: 0.95rem !important; }
+
+    .stage .arch-flow .lane h3 { font-size: 28px !important; }
+    .stage .arch-flow .lane p, .stage .arch-flow .lane li { font-size: 18px !important; }
+    .stage .arch-grid .card h3 { font-size: 26px !important; }
+    .stage .arch-grid .card p { font-size: 20px !important; }
+    .stage .arch-principles h3 { font-size: 22px !important; }
+    .stage .arch-principles p { font-size: 18px !important; }
+
+    /* ===== Slide 6: MVP Releases ===== */
+    .mvp-slide .lede { width: min(100%, 70ch); }
+    .mvp-track {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.9rem;
+      flex: 1;
+      min-height: 0;
+      margin-top: 0.55rem;
+      position: relative;
+    }
+    .mvp-card {
+      background: rgba(250,248,244,.88);
+      border: 1px solid var(--line);
+      border-radius: 1.15rem;
+      padding: 1.25rem 1.35rem 1.2rem;
+      display: flex; flex-direction: column;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    .mvp-card::before {
+      content: "";
+      position: absolute; left: 0; top: 0; right: 0; height: 6px;
+      background: linear-gradient(90deg, var(--amber-bright), var(--sea-bright));
+    }
+    .mvp-card .phase {
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      font-size: 0.78rem; font-weight: 800; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--sea); margin-bottom: 0.45rem;
+    }
+    .mvp-card .phase .pct {
+      background: rgba(31,111,120,.12); color: var(--sea);
+      padding: 0.2rem 0.55rem; border-radius: 999px;
+    }
+    .mvp-card h3 {
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: 1.7rem; font-weight: 400; line-height: 1.15; margin-bottom: 0.55rem;
+    }
+    .mvp-bar {
+      height: 8px; border-radius: 999px; background: rgba(11,31,42,.08);
+      overflow: hidden; margin-bottom: 0.9rem;
+    }
+    .mvp-bar > i {
+      display: block; height: 100%; border-radius: 999px;
+      background: linear-gradient(90deg, var(--amber-bright), var(--sea-bright));
+    }
+    .mvp-card ul {
+      list-style: none; padding: 0; margin: 0; flex: 1;
+      display: flex; flex-direction: column; gap: 0.55rem;
+      justify-content: stretch;
+    }
+    .mvp-card li {
+      position: relative;
+      flex: 1 1 0;
+      display: flex; align-items: center;
+      padding: 0.7rem 0.85rem 0.7rem 2.3rem;
+      background: rgba(255,255,255,.55);
+      border: 1px solid var(--line);
+      border-radius: 0.75rem;
+      font-size: 1.02rem; font-weight: 600; color: var(--ink-soft); line-height: 1.35;
+    }
+    .mvp-card li::before {
+      content: "✓";
+      position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%);
+      color: var(--sea); font-weight: 800;
+    }
+    .mvp-card .demo {
+      margin-top: 0.9rem; padding-top: 0.75rem;
+      border-top: 1px dashed var(--line);
+      font-size: 0.95rem; font-weight: 700; color: var(--ink);
+    }
+    .mvp-card .demo span { color: var(--sea); }
+    .mvp-foot {
+      margin-top: 0.75rem;
+      display: grid; grid-template-columns: 1.4fr 1fr; gap: 0.75rem;
+      flex: 0 0 auto;
+    }
+    .mvp-foot .card {
+      padding: 0.95rem 1.1rem;
+      display: flex; flex-direction: column; justify-content: center;
+      min-height: 110px;
+      height: 100%;
+    }
+    .mvp-foot h3 { font-size: 1.1rem !important; }
+    .mvp-foot p { font-size: 1rem !important; }
+
+    .stage .mvp-card h3 { font-size: 34px !important; }
+    .stage .mvp-card li { font-size: 20px !important; }
+    .stage .mvp-card .demo { font-size: 18px !important; }
+    .stage .mvp-card .phase { font-size: 15px !important; }
+    .stage .mvp-foot h3 { font-size: 22px !important; }
+    .stage .mvp-foot p { font-size: 18px !important; }
+
+    /* denser impeccable layout for arch + mvp on 1080p stage */
+    .stage .arch-slide,
+    .stage .mvp-slide {
+      padding: 36px 56px 56px !important;
+    }
+    .stage .arch-slide h2,
+    .stage .mvp-slide h2 {
+      font-size: 48px !important;
+      margin-bottom: 0.35rem !important;
+      width: min(100%, 32ch) !important;
+    }
+    .stage .arch-slide .lede,
+    .stage .mvp-slide .lede {
+      font-size: 22px !important;
+      margin-bottom: 0.35rem;
+      width: min(100%, 72ch) !important;
+    }
+    .stage .arch-flow {
+      margin: 0.35rem 0 0.65rem !important;
+      gap: 0.65rem !important;
+    }
+    .stage .arch-flow .lane {
+      padding: 1.15rem 1.25rem !important;
+      min-height: 210px;
+    }
+    .stage .arch-flow .lane h3 { font-size: 30px !important; }
+    .stage .arch-flow .lane p,
+    .stage .arch-flow .lane li { font-size: 19px !important; }
+    .stage .arch-grid {
+      gap: 0.75rem !important;
+      min-height: 240px;
+    }
+    .stage .arch-grid .card {
+      padding: 1.35rem 1.4rem !important;
+    }
+    .stage .arch-grid .card h3 { font-size: 28px !important; }
+    .stage .arch-grid .card p { font-size: 20px !important; }
+    .stage .arch-principles {
+      margin-top: 0.65rem !important;
+      gap: 0.75rem !important;
+    }
+    .stage .arch-principles .card { padding: 1.05rem 1.2rem !important; min-height: 96px; }
+    .stage .arch-principles h3 { font-size: 24px !important; }
+    .stage .arch-principles p { font-size: 19px !important; }
+
+    .stage .mvp-track {
+      gap: 1rem !important;
+      margin-top: 0.4rem !important;
+    }
+    .stage .mvp-card {
+      padding: 1.35rem 1.45rem 1.25rem !important;
+    }
+    .stage .mvp-card h3 { font-size: 36px !important; }
+    .stage .mvp-card li {
+      font-size: 20px !important;
+      padding: 0.85rem 1rem 0.85rem 2.5rem !important;
+    }
+    .stage .mvp-card ul { gap: 0.65rem !important; }
+    .stage .mvp-card .demo { font-size: 19px !important; }
+    .stage .mvp-card .phase { font-size: 15px !important; margin-bottom: 0.55rem !important; }
+    .stage .mvp-bar { height: 10px !important; margin-bottom: 1rem !important; }
+    .stage .mvp-foot {
+      margin-top: 0.7rem !important;
+      gap: 0.85rem !important;
+    }
+    .stage .mvp-foot .card { padding: 1.1rem 1.25rem !important; min-height: 100px; }
+    .stage .mvp-foot h3 { font-size: 24px !important; }
+    .stage .mvp-foot p { font-size: 19px !important; }
+
+    /* ===== Slide Tecnologías ===== */
+    .tech-slide .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: 1fr 1fr;
+      gap: 0.75rem;
+      flex: 1;
+      min-height: 0;
+      margin-top: 0.5rem;
+    }
+    .tech-slide .tech-grid .card {
+      height: 100%;
+      display: flex; flex-direction: column; justify-content: center;
+      border-top: 4px solid var(--sea);
+      padding: 1.2rem 1.25rem;
+    }
+    .tech-slide .tech-grid .tag {
+      font-size: 0.78rem; font-weight: 800; letter-spacing: .12em;
+      text-transform: uppercase; color: #b8751f; margin-bottom: 0.4rem;
+    }
+    .tech-slide .tech-grid h3 { font-size: 1.35rem !important; margin-bottom: 0.35rem; }
+    .tech-slide .tech-grid p { font-size: 1.05rem !important; line-height: 1.4; }
+    .tech-slide .tech-note {
+      margin-top: 0.75rem;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 0.75rem;
+      flex: 0 0 auto;
+    }
+    .tech-slide .tech-note .card {
+      border-left: 4px solid var(--amber);
+      padding: 1rem 1.15rem;
+      display: flex; flex-direction: column; justify-content: center;
+      min-height: 110px;
+    }
+    .tech-slide .tech-note h3 { font-size: 1.15rem !important; }
+    .tech-slide .tech-note p { font-size: 1rem !important; }
+
+    .stage .tech-slide { padding: 36px 56px 56px !important; }
+    .stage .tech-slide h2 { font-size: 48px !important; width: min(100%, 28ch) !important; }
+    .stage .tech-slide .lede { font-size: 22px !important; width: min(100%, 70ch) !important; }
+    .stage .tech-slide .tech-grid .card h3 { font-size: 28px !important; }
+    .stage .tech-slide .tech-grid .card p { font-size: 20px !important; }
+    .stage .tech-slide .tech-note h3 { font-size: 24px !important; }
+    .stage .tech-slide .tech-note p { font-size: 19px !important; }
+
+    /* ===== Slide 7 Prototipos ===== */
+    .proto-slide .proto-layout {
+      display: grid;
+      grid-template-columns: 1.55fr 1fr;
+      gap: 1rem;
+      flex: 1;
+      min-height: 0;
+      margin-top: 0.4rem;
+    }
+    .proto-gallery {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 0.7rem;
+      min-height: 0;
+      height: 100%;
+    }
+    .proto-gallery figure {
+      margin: 0;
+      border-radius: 1rem;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      background: var(--ink);
+      position: relative;
+      min-height: 0;
+    }
+    .proto-gallery figure.hero {
+      grid-row: 1 / span 2;
+    }
+    .proto-gallery img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top left;
+      display: block;
+    }
+    .proto-gallery figcaption {
+      position: absolute;
+      left: 0.7rem;
+      bottom: 0.7rem;
+      padding: 0.35rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(11,31,42,.82);
+      color: var(--foam);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    .proto-side {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      min-height: 0;
+      height: 100%;
+    }
+    .proto-layout { align-items: stretch; }
+    .proto-side .lede { width: 100%; }
+    .proto-files {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+    .proto-files span {
+      display: inline-flex;
+      padding: 0.4rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(31,111,120,.1);
+      color: var(--sea);
+      font-size: 0.85rem;
+      font-weight: 800;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    .proto-side .codebox {
+      flex: 0 0 auto;
+      margin-top: 0;
+      font-size: 1rem;
+      padding: 1rem 1.15rem;
+    }
+    .proto-checks {
+      display: grid;
+      grid-template-rows: 1fr 1fr 1fr;
+      gap: 0.6rem;
+      flex: 1 1 auto;
+      min-height: 0;
+    }
+    .proto-checks .card {
+      border-left: 4px solid var(--sea);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 1.05rem 1.15rem;
+      height: 100%;
+      min-height: 0;
+    }
+    .proto-checks h3 { font-size: 1.1rem !important; margin-bottom: 0.25rem; }
+    .proto-checks p { font-size: 0.98rem !important; }
+
+    .stage .proto-slide { padding: 36px 56px 56px !important; }
+    .stage .proto-slide h2 { font-size: 48px !important; width: min(100%, 28ch) !important; }
+    .stage .proto-slide .lede { font-size: 22px !important; width: min(100%, 70ch) !important; }
+    .stage .proto-gallery figcaption { font-size: 15px !important; padding: 0.45rem 0.85rem !important; }
+    .stage .proto-files span { font-size: 16px !important; padding: 0.5rem 0.85rem !important; }
+    .stage .proto-side .codebox { font-size: 20px !important; padding: 1.15rem 1.3rem !important; }
+    .stage .proto-checks h3 { font-size: 24px !important; }
+    .stage .proto-checks p { font-size: 19px !important; }
+
+    /* ===== Slide 8 Competencia ===== */
+    .comp-slide .comp-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.9rem;
+      flex: 1;
+      min-height: 0;
+      margin-top: 0.45rem;
+    }
+    .comp-card {
+      background: rgba(250,248,244,.88);
+      border: 1px solid var(--line);
+      border-radius: 1.15rem;
+      padding: 1.25rem 1.35rem;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow);
+      min-height: 0;
+      height: 100%;
+    }
+    .comp-card .who {
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: #b8751f;
+      margin-bottom: 0.35rem;
+    }
+    .comp-card h3 {
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: 2rem;
+      font-weight: 400;
+      line-height: 1.1;
+      margin-bottom: 0.85rem;
+    }
+    .comp-card .block {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.55rem;
+      min-height: 0;
+    }
+    .comp-card .block + .block {
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px dashed var(--line);
+    }
+    .comp-card .label {
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--sea);
+    }
+    .comp-card .label.weak { color: var(--coral); }
+    .comp-card p {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--ink-soft);
+      line-height: 1.4;
+    }
+    .comp-foot {
+      margin-top: 0.8rem;
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 0.8rem;
+      flex: 0 0 auto;
+    }
+    .comp-foot .card {
+      border-left: 4px solid var(--amber);
+      padding: 1.05rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 110px;
+      height: 100%;
+    }
+    .comp-foot .card.win {
+      border-left-color: var(--sea);
+      background: linear-gradient(160deg, rgba(42,154,154,.12), rgba(250,248,244,.9));
+    }
+    .comp-foot h3 { font-size: 1.2rem !important; margin-bottom: 0.3rem; }
+    .comp-foot p { font-size: 1.02rem !important; }
+
+    .stage .comp-slide { padding: 36px 56px 56px !important; }
+    .stage .comp-slide h2 { font-size: 48px !important; width: min(100%, 30ch) !important; }
+    .stage .comp-slide .lede { font-size: 22px !important; width: min(100%, 70ch) !important; }
+    .stage .comp-card h3 { font-size: 40px !important; }
+    .stage .comp-card p { font-size: 21px !important; }
+    .stage .comp-card .who,
+    .stage .comp-card .label { font-size: 15px !important; }
+    .stage .comp-foot h3 { font-size: 24px !important; }
+    .stage .comp-foot p { font-size: 20px !important; }
+    .stage .comp-foot .card { min-height: 120px; }
+  </style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+<div class="viewport">
+<div class="stage" id="stage">
+<div class="deck">
+
+<section class="slide cover active" data-title="Portada">
+  <p class="kicker">Proyecto Integrador 2 · EAFIT · Sprint 1</p>
+  <h1>TravelOS AI</h1>
+  <p class="lede">Fundación multi-tenant + CRM núcleo. Sustentación MVP Versión 1 — demo usable, calidad medible, backlog cerrado.</p>
+  <div class="meta">
+    <span class="brand-mark"><span class="dot"></span> Punto D' Partida · PO Juan Manuel Restrepo</span>
+    <span>1 / 12</span>
+  </div>
+</section>
+
+<section class="slide" data-title="Agenda">
+  <p class="kicker">01 · Agenda</p>
+  <h2>Qué vamos a demostrar hoy</h2>
+  <ul class="check fill">
+    <li class="ok">Sprint goal y rúbrica MVP V1</li>
+    <li class="ok">Demo en vivo: auth → branding → CRM → auditoría</li>
+    <li class="ok">Plan de negocios (resumen ejecutivo)</li>
+    <li class="ok">Pruebas funcionales + ejecución</li>
+    <li class="ok">Calidad: CI, lint, GitHub Flow</li>
+    <li class="ok">Ceremonias, feedback PO y cierre de milestone</li>
+  </ul>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>2 / 12</span></div>
+</section>
+
+<section class="slide" data-title="Rúbrica">
+  <p class="kicker">02 · Rúbrica Sprint 1</p>
+  <h2>Entregables del MVP Versión 1</h2>
+  <table class="comp fill">
+    <thead><tr><th>Entregable</th><th>Peso</th><th>Estado</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Plan de Negocios</strong> (secciones 1–5)</td><td>20%</td><td>Entregado</td></tr>
+      <tr><td><strong>Pruebas funcionales</strong> (diseño + ejecución)</td><td>20%</td><td>38 CP · log actualizado</td></tr>
+      <tr><td><strong>Calidad de software</strong></td><td>10%</td><td>CI lint/test/build verde</td></tr>
+      <tr><td><strong>Desarrollo MVP</strong> (HU Sprint 1)</td><td>30%</td><td>11 HU cerradas</td></tr>
+      <tr><td><strong>Presentación</strong></td><td>20%</td><td>Este deck + demo</td></tr>
+    </tbody>
+  </table>
+  <p class="note">Fuente: documento-maestro-sprint-1.pdf · Evidencias de ceremonias en documentation/ceremonies/</p>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>3 / 12</span></div>
+</section>
+
+<section class="slide" data-title="Goal">
+  <p class="kicker">03 · Sprint goal</p>
+  <h2>Plataforma autenticada multi-tenant con CRM usable</h2>
+  <div class="values fill">
+    <div class="card"><h3>Épica 1 — Fundación</h3><p>Registro, login JWT+cookie, RBAC, marca blanca, auditoría, health + CI.</p></div>
+    <div class="card"><h3>Épica 2 — CRM núcleo</h3><p>Leads CRUD, pipeline por etapas, tareas, filtros, asignación a asesor.</p></div>
+    <div class="card"><h3>Fuera de alcance</h3><p>Cotizador IA, itinerarios y portal viajero → Sprint 2–3.</p></div>
+    <div class="card"><h3>DoD</h3><p>AC Gherkin, CP asociados, CI verde en PR, review de pares, issues cerrados.</p></div>
+  </div>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>4 / 12</span></div>
+</section>
+
+<section class="slide" data-title="Demo">
+  <p class="kicker">04 · Demo script</p>
+  <h2>Recorrido en vivo (4–5 min)</h2>
+  <ul class="check fill">
+    <li class="ok">1. Registrar agencia (tenant) → cookie httpOnly</li>
+    <li class="ok">2. Login / fail login → audit LOGIN_*</li>
+    <li class="ok">3. Branding: color + logo persistidos en Agency</li>
+    <li class="ok">4. CRM: crear lead, cambiar stage, tareas</li>
+    <li class="ok">5. Asignar lead a ASESOR (ADMIN/GERENTE)</li>
+    <li class="ok">6. Filtrar por asesor · aislamiento multi-tenant</li>
+    <li class="ok">7. GET /api/health + panel Auditoría (ADMIN)</li>
+  </ul>
+  <p class="note">Stack: Next.js · NestJS · Prisma · PostgreSQL · pnpm monorepo</p>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>5 / 12</span></div>
+</section>
+
+<section class="slide" data-title="Arquitectura">
+  <p class="kicker">05 · Arquitectura entregada</p>
+  <h2>Límites de seguridad por tenant</h2>
+  <div class="values fill">
+    <div class="card"><h3>Auth</h3><p>JWT en cookie httpOnly + credentials CORS. Claims: sub, agencyId, role.</p></div>
+    <div class="card"><h3>RBAC</h3><p>JwtAuthGuard + RolesGuard. ASESOR solo ve leads asignados.</p></div>
+    <div class="card"><h3>Validación</h3><p>Zod shared schemas · ZodValidationPipe en API.</p></div>
+    <div class="card"><h3>Auditoría</h3><p>LOGIN, ROLE_CHANGE, LEAD_ASSIGN/DELETE, BRANDING_UPDATE.</p></div>
+  </div>
+  <p class="quote">Cada query de negocio se <em>scopea</em> por <em>agencyId</em> del token — no por parámetro del cliente.</p>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>6 / 12</span></div>
+</section>
+
+<section class="slide" data-title="Negocio">
+  <p class="kicker">06 · Plan de negocios</p>
+  <h2>Resumen ejecutivo (Sección 1)</h2>
+  <div class="values fill">
+    <div class="card"><h3>Problema</h3><p>Agencias LATAM operan con WhatsApp + Excel + herramientas desconectadas.</p></div>
+    <div class="card"><h3>Solución</h3><p>SO white-label: CRM + IA + portal en un solo tenant.</p></div>
+    <div class="card"><h3>Cliente piloto</h3><p>Punto D' Partida — validación real de flujo comercial.</p></div>
+    <div class="card"><h3>Modelo</h3><p>SaaS por agencia + seats; upsell cotizador IA y portal en S2–S3.</p></div>
+  </div>
+  <p class="note">Detalle completo: documentation/sprint-1/business-plan.md</p>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>7 / 12</span></div>
+</section>
+
+<section class="slide" data-title="Pruebas">
+  <p class="kicker">07 · Pruebas funcionales</p>
+  <h2>De HU → CP → evidencia</h2>
+  <table class="comp fill">
+    <thead><tr><th>Métrica</th><th>Valor</th></tr></thead>
+    <tbody>
+      <tr><td>CP diseñados (Sprint 1)</td><td><strong>38</strong></td></tr>
+      <tr><td>Cobertura HU</td><td>#1–#9, #11, #12</td></tr>
+      <tr><td>Unit API</td><td>Auth + Leads isolation verdes</td></tr>
+      <tr><td>E2E contractual</td><td>auth + lead specs en repo</td></tr>
+      <tr><td>Hallazgo documentado</td><td>DELETE lead sin AC formal → backlog</td></tr>
+    </tbody>
+  </table>
+  <p class="note">Artefactos: functional-tests/CP-HU-*.md · EXECUTION-LOG.md</p>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>8 / 12</span></div>
+</section>
+
+<section class="slide" data-title="Calidad">
+  <p class="kicker">08 · Calidad & DevSecOps</p>
+  <h2>CI confiable, DRY y medible</h2>
+  <ul class="check fill">
+    <li class="ok">GitHub Actions: shared build → prisma → lint API → test → build API → lint/build Web</li>
+    <li class="ok">Healthcheck con SELECT 1 a PostgreSQL</li>
+    <li class="ok">ESLint tipado (API) + Next lint (Web)</li>
+    <li class="ok">Schemas compartidos @travelos/shared (una sola fuente de verdad)</li>
+    <li class="ok">GitHub Flow: PRs con justificación de aprobación</li>
+    <li class="warn">Deuda: e2e aún no gate en CI (unit sí)</li>
+  </ul>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>9 / 12</span></div>
+</section>
+
+<section class="slide" data-title="Backlog">
+  <p class="kicker">09 · Backlog cerrado</p>
+  <h2>Sprint 1 milestone — 11 HU Done</h2>
+  <table class="comp fill">
+    <thead><tr><th>HU</th><th>Entrega</th></tr></thead>
+    <tbody>
+      <tr><td>#1–#3</td><td>Registro, login, RBAC</td></tr>
+      <tr><td>#4–#6</td><td>Branding API, auditoría, health/CI</td></tr>
+      <tr><td>#7–#9</td><td>Leads, pipeline stages, tareas</td></tr>
+      <tr><td>#11–#12</td><td>Filtros + asignación asesor</td></tr>
+    </tbody>
+  </table>
+  <p class="note">Issues y milestone cerrados con comentario de evidencia (PR/commit).</p>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>10 / 12</span></div>
+</section>
+
+<section class="slide" data-title="PO">
+  <p class="kicker">10 · Feedback del PO</p>
+  <h2>“Exigente, pero justo”</h2>
+  <p class="quote">«No me vendan pantallas bonitas. Quiero <em>aislamiento de agencias</em>, trazabilidad de quién tocó un lead, y que el branding no se pierda al cambiar de máquina.»</p>
+  <div class="values" style="flex:0;margin-top:1rem;">
+    <div class="card"><h3>Cumplido</h3><p>Tenant scope, audit trail, branding en DB, asignación real.</p></div>
+    <div class="card"><h3>Pedido S2</h3><p>Cotizador usable en &lt;60s y PDF de cotización.</p></div>
+  </div>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>11 / 12</span></div>
+</section>
+
+<section class="slide" data-title="Cierre">
+  <p class="kicker">11 · Cierre</p>
+  <h2>Sprint 1 cerrado. Siguiente: cotizador IA.</h2>
+  <ul class="check fill">
+    <li class="ok">MVP V1 demostrable</li>
+    <li class="ok">Rúbrica cubierta con artefactos</li>
+    <li class="ok">Milestone Sprint 1 cerrado</li>
+    <li class="ok">Actas semanales + comentarios PO</li>
+    <li class="ok">→ Sprint 2: HU-13… cotización NL + PDF</li>
+  </ul>
+  <p class="lede" style="margin-top:.8rem;">Repo: <strong>github.com/Jeronimo0228/travel-OS</strong></p>
+  <div class="meta"><span>Gracias — ¿preguntas?</span><span>12 / 12</span></div>
+</section>
+
+</div>
+</div>
+</div>
+
+<div class="hud">
+    <span class="hint">F pantalla · ← →</span>
+    <button type="button" id="prev" aria-label="Anterior">‹</button>
+    <span id="counter">1 / 10</span>
+    <button type="button" id="next" aria-label="Siguiente">›</button>
+  </div>
+
+  <script>
+    (function () {
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const progress = document.getElementById("progress");
+      const counter = document.getElementById("counter");
+      const stage = document.getElementById("stage");
+      let i = 0;
+
+      function fit() {
+        if (!stage) return;
+        const sx = window.innerWidth / 1920;
+        const sy = window.innerHeight / 1080;
+        const s = Math.min(sx, sy);
+        stage.style.transform = "scale(" + s + ")";
+      }
+
+      function show(n) {
+        i = Math.max(0, Math.min(slides.length - 1, n));
+        slides.forEach((s, idx) => s.classList.toggle("active", idx === i));
+        counter.textContent = (i + 1) + " / " + slides.length;
+        progress.style.width = ((i + 1) / slides.length * 100) + "%";
+        document.title = "TravelOS AI — " + (slides[i].dataset.title || "Sprint 1");
+      }
+
+      document.getElementById("prev").addEventListener("click", () => show(i - 1));
+      document.getElementById("next").addEventListener("click", () => show(i + 1));
+
+      window.addEventListener("keydown", (e) => {
+        if (["ArrowRight", "PageDown", " ", "Enter"].includes(e.key)) { e.preventDefault(); show(i + 1); }
+        else if (["ArrowLeft", "PageUp", "Backspace"].includes(e.key)) { e.preventDefault(); show(i - 1); }
+        else if (e.key === "Home") show(0);
+        else if (e.key === "End") show(slides.length - 1);
+        else if (e.key === "f" || e.key === "F") {
+          if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+          else document.exitFullscreen?.();
+        }
+      });
+
+      let touchX = null;
+      window.addEventListener("touchstart", (e) => { touchX = e.changedTouches[0].screenX; }, { passive: true });
+      window.addEventListener("touchend", (e) => {
+        if (touchX == null) return;
+        const dx = e.changedTouches[0].screenX - touchX;
+        if (Math.abs(dx) > 50) show(i + (dx < 0 ? 1 : -1));
+        touchX = null;
+      }, { passive: true });
+
+      window.addEventListener("resize", fit);
+      fit();
+      const params = new URLSearchParams(location.search);
+      const start = Math.max(0, (parseInt(params.get("s") || "1", 10) || 1) - 1);
+      show(start);
+    })();
+  </script>
+</body>
+</html>
