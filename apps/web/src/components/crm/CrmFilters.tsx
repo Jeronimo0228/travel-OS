@@ -2,6 +2,7 @@
 
 import { leadStages } from "@travelos/shared";
 import { stageBadge } from "./mock-data";
+import type { AgencyUser } from "@/lib/users";
 
 export type StageFilter = "ALL" | (typeof leadStages)[number];
 
@@ -10,6 +11,10 @@ type CrmFiltersProps = {
   onSearchChange: (value: string) => void;
   stage: StageFilter;
   onStageChange: (value: StageFilter) => void;
+  assigneeId: string | null;
+  onAssigneeChange: (value: string | null) => void;
+  advisors: AgencyUser[];
+  canFilterAssignee: boolean;
 };
 
 export function CrmFilters({
@@ -17,6 +22,10 @@ export function CrmFilters({
   onSearchChange,
   stage,
   onStageChange,
+  assigneeId,
+  onAssigneeChange,
+  advisors,
+  canFilterAssignee,
 }: CrmFiltersProps) {
   return (
     <div className="flex flex-wrap items-center gap-3 bg-surface-container-lowest border border-outline-variant rounded-xl p-4">
@@ -55,6 +64,29 @@ export function CrmFilters({
           ))}
         </select>
       </div>
+
+      {canFilterAssignee && (
+        <div>
+          <label className="sr-only" htmlFor="crm-assignee-filter">
+            Filtrar por asesor
+          </label>
+          <select
+            id="crm-assignee-filter"
+            value={assigneeId ?? ""}
+            onChange={(event) =>
+              onAssigneeChange(event.target.value || null)
+            }
+            className="border border-outline-variant rounded-lg px-3 py-2 font-body-custom text-body-sm outline-none focus:ring-2 focus:ring-secondary-container bg-surface-container-lowest"
+          >
+            <option value="">Todos los asesores</option>
+            {advisors.map((advisor) => (
+              <option key={advisor.id} value={advisor.id}>
+                {advisor.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
     </div>
   );
 }

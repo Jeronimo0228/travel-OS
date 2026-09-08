@@ -78,8 +78,15 @@ export function Sidebar() {
           href="/settings/branding"
           className="text-on-primary-container hover:bg-primary-container/50 rounded-lg mx-2 my-1 flex items-center gap-3 px-4 py-2 transition-colors duration-200"
         >
-          <span className="material-symbols-outlined">settings</span>
-          <span className="font-body-custom text-label-md">Configuración</span>
+          <span className="material-symbols-outlined">palette</span>
+          <span className="font-body-custom text-label-md">Marca blanca</span>
+        </Link>
+        <Link
+          href="/settings/audit"
+          className="text-on-primary-container hover:bg-primary-container/50 rounded-lg mx-2 my-1 flex items-center gap-3 px-4 py-2 transition-colors duration-200"
+        >
+          <span className="material-symbols-outlined">policy</span>
+          <span className="font-body-custom text-label-md">Auditoría</span>
         </Link>
         <a
           href="#"

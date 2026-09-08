@@ -8,6 +8,8 @@ import {
   type CSSProperties,
   type ReactNode,
 } from "react";
+import { getAgencyBranding } from "@/lib/agency";
+import { ApiError } from "@/lib/api-client";
 
 const STORAGE_KEY = "travelos.tenant-branding";
 
@@ -34,6 +36,7 @@ function readFromStorage(): TenantBranding {
 type TenantBrandingContextValue = {
   branding: TenantBranding;
   setBranding: (branding: TenantBranding) => void;
+  refreshBranding: () => Promise<void>;
 };
 
 const TenantBrandingContext = createContext<TenantBrandingContextValue | null>(
@@ -41,8 +44,6 @@ const TenantBrandingContext = createContext<TenantBrandingContextValue | null>(
 );
 
 export function TenantBrandingProvider({ children }: { children: ReactNode }) {
-  // Same hydration-safety rule as CrmStoreProvider: match the server's
-  // default render first, then load the persisted value after mount.
   const [branding, setBrandingState] = useState<TenantBranding>(DEFAULT_BRANDING);
   const [hydrated, setHydrated] = useState(false);
 
@@ -53,8 +54,40 @@ export function TenantBrandingProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!hydrated) return;
+
+    let cancelled = false;
+    getAgencyBranding()
+      .then((agency) => {
+        if (cancelled) return;
+        setBrandingState({
+          primaryColor: agency.primaryColor,
+          logoUrl: agency.logoUrl,
+        });
+      })
+      .catch((error) => {
+        if (cancelled) return;
+        if (!(error instanceof ApiError)) {
+          console.warn("No se pudo cargar branding del tenant", error);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [hydrated]);
+
+  useEffect(() => {
+    if (!hydrated) return;
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(branding));
   }, [branding, hydrated]);
+
+  async function refreshBranding() {
+    const agency = await getAgencyBranding();
+    setBrandingState({
+      primaryColor: agency.primaryColor,
+      logoUrl: agency.logoUrl,
+    });
+  }
 
   const style: CSSProperties | undefined = branding.primaryColor
     ? ({ "--color-primary": branding.primaryColor } as CSSProperties)
@@ -62,7 +95,7 @@ export function TenantBrandingProvider({ children }: { children: ReactNode }) {
 
   return (
     <TenantBrandingContext.Provider
-      value={{ branding, setBranding: setBrandingState }}
+      value={{ branding, setBranding: setBrandingState, refreshBranding }}
     >
       <div style={style}>{children}</div>
     </TenantBrandingContext.Provider>

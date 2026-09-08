@@ -13,6 +13,7 @@ import {
   listLeads,
   createLead as createLeadRequest,
   updateLead as updateLeadRequest,
+  assignLead as assignLeadRequest,
   type Lead,
 } from "@/lib/leads";
 import { ApiError } from "@/lib/api-client";
@@ -21,9 +22,12 @@ type CrmStoreValue = {
   leads: Lead[];
   loading: boolean;
   error: string | null;
+  assigneeFilter: string | null;
+  setAssigneeFilter: (assigneeId: string | null) => void;
   addLead: (input: CreateLeadInput) => Promise<void>;
   updateLead: (id: string, input: UpdateLeadInput) => Promise<void>;
   updateStage: (id: string, stage: (typeof leadStages)[number]) => Promise<void>;
+  assignLead: (id: string, assigneeId: string) => Promise<void>;
   refetch: () => void;
 };
 
@@ -34,13 +38,17 @@ export function CrmStoreProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [reloadToken, setReloadToken] = useState(0);
+  const [assigneeFilter, setAssigneeFilter] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
 
     setLoading(true);
     setError(null);
-    listLeads({ take: 100 })
+    listLeads({
+      take: 100,
+      ...(assigneeFilter ? { assigneeId: assigneeFilter } : {}),
+    })
       .then((result) => {
         if (!cancelled) setLeads(result.items);
       })
@@ -60,7 +68,7 @@ export function CrmStoreProvider({ children }: { children: ReactNode }) {
     return () => {
       cancelled = true;
     };
-  }, [reloadToken]);
+  }, [reloadToken, assigneeFilter]);
 
   const refetch = useCallback(() => setReloadToken((n) => n + 1), []);
 
@@ -82,9 +90,25 @@ export function CrmStoreProvider({ children }: { children: ReactNode }) {
     [],
   );
 
+  const assignLead = useCallback(async (id: string, assigneeId: string) => {
+    const lead = await assignLeadRequest(id, assigneeId);
+    setLeads((prev) => prev.map((item) => (item.id === id ? lead : item)));
+  }, []);
+
   return (
     <CrmStoreContext.Provider
-      value={{ leads, loading, error, addLead, updateLead, updateStage, refetch }}
+      value={{
+        leads,
+        loading,
+        error,
+        assigneeFilter,
+        setAssigneeFilter,
+        addLead,
+        updateLead,
+        updateStage,
+        assignLead,
+        refetch,
+      }}
     >
       {children}
     </CrmStoreContext.Provider>

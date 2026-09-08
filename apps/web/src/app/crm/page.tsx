@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AppShell } from "@/components/layout/AppShell";
 import { CoPilotPanel } from "@/components/crm/CoPilotPanel";
 import { SalesFunnel } from "@/components/crm/SalesFunnel";
@@ -8,14 +8,45 @@ import { ClientsTable } from "@/components/crm/ClientsTable";
 import { CrmFilters, type StageFilter } from "@/components/crm/CrmFilters";
 import { LeadFormDialog } from "@/components/crm/LeadFormDialog";
 import { CrmStoreProvider, useCrmStore } from "@/components/crm/CrmStoreProvider";
+import { useSession } from "@/components/auth/SessionProvider";
 import type { Lead } from "@/lib/leads";
+import { listAgencyUsers, type AgencyUser } from "@/lib/users";
 
 function CrmContent() {
-  const { leads, loading, error, refetch } = useCrmStore();
+  const { user } = useSession();
+  const {
+    leads,
+    loading,
+    error,
+    refetch,
+    assigneeFilter,
+    setAssigneeFilter,
+  } = useCrmStore();
   const [search, setSearch] = useState("");
   const [stageFilter, setStageFilter] = useState<StageFilter>("ALL");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingLead, setEditingLead] = useState<Lead | null>(null);
+  const [advisors, setAdvisors] = useState<AgencyUser[]>([]);
+
+  const canManageAssignees =
+    user?.role === "ADMIN" || user?.role === "GERENTE";
+
+  useEffect(() => {
+    if (!canManageAssignees) return;
+    let cancelled = false;
+    listAgencyUsers()
+      .then((users) => {
+        if (!cancelled) {
+          setAdvisors(users.filter((item) => item.role === "ASESOR"));
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setAdvisors([]);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [canManageAssignees]);
 
   const filteredLeads = useMemo(() => {
     return leads.filter((lead) => {
@@ -68,6 +99,10 @@ function CrmContent() {
         onSearchChange={setSearch}
         stage={stageFilter}
         onStageChange={setStageFilter}
+        assigneeId={assigneeFilter}
+        onAssigneeChange={setAssigneeFilter}
+        advisors={advisors}
+        canFilterAssignee={canManageAssignees}
       />
 
       <div className="grid grid-cols-12 gap-6">
@@ -79,6 +114,8 @@ function CrmContent() {
           error={error}
           onRetry={refetch}
           onEdit={openEditDialog}
+          advisors={advisors}
+          canAssign={canManageAssignees}
         />
       </div>
 

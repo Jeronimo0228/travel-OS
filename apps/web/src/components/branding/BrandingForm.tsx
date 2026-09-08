@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { updateAgencyBranding } from "@/lib/agency";
+import { ApiError } from "@/lib/api-client";
 import { useTenantBranding } from "./TenantBrandingProvider";
 
 const ACCEPTED_TYPES = ["image/png", "image/jpeg", "image/svg+xml"];
@@ -10,13 +12,15 @@ const labelClass =
   "font-body-custom text-label-sm text-on-surface-variant mb-1 block";
 
 export function BrandingForm() {
-  const { branding, setBranding } = useTenantBranding();
+  const { branding, setBranding, refreshBranding } = useTenantBranding();
   const [primaryColor, setPrimaryColor] = useState(
     branding.primaryColor ?? "#4648d4",
   );
   const [logoUrl, setLogoUrl] = useState<string | null>(branding.logoUrl);
   const [logoError, setLogoError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   function handleLogoChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -38,10 +42,29 @@ export function BrandingForm() {
     reader.readAsDataURL(file);
   }
 
-  function handleSave(event: React.FormEvent) {
+  async function handleSave(event: React.FormEvent) {
     event.preventDefault();
-    setBranding({ primaryColor, logoUrl });
-    setSaved(true);
+    setSaving(true);
+    setError(null);
+    setSaved(false);
+
+    try {
+      const agency = await updateAgencyBranding({ primaryColor, logoUrl });
+      setBranding({
+        primaryColor: agency.primaryColor,
+        logoUrl: agency.logoUrl,
+      });
+      await refreshBranding();
+      setSaved(true);
+    } catch (err) {
+      setError(
+        err instanceof ApiError
+          ? err.message
+          : "No se pudo guardar el branding en el servidor.",
+      );
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (
@@ -96,20 +119,28 @@ export function BrandingForm() {
         )}
       </div>
 
+      {error && (
+        <p role="alert" className="text-alert-coral text-body-sm">
+          {error}
+        </p>
+      )}
+
       {saved && (
         <p
           role="status"
           className="bg-success-emerald/10 text-success-emerald text-body-sm rounded-lg px-3 py-2"
         >
-          Branding actualizado. El sidebar y los botones reflejan el nuevo color.
+          Branding guardado en el tenant. Sidebar y botones usan el color de la
+          agencia.
         </p>
       )}
 
       <button
         type="submit"
-        className="px-4 py-2 bg-primary text-on-primary rounded-lg font-body-custom text-label-md hover:opacity-90 active:scale-[0.98] transition-all"
+        disabled={saving}
+        className="px-4 py-2 bg-primary text-on-primary rounded-lg font-body-custom text-label-md hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-60"
       >
-        Guardar cambios
+        {saving ? "Guardando..." : "Guardar cambios"}
       </button>
     </form>
   );

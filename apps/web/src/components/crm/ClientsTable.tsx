@@ -3,6 +3,7 @@
 import { Fragment, useState } from "react";
 import { leadStages } from "@travelos/shared";
 import type { Lead } from "@/lib/leads";
+import type { AgencyUser } from "@/lib/users";
 import { Avatar } from "@/components/shared/Avatar";
 import { useCrmStore } from "./CrmStoreProvider";
 import { EmptyState } from "./EmptyState";
@@ -23,13 +24,37 @@ type ClientsTableProps = {
   error: string | null;
   onRetry: () => void;
   onEdit: (lead: Lead) => void;
+  advisors: AgencyUser[];
+  canAssign: boolean;
 };
 
 const SKELETON_ROWS = 3;
 
-export function ClientsTable({ leads, loading, error, onRetry, onEdit }: ClientsTableProps) {
-  const { updateStage } = useCrmStore();
+export function ClientsTable({
+  leads,
+  loading,
+  error,
+  onRetry,
+  onEdit,
+  advisors,
+  canAssign,
+}: ClientsTableProps) {
+  const { updateStage, assignLead } = useCrmStore();
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [assignError, setAssignError] = useState<string | null>(null);
+  const colSpan = canAssign ? 6 : 5;
+
+  async function handleAssign(leadId: string, assigneeId: string) {
+    if (!assigneeId) return;
+    setAssignError(null);
+    try {
+      await assignLead(leadId, assigneeId);
+    } catch (err) {
+      setAssignError(
+        err instanceof Error ? err.message : "No se pudo asignar el lead.",
+      );
+    }
+  }
 
   return (
     <section className="col-span-12">
@@ -38,6 +63,11 @@ export function ClientsTable({ leads, loading, error, onRetry, onEdit }: Clients
           <h3 className="font-headline text-headline-md text-primary">
             Inteligencia de Clientes Activos
           </h3>
+          {assignError && (
+            <p role="alert" className="mt-2 text-body-sm text-alert-coral">
+              {assignError}
+            </p>
+          )}
         </div>
 
         {error ? (
@@ -74,6 +104,11 @@ export function ClientsTable({ leads, loading, error, onRetry, onEdit }: Clients
                   <th className="px-6 py-4 font-body-custom text-label-sm text-on-surface-variant uppercase tracking-wider">
                     Estado
                   </th>
+                  {canAssign && (
+                    <th className="px-6 py-4 font-body-custom text-label-sm text-on-surface-variant uppercase tracking-wider">
+                      Asesor
+                    </th>
+                  )}
                   <th className="px-6 py-4 font-body-custom text-label-sm text-on-surface-variant uppercase tracking-wider">
                     Destino
                   </th>
@@ -124,6 +159,30 @@ export function ClientsTable({ leads, loading, error, onRetry, onEdit }: Clients
                             ))}
                           </select>
                         </td>
+                        {canAssign && (
+                          <td className="px-6 py-4">
+                            <label className="sr-only" htmlFor={`assignee-${lead.id}`}>
+                              Asesor de {lead.name}
+                            </label>
+                            <select
+                              id={`assignee-${lead.id}`}
+                              value={lead.assigneeId ?? ""}
+                              onChange={(event) =>
+                                void handleAssign(lead.id, event.target.value)
+                              }
+                              className="border border-outline-variant rounded-lg px-2 py-1 font-body-custom text-body-sm bg-surface-container-lowest max-w-[160px]"
+                            >
+                              <option value="" disabled>
+                                Sin asignar
+                              </option>
+                              {advisors.map((advisor) => (
+                                <option key={advisor.id} value={advisor.id}>
+                                  {advisor.name}
+                                </option>
+                              ))}
+                            </select>
+                          </td>
+                        )}
                         <td className="px-6 py-4 text-body-sm">
                           {lead.destination ?? "—"}
                         </td>
@@ -158,7 +217,7 @@ export function ClientsTable({ leads, loading, error, onRetry, onEdit }: Clients
                       </tr>
                       {isExpanded && (
                         <tr>
-                          <td colSpan={5} className="p-0">
+                          <td colSpan={colSpan} className="p-0">
                             <LeadTasksPanel leadId={lead.id} />
                           </td>
                         </tr>
