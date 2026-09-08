@@ -3,6 +3,7 @@ import { ROLES } from '../roles';
 
 export const registerAgencySchema = z.object({
   agencyName: z.string().min(2).max(120),
+  nit: z.string().trim().min(5).max(30),
   slug: z
     .string()
     .min(2)

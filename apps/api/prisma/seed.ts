@@ -11,6 +11,7 @@ async function main() {
     update: {},
     create: {
       name: 'Agencia Demo TravelOS',
+      nit: '900123456-7',
       slug: 'demo-agencia',
       primaryColor: '#4648d4',
       users: {
@@ -19,6 +20,12 @@ async function main() {
             email: 'admin@demo.travelos.local',
             name: 'Admin Demo',
             role: Role.ADMIN,
+            passwordHash,
+          },
+          {
+            email: 'gerente@demo.travelos.local',
+            name: 'Gerente Demo',
+            role: Role.GERENTE,
             passwordHash,
           },
           {
