@@ -37,17 +37,6 @@ export function listLeads(params: ListLeadsParams = {}) {
   );
 }
 
-export function assignLead(id: string, assigneeId: string) {
-  return apiFetch<Lead>(`/api/leads/${id}/assignee`, {
-    method: "PUT",
-    body: JSON.stringify({ assigneeId }),
-  });
-}
-
-export function deleteLead(id: string) {
-  return apiFetch<void>(`/api/leads/${id}`, { method: "DELETE" });
-}
-
 export function createLead(input: CreateLeadInput) {
   return apiFetch<Lead>("/api/leads", {
     method: "POST",
@@ -59,6 +48,13 @@ export function updateLead(id: string, input: UpdateLeadInput) {
   return apiFetch<Lead>(`/api/leads/${id}`, {
     method: "PUT",
     body: JSON.stringify(input),
+  });
+}
+
+export function assignLead(id: string, assigneeId: string) {
+  return apiFetch<Lead>(`/api/leads/${id}/assignee`, {
+    method: "PUT",
+    body: JSON.stringify({ assigneeId }),
   });
 }
 
