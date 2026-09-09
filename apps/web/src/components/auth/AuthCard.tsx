@@ -9,7 +9,7 @@ type AuthCardProps = {
 
 export function AuthCard({ title, subtitle, children, footer }: AuthCardProps) {
   return (
-    <main className="min-h-screen bg-background flex items-center justify-center px-4 py-12">
+    <main className="min-h-screen bg-surface text-on-surface flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         <div className="flex items-center gap-3 justify-center mb-8">
           <div className="w-10 h-10 bg-secondary rounded-lg flex items-center justify-center">

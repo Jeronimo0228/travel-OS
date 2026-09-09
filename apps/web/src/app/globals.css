@@ -176,11 +176,11 @@
   --text-data-mono: var(--text-data-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* TravelOS es tema claro (CRM white-label). No invertir solo
+   --background con prefers-color-scheme: deja el brand text-primary
+   (#000) invisible sobre fondo negro. */
+html {
+  color-scheme: light;
 }
 
 /* === TravelOS AI — Shell utilities (ported from index.html / crm.html) === */
