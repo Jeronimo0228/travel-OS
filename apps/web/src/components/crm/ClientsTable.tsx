@@ -39,7 +39,7 @@ export function ClientsTable({
   advisors,
   canAssign,
 }: ClientsTableProps) {
-  const { updateStage, assignLead } = useCrmStore();
+  const { updateStage, assignLead, deleteLead } = useCrmStore();
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [assignError, setAssignError] = useState<string | null>(null);
   const colSpan = canAssign ? 6 : 5;
@@ -52,6 +52,21 @@ export function ClientsTable({
     } catch (err) {
       setAssignError(
         err instanceof Error ? err.message : "No se pudo asignar el lead.",
+      );
+    }
+  }
+
+  async function handleDelete(lead: Lead) {
+    const confirmed = window.confirm(
+      `¿Eliminar el prospecto "${lead.name}"? Esta acción no se puede deshacer.`,
+    );
+    if (!confirmed) return;
+    setAssignError(null);
+    try {
+      await deleteLead(lead.id);
+    } catch (err) {
+      setAssignError(
+        err instanceof Error ? err.message : "No se pudo eliminar el lead.",
       );
     }
   }
@@ -211,6 +226,14 @@ export function ClientsTable({
                               className="text-on-surface-variant hover:text-primary transition-colors"
                             >
                               <span className="material-symbols-outlined">edit</span>
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => void handleDelete(lead)}
+                              aria-label={`Eliminar ${lead.name}`}
+                              className="text-on-surface-variant hover:text-alert-coral transition-colors"
+                            >
+                              <span className="material-symbols-outlined">delete</span>
                             </button>
                           </div>
                         </td>

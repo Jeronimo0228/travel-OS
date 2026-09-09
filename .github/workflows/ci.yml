@@ -42,10 +42,14 @@ jobs:
         run: pnpm --filter @travelos/shared build
       - name: Prisma generate
         run: pnpm --filter @travelos/api prisma:generate
+      - name: Prisma migrate
+        run: pnpm --filter @travelos/api exec prisma migrate deploy
       - name: Lint API
         run: pnpm --filter @travelos/api lint
       - name: Test API
         run: pnpm --filter @travelos/api test
+      - name: Test API e2e
+        run: pnpm --filter @travelos/api test:e2e
       - name: Build API
         run: pnpm --filter @travelos/api build
       - name: Lint Web

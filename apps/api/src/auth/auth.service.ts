@@ -86,7 +86,11 @@ export class AuthService {
       user.passwordHash,
     );
     if (!passwordMatches) {
-      await this.auditService.log(user.agencyId, user.id, 'LOGIN_FAIL');
+      try {
+        await this.auditService.log(user.agencyId, user.id, 'LOGIN_FAIL');
+      } catch {
+        // Audit must never turn a credential failure into a 500.
+      }
       throw new UnauthorizedException('Invalid credentials');
     }
 
