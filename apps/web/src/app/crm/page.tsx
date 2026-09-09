@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { AppShell } from "@/components/layout/AppShell";
 import { CoPilotPanel } from "@/components/crm/CoPilotPanel";
-import { SalesFunnel } from "@/components/crm/SalesFunnel";
+import { PipelineBoard } from "@/components/crm/PipelineBoard";
 import { ClientsTable } from "@/components/crm/ClientsTable";
 import { CrmFilters, type StageFilter } from "@/components/crm/CrmFilters";
 import { LeadFormDialog } from "@/components/crm/LeadFormDialog";
@@ -107,7 +107,7 @@ function CrmContent() {
 
       <div className="grid grid-cols-12 gap-6">
         <CoPilotPanel />
-        <SalesFunnel />
+        <PipelineBoard />
         <ClientsTable
           leads={filteredLeads}
           loading={loading}

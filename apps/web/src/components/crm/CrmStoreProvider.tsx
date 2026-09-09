@@ -14,6 +14,7 @@ import {
   createLead as createLeadRequest,
   updateLead as updateLeadRequest,
   assignLead as assignLeadRequest,
+  deleteLead as deleteLeadRequest,
   type Lead,
 } from "@/lib/leads";
 import { ApiError } from "@/lib/api-client";
@@ -28,6 +29,7 @@ type CrmStoreValue = {
   updateLead: (id: string, input: UpdateLeadInput) => Promise<void>;
   updateStage: (id: string, stage: (typeof leadStages)[number]) => Promise<void>;
   assignLead: (id: string, assigneeId: string) => Promise<void>;
+  deleteLead: (id: string) => Promise<void>;
   refetch: () => void;
 };
 
@@ -95,6 +97,11 @@ export function CrmStoreProvider({ children }: { children: ReactNode }) {
     setLeads((prev) => prev.map((item) => (item.id === id ? lead : item)));
   }, []);
 
+  const deleteLead = useCallback(async (id: string) => {
+    await deleteLeadRequest(id);
+    setLeads((prev) => prev.filter((item) => item.id !== id));
+  }, []);
+
   return (
     <CrmStoreContext.Provider
       value={{
@@ -107,6 +114,7 @@ export function CrmStoreProvider({ children }: { children: ReactNode }) {
         updateLead,
         updateStage,
         assignLead,
+        deleteLead,
         refetch,
       }}
     >

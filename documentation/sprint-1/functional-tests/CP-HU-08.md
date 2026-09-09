@@ -12,8 +12,8 @@
 
 ### AC-02
 - **Dado** un lead en stage Prospecto
-- **Cuando** lo mueve a Cotización
-- **Entonces** el stage persiste y se refleja en UI
+- **Cuando** lo mueve (drag-and-drop) a Cotización
+- **Entonces** el stage persiste vía `PUT /api/leads/:id` y se refleja en UI
 
 ### AC-03
 - **Dado** pipeline del tenant A
@@ -25,21 +25,20 @@
 ### CP-08-01 — Ver pipeline
 - **AC relacionado:** AC-01
 - **Precondiciones:** Leads en ≥2 stages
-- **Pasos:** Abrir vista pipeline
-- **Resultado esperado:** Stages visibles con conteos
-- **Resultado ejecución:** ⏳ Pendiente (tras implementación)
+- **Pasos:** Abrir CRM → Pipeline por etapas
+- **Resultado esperado:** Columnas visibles con conteos y cards
+- **Resultado ejecución:** ✅ 2026-09-08
 
-### CP-08-02 — Mover stage
+### CP-08-02 — Mover stage (DnD)
 - **AC relacionado:** AC-02
 - **Precondiciones:** Lead en Prospecto
-- **Pasos:** Drag/select a Cotización; refresh
+- **Pasos:** Arrastrar card a columna Cotizando; refresh
 - **Resultado esperado:** Stage actualizado
-- **Resultado ejecución:** ⏳ Pendiente (tras implementación)
+- **Resultado ejecución:** ✅ 2026-09-08
 
 ### CP-08-03 — Aislamiento pipeline
 - **AC relacionado:** AC-03
 - **Precondiciones:** Tenants A/B
 - **Pasos:** Login B
 - **Resultado esperado:** Sin leads A
-- **Resultado ejecución:** ⏳ Pendiente (tras implementación)
-
+- **Resultado ejecución:** ✅ 2026-09-08

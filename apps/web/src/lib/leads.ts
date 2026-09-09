@@ -44,6 +44,10 @@ export function assignLead(id: string, assigneeId: string) {
   });
 }
 
+export function deleteLead(id: string) {
+  return apiFetch<void>(`/api/leads/${id}`, { method: "DELETE" });
+}
+
 export function createLead(input: CreateLeadInput) {
   return apiFetch<Lead>("/api/leads", {
     method: "POST",
