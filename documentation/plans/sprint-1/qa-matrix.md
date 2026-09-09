@@ -4,7 +4,7 @@ Casos de prueba por historia de usuario, con trazabilidad a los archivos `docume
 
 IDs siguen la numeración ya usada en `CP-HU-*.md` (`CP-01-01`, no `CP-HU-01-01`) para no crear un segundo esquema de IDs en el repo.
 
-**Status cierre Sprint 1 (2026-09-08):** auth/leads/tasks/audit/agency/health implementados. Unit API verdes. E2e contractuales en repo (aún no gate CI). Fuente de ejecución: `documentation/sprint-1/functional-tests/EXECUTION-LOG.md`.
+**Status cierre Sprint 1 (2026-09-08):** auth/leads/tasks/audit/agency/health implementados. Unit + e2e API verdes y gate en CI. Fuente de ejecución: `documentation/sprint-1/functional-tests/EXECUTION-LOG.md`.
 
 ## HU-01 — Registro de agencia (Issue #1)
 
