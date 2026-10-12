@@ -21,6 +21,23 @@ enum LeadStage {
   PERDIDO
 }
 
+enum CatalogKind {
+  HOTEL
+  ACTIVITY
+}
+
+enum CatalogPricingUnit {
+  PER_NIGHT
+  PER_PERSON
+}
+
+enum PdfStatus {
+  NOT_REQUESTED
+  PENDING
+  READY
+  FAILED
+}
+
 model Agency {
   id           String   @id @default(cuid())
   name         String
@@ -31,10 +48,12 @@ model Agency {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  users      User[]
-  leads      Lead[]
-  tasks      Task[]
-  auditLogs  AuditLog[]
+  users        User[]
+  leads        Lead[]
+  tasks        Task[]
+  auditLogs    AuditLog[]
+  catalogItems CatalogItem[]
+  quotes       Quote[]
 }
 
 model User {
@@ -47,10 +66,11 @@ model User {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  agency         Agency @relation(fields: [agencyId], references: [id], onDelete: Cascade)
-  assignedLeads  Lead[] @relation("LeadAssignee")
-  tasks          Task[]
-  auditLogs      AuditLog[]
+  agency        Agency     @relation(fields: [agencyId], references: [id], onDelete: Cascade)
+  assignedLeads Lead[]     @relation("LeadAssignee")
+  tasks         Task[]
+  auditLogs     AuditLog[]
+  createdQuotes Quote[]
 
   @@unique([agencyId, email])
   @@index([agencyId])
@@ -69,12 +89,88 @@ model Lead {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
-  agency   Agency @relation(fields: [agencyId], references: [id], onDelete: Cascade)
-  assignee User?  @relation("LeadAssignee", fields: [assigneeId], references: [id])
+  agency   Agency  @relation(fields: [agencyId], references: [id], onDelete: Cascade)
+  assignee User?   @relation("LeadAssignee", fields: [assigneeId], references: [id])
   tasks    Task[]
+  quotes   Quote[]
 
   @@index([agencyId, stage])
   @@index([agencyId, assigneeId])
+}
+
+model CatalogItem {
+  id          String             @id @default(cuid())
+  agencyId    String
+  slug        String
+  kind        CatalogKind
+  name        String
+  destination String
+  description String
+  pricingUnit CatalogPricingUnit
+  price       Decimal            @db.Decimal(12, 2)
+  currency    String             @default("COP")
+  createdAt   DateTime           @default(now())
+
+  agency     Agency            @relation(fields: [agencyId], references: [id], onDelete: Cascade)
+  quoteItems QuoteOptionItem[]
+
+  @@unique([agencyId, slug])
+  @@index([agencyId, kind, destination])
+}
+
+model Quote {
+  id            String    @id @default(cuid())
+  agencyId      String
+  createdById   String
+  leadId        String?
+  prompt        String
+  destination   String
+  durationDays  Int
+  travelerCount Int
+  pdfStatus     PdfStatus @default(NOT_REQUESTED)
+  pdfData       Bytes?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  agency    Agency        @relation(fields: [agencyId], references: [id], onDelete: Cascade)
+  createdBy User          @relation(fields: [createdById], references: [id], onDelete: Cascade)
+  lead      Lead?         @relation(fields: [leadId], references: [id], onDelete: SetNull)
+  options   QuoteOption[]
+
+  @@index([agencyId, createdAt])
+  @@index([agencyId, leadId])
+  @@index([agencyId, createdById])
+}
+
+model QuoteOption {
+  id         String            @id @default(cuid())
+  quoteId    String
+  position   Int
+  title      String
+  summary    String
+  totalPrice Decimal           @db.Decimal(12, 2)
+  currency   String            @default("COP")
+  items      QuoteOptionItem[]
+
+  quote Quote @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+
+  @@unique([quoteId, position])
+}
+
+model QuoteOptionItem {
+  id                  String             @id @default(cuid())
+  quoteOptionId       String
+  catalogItemId       String
+  nameSnapshot        String
+  descriptionSnapshot String
+  pricingUnit         CatalogPricingUnit
+  quantity            Int
+  unitPrice           Decimal            @db.Decimal(12, 2)
+
+  quoteOption QuoteOption @relation(fields: [quoteOptionId], references: [id], onDelete: Cascade)
+  catalogItem CatalogItem @relation(fields: [catalogItemId], references: [id], onDelete: Restrict)
+
+  @@index([quoteOptionId])
 }
 
 model Task {

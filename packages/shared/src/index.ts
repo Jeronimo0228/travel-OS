@@ -5,3 +5,6 @@ export * from './schemas/lead';
 export * from './schemas/user';
 export * from './schemas/task';
 export * from './schemas/audit';
+export * from './schemas/ai';
+export * from './schemas/catalog';
+export * from './schemas/quote';

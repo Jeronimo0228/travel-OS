@@ -10,6 +10,9 @@ import { LeadsModule } from './leads/leads.module';
 import { AuditModule } from './audit/audit.module';
 import { TasksModule } from './tasks/tasks.module';
 import { AgencyModule } from './agency/agency.module';
+import { AiModule } from './ai/ai.module';
+import { CatalogModule } from './catalog/catalog.module';
+import { QuotesModule } from './quotes/quotes.module';
 
 @Module({
   imports: [
@@ -17,9 +20,12 @@ import { AgencyModule } from './agency/agency.module';
     PrismaModule,
     HealthModule,
     AuditModule,
+    AiModule,
     AuthModule,
+    CatalogModule,
     UsersModule,
     LeadsModule,
+    QuotesModule,
     TasksModule,
     AgencyModule,
   ],
