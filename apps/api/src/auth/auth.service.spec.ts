@@ -30,6 +30,47 @@ describe('AuthService', () => {
   });
 
   describe('registerAgency()', () => {
+    it('seeds agency-scoped catalog inventory during registration', async () => {
+      const agencyCreate = jest.fn().mockResolvedValue({ id: 'agency-new' });
+      const catalogCreateMany = jest.fn().mockResolvedValue({ count: 10 });
+      const userCreate = jest.fn().mockResolvedValue({
+        id: 'admin-new',
+        agencyId: 'agency-new',
+        email: 'admin@new-agency.com',
+        name: 'Admin',
+        role: Role.ADMIN,
+        passwordHash: 'hashed-password',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+      transaction.mockImplementation((callback) =>
+        callback({
+          agency: { create: agencyCreate },
+          catalogItem: { createMany: catalogCreateMany },
+          user: { create: userCreate },
+        }),
+      );
+
+      const result = await service.registerAgency({
+        agencyName: 'Nueva Agencia SAS',
+        nit: '900111223',
+        slug: 'nueva-agencia',
+        adminEmail: 'admin@new-agency.com',
+        adminPassword: 'S3cure-Passw0rd!',
+        adminName: 'Admin',
+      });
+
+      expect(result.user.agencyId).toBe('agency-new');
+      expect(catalogCreateMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.arrayContaining([
+            expect.objectContaining({ agencyId: 'agency-new' }),
+          ]),
+          skipDuplicates: true,
+        }),
+      );
+    });
+
     it('rejects duplicate admin emails before creating the tenant', async () => {
       findFirst.mockResolvedValue({ id: 'existing-user' });
 

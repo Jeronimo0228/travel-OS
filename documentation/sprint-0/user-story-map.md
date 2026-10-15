@@ -13,7 +13,7 @@
 | **Release 3** | Traveler portal + insights + follow-up automation | Sprint 3 |
 
 **Primary technology (MVP)**  
-Next.js 15 · NestJS · PostgreSQL/Prisma · Redis/BullMQ · Zod · Auth/JWT · Tailwind · OpenAI (from Release 2) · Object storage for docs/PDFs
+Next.js 15 · NestJS · PostgreSQL/Prisma · Redis/BullMQ · Zod · Auth/JWT · Tailwind · Groq (from Release 2) · Object storage for docs/PDFs
 
 ---
 
@@ -107,7 +107,7 @@ Stories are phrased for mapping; GitHub Issues are the execution backlog ([issue
 - NL quoter + options + PDF + link to lead  
 - Itinerary builder + seed catalog  
 - AI copiloto prioritization + agency knowledge base  
-- **Tech focus:** OpenAI orchestration, BullMQ workers, RAG/knowledge per `agencyId`, reuse `cotizador.html` / `itinerario.html`
+- **Tech focus:** Groq orchestration, BullMQ workers, RAG/knowledge per `agencyId`, reuse `cotizador.html` / `itinerario.html`
 
 ### Release 3 — Must have for pilot & traveler experience
 - Traveler portal (itinerary, docs, chat)  

@@ -1,0 +1,106 @@
+import { CatalogKind, CatalogPricingUnit, Prisma } from '@prisma/client';
+
+const catalogItems: Omit<Prisma.CatalogItemCreateManyInput, 'agencyId'>[] = [
+  {
+    slug: 'medellin-hotel-laureles',
+    kind: CatalogKind.HOTEL,
+    name: 'Hotel Laureles Central',
+    destination: 'Medellín',
+    description: 'Hotel boutique cerca de restaurantes y transporte público.',
+    pricingUnit: CatalogPricingUnit.PER_NIGHT,
+    price: 245000,
+  },
+  {
+    slug: 'medellin-hotel-poblado',
+    kind: CatalogKind.HOTEL,
+    name: 'Hotel Poblado Verde',
+    destination: 'Medellín',
+    description: 'Alojamiento confortable en El Poblado con desayuno incluido.',
+    pricingUnit: CatalogPricingUnit.PER_NIGHT,
+    price: 390000,
+  },
+  {
+    slug: 'medellin-activity-comuna-13',
+    kind: CatalogKind.ACTIVITY,
+    name: 'Recorrido Comuna 13',
+    destination: 'Medellín',
+    description:
+      'Recorrido guiado de arte urbano, escaleras eléctricas e historia local.',
+    pricingUnit: CatalogPricingUnit.PER_PERSON,
+    price: 85000,
+  },
+  {
+    slug: 'medellin-activity-guatape',
+    kind: CatalogKind.ACTIVITY,
+    name: 'Excursión a Guatapé',
+    destination: 'Medellín',
+    description: 'Excursión de día completo a Guatapé y la Piedra del Peñol.',
+    pricingUnit: CatalogPricingUnit.PER_PERSON,
+    price: 210000,
+  },
+  {
+    slug: 'cartagena-hotel-centro',
+    kind: CatalogKind.HOTEL,
+    name: 'Casa Amurallada',
+    destination: 'Cartagena',
+    description: 'Hotel en el centro histórico, cerca de plazas y museos.',
+    pricingUnit: CatalogPricingUnit.PER_NIGHT,
+    price: 460000,
+  },
+  {
+    slug: 'cartagena-hotel-bocagrande',
+    kind: CatalogKind.HOTEL,
+    name: 'Hotel Bahía Bocagrande',
+    destination: 'Cartagena',
+    description: 'Hotel frente al mar con piscina y acceso a la playa.',
+    pricingUnit: CatalogPricingUnit.PER_NIGHT,
+    price: 575000,
+  },
+  {
+    slug: 'cartagena-activity-islas',
+    kind: CatalogKind.ACTIVITY,
+    name: 'Islas del Rosario',
+    destination: 'Cartagena',
+    description: 'Paseo en lancha con tiempo libre en las Islas del Rosario.',
+    pricingUnit: CatalogPricingUnit.PER_PERSON,
+    price: 320000,
+  },
+  {
+    slug: 'cartagena-activity-centro',
+    kind: CatalogKind.ACTIVITY,
+    name: 'Centro histórico y Getsemaní',
+    destination: 'Cartagena',
+    description:
+      'Caminata guiada por el centro histórico y el barrio Getsemaní.',
+    pricingUnit: CatalogPricingUnit.PER_PERSON,
+    price: 95000,
+  },
+  {
+    slug: 'santa-marta-hotel-roda',
+    kind: CatalogKind.HOTEL,
+    name: 'Hotel Bahía Rodadero',
+    destination: 'Santa Marta',
+    description: 'Alojamiento a pocos pasos de la playa de El Rodadero.',
+    pricingUnit: CatalogPricingUnit.PER_NIGHT,
+    price: 335000,
+  },
+  {
+    slug: 'santa-marta-activity-tyrona',
+    kind: CatalogKind.ACTIVITY,
+    name: 'Parque Nacional Tayrona',
+    destination: 'Santa Marta',
+    description: 'Excursión guiada de naturaleza al Parque Nacional Tayrona.',
+    pricingUnit: CatalogPricingUnit.PER_PERSON,
+    price: 180000,
+  },
+];
+
+export async function seedCatalogForAgency(
+  database: Pick<Prisma.TransactionClient, 'catalogItem'>,
+  agencyId: string,
+) {
+  await database.catalogItem.createMany({
+    data: catalogItems.map((item) => ({ ...item, agencyId })),
+    skipDuplicates: true,
+  });
+}

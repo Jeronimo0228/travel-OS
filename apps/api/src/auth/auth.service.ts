@@ -10,6 +10,7 @@ import * as bcrypt from 'bcrypt';
 import { AuditService } from '../audit/audit.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { BCRYPT_SALT_ROUNDS } from './auth.constants';
+import { seedCatalogForAgency } from '../../prisma/seed-catalog';
 
 type SafeUser = Pick<User, 'id' | 'agencyId' | 'email' | 'name' | 'role'>;
 
@@ -50,6 +51,8 @@ export class AuthService {
             slug: input.slug,
           },
         });
+
+        await seedCatalogForAgency(transaction, agency.id);
 
         return transaction.user.create({
           data: {

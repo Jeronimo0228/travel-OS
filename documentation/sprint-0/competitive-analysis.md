@@ -20,7 +20,7 @@ Public sources: TravelJoy (pricing/features 2026), Travefy (product + PCI-DSS cl
 
 ## Solution ideas for TravelOS (from this diverge)
 
-1. **Explicit modern stack** (ours): Next.js + NestJS + PostgreSQL/Prisma + Redis/BullMQ + OpenAI + strict multi-tenancy — clearer academic/technical narrative than closed-stack competitors.
+1. **Explicit modern stack** (ours): Next.js + NestJS + PostgreSQL/Prisma + Redis/BullMQ + Groq + strict multi-tenancy — clearer academic/technical narrative than closed-stack competitors.
 2. **WhatsApp-first + portal + CRM + quoter** in one product (close the TravelJoy/Travefy vs chatbot gap).
 3. **AI with knowledge per `agencyId`** (tone/policies), not a generic copiloto.
 4. **White-label** (logo, domain, app) as LATAM commercial differentiator.

@@ -44,7 +44,7 @@ pnpm dev
 
 ## Stack
 
-Next.js 15 · NestJS · PostgreSQL/Prisma · Redis · Zod · Tailwind · GitHub Actions · OpenAI (Sprint 2+)
+Next.js 15 · NestJS · PostgreSQL/Prisma · Redis · Zod · Tailwind · GitHub Actions · Groq (Sprint 2+)
 
 ## Team — open your plan and code
 

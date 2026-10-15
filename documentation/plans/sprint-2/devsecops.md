@@ -5,7 +5,7 @@
 | Issue | Story | Role |
 |---|---|---|
 | #24 | Knowledge base + RAG isolation | Owner |
-| — | OpenAI secrets, rate limits, worker safety | Owner |
+| — | Groq secrets, rate limits, worker safety | Owner |
 
 ## Files
 
