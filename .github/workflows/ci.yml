@@ -64,5 +64,7 @@ jobs:
         run: pnpm --filter @travelos/api build
       - name: Lint Web
         run: pnpm --filter @travelos/web lint
+      - name: Test Web
+        run: pnpm --filter @travelos/web test
       - name: Build Web
         run: pnpm --filter @travelos/web build
