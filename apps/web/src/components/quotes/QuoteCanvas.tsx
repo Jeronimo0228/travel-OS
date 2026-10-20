@@ -5,6 +5,7 @@ import { formatRelativeTime, pluralize } from "@/lib/format";
 import { cheapestOptionId } from "@/lib/quote-logic";
 import { LeadLinker } from "./LeadLinker";
 import { QuoteOptionCard } from "./QuoteOptionCard";
+import { QuotePdfButton } from "./QuotePdfButton";
 import { useQuoterStore } from "./QuoterStoreProvider";
 
 export function QuoteCanvas() {
@@ -52,6 +53,20 @@ export function QuoteCanvas() {
         </div>
         <div className="flex flex-wrap items-start gap-3">
           <LeadLinker quote={selected} />
+          <QuotePdfButton quote={selected} />
+          <button
+            type="button"
+            disabled
+            className="flex cursor-not-allowed items-center gap-2 rounded-lg bg-primary px-4 py-2 font-body-custom text-label-md text-on-primary opacity-50"
+          >
+            <span className="material-symbols-outlined text-[20px]" aria-hidden="true">
+              send
+            </span>
+            Enviar al viajero
+            <span className="rounded-full bg-on-primary/20 px-2 py-0.5 text-label-sm">
+              Próximamente
+            </span>
+          </button>
         </div>
       </header>
 
