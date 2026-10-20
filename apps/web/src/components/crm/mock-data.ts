@@ -22,33 +22,6 @@ export const funnelStageOrder: Array<{
   { stage: "GANADO", label: "Ganados" },
 ];
 
-export const coPilotInsights = [
-  {
-    id: "insight-1",
-    icon: "call",
-    iconClass: "text-success-emerald",
-    title: "Contactar a Camila Restrepo ahora",
-    detail:
-      "94% de probabilidad de conversión basado en búsquedas recientes de safaris de lujo.",
-  },
-  {
-    id: "insight-2",
-    icon: "ac_unit",
-    iconClass: "text-alert-coral",
-    title: "Andrés Gómez se está enfriando",
-    detail:
-      "Inactividad detectada por 48h. Enviar seguimiento de 'Bora Bora Exclusivo'.",
-  },
-  {
-    id: "insight-3",
-    icon: "auto_graph",
-    iconClass: "text-secondary-fixed",
-    title: "Oportunidad Masiva: Grupo Alumni",
-    detail:
-      "La IA identifica 12 perfiles similares interesados en cruceros fluviales europeos.",
-  },
-];
-
 export const kpiCards = [
   { label: "Prospectos Activos", value: "142", delta: "+12%", deltaClass: "text-success-emerald" },
   { label: "Valor de Pipeline", value: "$1.2M", delta: "Estable", deltaClass: "text-secondary" },
