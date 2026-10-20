@@ -179,7 +179,7 @@ describe('QuotesService', () => {
         travelers: 2,
         preferences: [],
       })
-      .mockResolvedValueOnce({
+      .mockResolvedValue({
         alternatives: [
           {
             title: 'Opción 1',
@@ -200,6 +200,37 @@ describe('QuotesService', () => {
       }),
     ).rejects.toBeInstanceOf(BadGatewayException);
     expect(createQuote).not.toHaveBeenCalled();
+  });
+
+  it('regenerates the proposal once when the first one is unusable', async () => {
+    findCatalogItems.mockResolvedValue(catalog);
+    const good = {
+      alternatives: [
+        { title: 'A', summary: 'S', itemIds: ['hotel-a', 'activity-a'] },
+        { title: 'B', summary: 'S', itemIds: ['hotel-b', 'activity-b'] },
+      ],
+    };
+    generateJson
+      .mockReset()
+      .mockResolvedValueOnce({
+        destination: 'Cartagena',
+        durationDays: 3,
+        travelers: 2,
+        preferences: [],
+      })
+      .mockResolvedValueOnce({
+        alternatives: [
+          { title: 'A', summary: 'S', itemIds: ['foreign', 'activity-a'] },
+          { title: 'B', summary: 'S', itemIds: ['hotel-b', 'activity-b'] },
+        ],
+      })
+      .mockResolvedValueOnce(good);
+    createQuote.mockResolvedValue(quote);
+
+    await expect(
+      service.create(user, { prompt: 'Viaje a Cartagena con actividades' }),
+    ).resolves.toBeDefined();
+    expect(generateJson).toHaveBeenCalledTimes(3);
   });
 
   it('links a quote only after verifying access to the lead', async () => {
