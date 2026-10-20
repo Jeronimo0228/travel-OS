@@ -6,15 +6,24 @@ import { JwtAuthGuard } from '../common/jwt-auth.guard';
 import { Roles } from '../common/roles.decorator';
 import { RolesGuard } from '../common/roles.guard';
 import { MetricsService } from './metrics.service';
+import { OperationsMetricsService } from './operations.service';
 
 @Controller('metrics')
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles(Role.ADMIN, Role.GERENTE)
 export class MetricsController {
-  constructor(private readonly metricsService: MetricsService) {}
+  constructor(
+    private readonly metricsService: MetricsService,
+    private readonly operationsService: OperationsMetricsService,
+  ) {}
 
   @Get()
   getDashboard(@CurrentUser() user: AuthenticatedUser) {
     return this.metricsService.getDashboard(user);
+  }
+
+  @Get('operations')
+  getOperations(@CurrentUser() user: AuthenticatedUser) {
+    return this.operationsService.getOperations(user);
   }
 }
