@@ -13,6 +13,8 @@ import { AgencyModule } from './agency/agency.module';
 import { AiModule } from './ai/ai.module';
 import { CatalogModule } from './catalog/catalog.module';
 import { QuotesModule } from './quotes/quotes.module';
+import { PortalModule } from './portal/portal.module';
+import { MetricsModule } from './metrics/metrics.module';
 
 @Module({
   imports: [
@@ -26,6 +28,8 @@ import { QuotesModule } from './quotes/quotes.module';
     UsersModule,
     LeadsModule,
     QuotesModule,
+    PortalModule,
+    MetricsModule,
     TasksModule,
     AgencyModule,
   ],

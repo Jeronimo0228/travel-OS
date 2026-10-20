@@ -38,6 +38,11 @@ enum PdfStatus {
   FAILED
 }
 
+enum PortalMessageSender {
+  TRAVELER
+  AGENCY
+}
+
 model Agency {
   id           String   @id @default(cuid())
   name         String
@@ -48,12 +53,14 @@ model Agency {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  users        User[]
-  leads        Lead[]
-  tasks        Task[]
-  auditLogs    AuditLog[]
-  catalogItems CatalogItem[]
-  quotes       Quote[]
+  users         User[]
+  leads         Lead[]
+  tasks         Task[]
+  auditLogs     AuditLog[]
+  catalogItems  CatalogItem[]
+  quotes        Quote[]
+  reservations  Reservation[]
+  taskReminders TaskReminder[]
 }
 
 model User {
@@ -66,11 +73,13 @@ model User {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  agency        Agency     @relation(fields: [agencyId], references: [id], onDelete: Cascade)
-  assignedLeads Lead[]     @relation("LeadAssignee")
-  tasks         Task[]
-  auditLogs     AuditLog[]
-  createdQuotes Quote[]
+  agency         Agency         @relation(fields: [agencyId], references: [id], onDelete: Cascade)
+  assignedLeads  Lead[]         @relation("LeadAssignee")
+  tasks          Task[]
+  auditLogs      AuditLog[]
+  createdQuotes  Quote[]
+  portalMessages ChatMessage[]
+  taskReminders  TaskReminder[]
 
   @@unique([agencyId, email])
   @@index([agencyId])
@@ -89,10 +98,11 @@ model Lead {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
-  agency   Agency  @relation(fields: [agencyId], references: [id], onDelete: Cascade)
-  assignee User?   @relation("LeadAssignee", fields: [assigneeId], references: [id])
-  tasks    Task[]
-  quotes   Quote[]
+  agency       Agency        @relation(fields: [agencyId], references: [id], onDelete: Cascade)
+  assignee     User?         @relation("LeadAssignee", fields: [assigneeId], references: [id])
+  tasks        Task[]
+  quotes       Quote[]
+  reservations Reservation[]
 
   @@index([agencyId, stage])
   @@index([agencyId, assigneeId])
@@ -184,11 +194,107 @@ model Task {
   updatedAt   DateTime  @updatedAt
   createdById String?
 
-  agency    Agency @relation(fields: [agencyId], references: [id], onDelete: Cascade)
-  lead      Lead   @relation(fields: [leadId], references: [id], onDelete: Cascade)
-  createdBy User?  @relation(fields: [createdById], references: [id])
+  agency    Agency         @relation(fields: [agencyId], references: [id], onDelete: Cascade)
+  lead      Lead           @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  createdBy User?          @relation(fields: [createdById], references: [id])
+  reminders TaskReminder[]
 
   @@index([agencyId, leadId])
+}
+
+model Reservation {
+  id            String   @id @default(cuid())
+  agencyId      String
+  leadId        String
+  travelerName  String
+  travelerEmail String
+  destination   String
+  startsAt      DateTime
+  endsAt        DateTime
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  agency       Agency                @relation(fields: [agencyId], references: [id], onDelete: Cascade)
+  lead         Lead                  @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  itinerary    ItineraryItem[]
+  documents    ReservationDocument[]
+  messages     ChatMessage[]
+  accessTokens PortalAccessToken[]
+
+  @@index([agencyId, startsAt])
+  @@index([agencyId, leadId])
+}
+
+model ItineraryItem {
+  id            String    @id @default(cuid())
+  reservationId String
+  title         String
+  details       String?
+  location      String?
+  startsAt      DateTime?
+  endsAt        DateTime?
+  position      Int       @default(0)
+  createdAt     DateTime  @default(now())
+
+  reservation Reservation @relation(fields: [reservationId], references: [id], onDelete: Cascade)
+
+  @@index([reservationId, position])
+}
+
+model ReservationDocument {
+  id            String   @id @default(cuid())
+  reservationId String
+  name          String
+  url           String
+  contentType   String?
+  createdAt     DateTime @default(now())
+
+  reservation Reservation @relation(fields: [reservationId], references: [id], onDelete: Cascade)
+
+  @@index([reservationId, createdAt])
+}
+
+model PortalAccessToken {
+  id            String   @id @default(cuid())
+  reservationId String
+  tokenHash     String   @unique
+  expiresAt     DateTime
+  createdAt     DateTime @default(now())
+
+  reservation Reservation @relation(fields: [reservationId], references: [id], onDelete: Cascade)
+
+  @@index([reservationId, expiresAt])
+}
+
+model ChatMessage {
+  id            String              @id @default(cuid())
+  reservationId String
+  sender        PortalMessageSender
+  senderUserId  String?
+  body          String
+  createdAt     DateTime            @default(now())
+
+  reservation Reservation @relation(fields: [reservationId], references: [id], onDelete: Cascade)
+  senderUser  User?       @relation(fields: [senderUserId], references: [id], onDelete: SetNull)
+
+  @@index([reservationId, createdAt])
+}
+
+model TaskReminder {
+  id          String    @id @default(cuid())
+  agencyId    String
+  taskId      String
+  dueAt       DateTime
+  recipientId String?
+  createdAt   DateTime  @default(now())
+  readAt      DateTime?
+
+  agency    Agency @relation(fields: [agencyId], references: [id], onDelete: Cascade)
+  task      Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  recipient User?  @relation(fields: [recipientId], references: [id], onDelete: SetNull)
+
+  @@unique([taskId, dueAt])
+  @@index([agencyId, recipientId, createdAt])
 }
 
 model AuditLog {

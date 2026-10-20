@@ -8,3 +8,4 @@ export * from './schemas/audit';
 export * from './schemas/ai';
 export * from './schemas/catalog';
 export * from './schemas/quote';
+export * from './schemas/portal';

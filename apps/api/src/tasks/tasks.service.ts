@@ -1,4 +1,5 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
+import { Role } from '@prisma/client';
 import type {
   CreateTaskInput,
   ListTasksQuery,
@@ -78,6 +79,70 @@ export class TasksService {
     const task = await this.findAccessibleTask(user, taskId);
     await this.prisma.task.deleteMany({
       where: { id: task.id, agencyId: user.agencyId, leadId: task.leadId },
+    });
+  }
+
+  listReminders(user: AuthenticatedUser) {
+    return this.prisma.taskReminder.findMany({
+      where: {
+        agencyId: user.agencyId,
+        ...(user.role === Role.ASESOR
+          ? {
+              OR: [
+                { recipientId: user.id },
+                {
+                  recipientId: null,
+                  task: {
+                    is: { lead: { is: { assigneeId: user.id } } },
+                  },
+                },
+              ],
+            }
+          : {}),
+      },
+      include: {
+        task: {
+          select: {
+            id: true,
+            title: true,
+            dueAt: true,
+            lead: {
+              select: { id: true, name: true, destination: true },
+            },
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  async markReminderRead(user: AuthenticatedUser, reminderId: string) {
+    const result = await this.prisma.taskReminder.updateMany({
+      where: {
+        id: reminderId,
+        agencyId: user.agencyId,
+        ...(user.role === Role.ASESOR
+          ? {
+              OR: [
+                { recipientId: user.id },
+                {
+                  recipientId: null,
+                  task: {
+                    is: { lead: { is: { assigneeId: user.id } } },
+                  },
+                },
+              ],
+            }
+          : {}),
+      },
+      data: { readAt: new Date() },
+    });
+    if (result.count !== 1) {
+      throw new ForbiddenException('Reminder is outside your permitted scope');
+    }
+
+    return this.prisma.taskReminder.findFirst({
+      where: { id: reminderId, agencyId: user.agencyId },
     });
   }
 

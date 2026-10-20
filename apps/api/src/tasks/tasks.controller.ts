@@ -49,6 +49,19 @@ export class TasksController {
     return this.tasksService.list(user, leadId, query);
   }
 
+  @Get('tasks/reminders')
+  listReminders(@CurrentUser() user: AuthenticatedUser) {
+    return this.tasksService.listReminders(user);
+  }
+
+  @Patch('tasks/reminders/:id/read')
+  markReminderRead(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('id') reminderId: string,
+  ) {
+    return this.tasksService.markReminderRead(user, reminderId);
+  }
+
   @Patch('tasks/:id')
   update(
     @CurrentUser() user: AuthenticatedUser,
