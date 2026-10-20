@@ -104,7 +104,7 @@ export class QuotesService {
     }
 
     const trip = await this.aiService.generateJson(
-      'Extrae la solicitud de viaje como JSON. No inventes un destino si no aparece en la solicitud. Devuelve destination y, si faltan datos, usa durationDays=3, travelers=2 y preferences=[]. Limita durationDays a 30 y travelers a 10.',
+      'Extrae la solicitud de viaje como JSON. No inventes un destino si no aparece en la solicitud. Devuelve destination y, si faltan datos, usa durationDays=3, travelers=2 y preferences=[]. Limita durationDays a 30 y travelers a 10. Responde solo con un objeto JSON de la forma {"destination":"...","durationDays":3,"travelers":2,"preferences":["..."]}, con números enteros y como máximo 8 preferencias cortas.',
       input.prompt,
       tripRequestSchema,
     );

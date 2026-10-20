@@ -57,6 +57,12 @@ export class AiService {
 
     const result = schema.safeParse(generated);
     if (!result.success) {
+      this.logger.warn(
+        `AI response failed validation: ${result.error.issues
+          .slice(0, 5)
+          .map((issue) => `${issue.path.join('.') || '(root)'} ${issue.code}`)
+          .join('; ')}`,
+      );
       throw new BadGatewayException(
         'AI provider response did not match the required format',
       );
