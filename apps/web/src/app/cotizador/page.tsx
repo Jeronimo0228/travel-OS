@@ -1,11 +1,21 @@
-import { ComingSoonPage } from "@/components/layout/ComingSoonPage";
+import { AppShell } from "@/components/layout/AppShell";
+import { QuoteCanvas } from "@/components/quotes/QuoteCanvas";
+import { QuoterChat } from "@/components/quotes/QuoterChat";
+import { QuoterStoreProvider } from "@/components/quotes/QuoterStoreProvider";
 
 export default function CotizadorPage() {
   return (
-    <ComingSoonPage
-      title="Cotizador"
-      icon="chat_bubble"
-      description="El cotizador con IA se construirá en un próximo sprint. Por ahora, gestiona tus prospectos desde el CRM Inteligente."
-    />
+    <AppShell searchPlaceholder="Buscar cotizaciones, clientes...">
+      <QuoterStoreProvider>
+        <div className="grid grid-cols-1 gap-6 lg:h-[calc(100vh-112px)] lg:grid-cols-5">
+          <div className="h-[70vh] min-h-0 lg:col-span-2 lg:h-full">
+            <QuoterChat />
+          </div>
+          <div className="min-h-0 lg:col-span-3 lg:h-full">
+            <QuoteCanvas />
+          </div>
+        </div>
+      </QuoterStoreProvider>
+    </AppShell>
   );
 }
