@@ -8,6 +8,6 @@ export const navItems: NavItem[] = [
   { href: "/", label: "Panel de Control", icon: "dashboard" },
   { href: "/crm", label: "CRM Inteligente", icon: "group" },
   { href: "/cotizador", label: "Cotizador", icon: "chat_bubble" },
-  { href: "/itinerario", label: "Itinerario", icon: "map" },
+  { href: "/viajes", label: "Viajes y Portal", icon: "luggage" },
   { href: "/agentes", label: "Centro de Agentes", icon: "smart_toy" },
 ];
