@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { Avatar } from "@/components/shared/Avatar";
 import { useSession } from "@/components/auth/SessionProvider";
+import { RemindersBell } from "./RemindersBell";
 
 type TopbarProps = {
   searchPlaceholder?: string;
@@ -52,14 +53,7 @@ export function Topbar({
           Análisis IA
         </button>
         <div className="flex items-center gap-2 border-l border-outline-variant pl-4">
-          <button
-            type="button"
-            aria-label="Notificaciones"
-            className="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-all relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-container"
-          >
-            <span className="material-symbols-outlined">notifications</span>
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-alert-coral rounded-full" />
-          </button>
+          <RemindersBell />
           <div
             title={user ? `${user.name} · ${user.role}` : undefined}
             aria-label={`Perfil de ${displayName}`}
