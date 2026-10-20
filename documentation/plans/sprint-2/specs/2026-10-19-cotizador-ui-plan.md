@@ -24,7 +24,9 @@
 
 ## Prerrequisitos (una sola vez)
 
-- Node 24 y pnpm 9.15 (`corepack enable`; si `pnpm` no está en el PATH, usar `npx pnpm@9.15.0` en lugar de `pnpm`).
+- Node 24 y pnpm 9.15. Si `pnpm` no está en el PATH, anteponer `corepack` a cada comando (`corepack pnpm ...`) o ejecutar `corepack enable` una vez. El script raíz `pnpm db:seed` llama a `pnpm` internamente; sin `pnpm` en el PATH usar `pnpm --filter @travelos/api prisma:seed`.
+- Antes de levantar el API, ejecutar `pnpm install` en la raíz (el backend del Sprint 2 agregó `pdfkit` y `bullmq`).
+- Si hay migraciones pendientes (`prisma migrate status`), aplicarlas con `pnpm --filter @travelos/api exec prisma migrate deploy`.
 - Para las verificaciones manuales de las Tareas 4–7: Docker Desktop encendido, y `apps/web/.env.local` con `NEXT_PUBLIC_API_URL=http://localhost:4000` (confirmar que está ignorado con `git check-ignore apps/web/.env.local`).
 
 ## Estructura de archivos
@@ -1415,7 +1417,7 @@ type QuoteOptionCardProps = {
 export function QuoteOptionCard({ option, cheapest }: QuoteOptionCardProps) {
   return (
     <article className="flex h-full flex-col rounded-xl border border-outline-variant bg-surface-container-lowest p-card-padding">
-      <header className="mb-3 flex items-start justify-between gap-2">
+      <header className="mb-3 flex flex-wrap items-start justify-between gap-2">
         <h3 className="font-headline text-headline-md text-primary">
           {option.title}
         </h3>
@@ -1509,7 +1511,7 @@ export function QuoteCanvas() {
   return (
     <section
       aria-label="Propuesta"
-      className="custom-scrollbar flex h-full flex-col gap-6 overflow-y-auto rounded-xl border border-outline-variant bg-surface-container-lowest p-6 pb-24"
+      className="custom-scrollbar @container flex h-full flex-col gap-6 overflow-y-auto rounded-xl border border-outline-variant bg-surface-container-lowest p-6 pb-24"
     >
       <header className="flex flex-wrap items-start justify-between gap-4">
         <div>
@@ -1525,8 +1527,8 @@ export function QuoteCanvas() {
       </header>
 
       <div
-        className={`grid gap-4 md:grid-cols-2 ${
-          selected.options.length >= 3 ? "xl:grid-cols-3" : ""
+        className={`grid gap-4 @xl:grid-cols-2 ${
+          selected.options.length >= 3 ? "@4xl:grid-cols-3" : ""
         }`}
       >
         {selected.options.map((option) => (
