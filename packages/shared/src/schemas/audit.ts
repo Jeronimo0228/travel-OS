@@ -7,6 +7,8 @@ export const auditActions = [
   'LEAD_ASSIGN',
   'LEAD_DELETE',
   'BRANDING_UPDATE',
+  'PORTAL_ACCESS_ISSUED',
+  'PORTAL_DOCUMENTS_VIEWED',
 ] as const;
 
 export const listAuditLogsQuerySchema = z.object({

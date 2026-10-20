@@ -25,3 +25,16 @@ npm install
 npm run css   # regenera public/styles.css
 npm run dev   # http://127.0.0.1:5173
 ```
+
+---
+
+# Sprint 3 — Review (Portal + Insights + Piloto)
+
+- [`sprint-3-deck.html`](./sprint-3-deck.html) — 14 diapositivas, mismo motor que Sprint 0/1 (stage 1920×1080, `F` pantalla completa, flechas).
+- Demo en vivo: https://travelos-pdp.vercel.app (gerente@demo.travelos.local / TravelOS!demo1).
+
+```bash
+cd travel-OS
+python3 -m http.server 8765 --bind 127.0.0.1
+# http://127.0.0.1:8765/documentation/presentation/sprint-3-deck.html
+```

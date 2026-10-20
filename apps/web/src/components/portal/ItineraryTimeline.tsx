@@ -30,7 +30,7 @@ export function ItineraryTimeline({
             <span className="w-8 h-8 rounded-full bg-secondary text-on-secondary text-label-md flex items-center justify-center">
               {dayIndex + 1}
             </span>
-            <span className="font-headline text-headline-md capitalize">
+            <span className="font-headline text-headline-md first-letter:uppercase">
               {day.label}
             </span>
           </h3>

@@ -1,6 +1,7 @@
 import { LeadStage, PrismaClient, Role } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { seedCatalogForAgency } from './seed-catalog';
+import { seedSprint3Demo } from './seed-sprint3';
 
 const prisma = new PrismaClient();
 const DEMO_PDF_PROMPT =
@@ -233,6 +234,8 @@ async function main() {
       },
     });
   }
+
+  await seedSprint3Demo(prisma, agency.id, passwordHash);
 
   console.log('Seed OK agency:', agency.slug);
   console.log(
