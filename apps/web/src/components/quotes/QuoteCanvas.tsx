@@ -3,6 +3,7 @@
 import { EmptyState } from "@/components/crm/EmptyState";
 import { formatRelativeTime, pluralize } from "@/lib/format";
 import { cheapestOptionId } from "@/lib/quote-logic";
+import { LeadLinker } from "./LeadLinker";
 import { QuoteOptionCard } from "./QuoteOptionCard";
 import { useQuoterStore } from "./QuoterStoreProvider";
 
@@ -48,6 +49,9 @@ export function QuoteCanvas() {
             {pluralize(selected.travelerCount, "viajero", "viajeros")} ·
             Actualizado {formatRelativeTime(selected.updatedAt)}
           </p>
+        </div>
+        <div className="flex flex-wrap items-start gap-3">
+          <LeadLinker quote={selected} />
         </div>
       </header>
 
