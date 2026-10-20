@@ -34,3 +34,15 @@ export function createBullMqRedisConnection(config: ConfigService) {
     ...(redisUrl.protocol === 'rediss:' ? { tls: {} } : {}),
   };
 }
+
+/**
+ * Inline jobs mode runs background work in-process instead of through BullMQ.
+ * It is used on serverless hosting (Vercel) where there is no long-lived worker
+ * and no Redis. Enabled with JOBS_MODE=inline or when REDIS_URL is missing.
+ */
+export function isInlineJobsMode(config: ConfigService): boolean {
+  return (
+    config.get<string>('JOBS_MODE') === 'inline' ||
+    !config.get<string>('REDIS_URL')
+  );
+}

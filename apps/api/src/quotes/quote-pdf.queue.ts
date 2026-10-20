@@ -7,7 +7,10 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { PdfStatus } from '@prisma/client';
 import { Job, Queue, Worker } from 'bullmq';
-import { createBullMqRedisConnection } from '../common/bullmq-redis-connection';
+import {
+  createBullMqRedisConnection,
+  isInlineJobsMode,
+} from '../common/bullmq-redis-connection';
 import { PrismaService } from '../prisma/prisma.service';
 import { renderQuotePdf } from './quote-pdf.renderer';
 
@@ -29,7 +32,14 @@ export class QuotePdfQueue implements OnModuleInit, OnModuleDestroy {
     private readonly prisma: PrismaService,
   ) {}
 
+  private inline = false;
+
   onModuleInit() {
+    if (isInlineJobsMode(this.config)) {
+      this.inline = true;
+      this.logger.log('Quote PDF jobs run inline (no Redis worker)');
+      return;
+    }
     const connection = createBullMqRedisConnection(this.config);
 
     this.queue = new Queue<PdfJobData>(QUEUE_NAME, { connection });
@@ -56,6 +66,20 @@ export class QuotePdfQueue implements OnModuleInit, OnModuleDestroy {
   }
 
   async enqueue(agencyId: string, quoteId: string) {
+    if (this.inline) {
+      await this.generate({
+        data: { agencyId, quoteId },
+        attemptsMade: 0,
+        opts: { attempts: 1 },
+      } as Job<PdfJobData>).catch((error: unknown) => {
+        this.logger.error(
+          `Inline quote PDF generation failed for ${quoteId}: ${
+            error instanceof Error ? error.message : String(error)
+          }`,
+        );
+      });
+      return;
+    }
     if (!this.queue) {
       throw new Error('Quote PDF queue has not been initialized');
     }

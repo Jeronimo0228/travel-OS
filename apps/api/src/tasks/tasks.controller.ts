@@ -24,12 +24,16 @@ import type { AuthenticatedUser } from '../common/authenticated-user.interface';
 import { CurrentUser } from '../common/current-user.decorator';
 import { JwtAuthGuard } from '../common/jwt-auth.guard';
 import { ZodValidationPipe } from '../common/zod-validation.pipe';
+import { FollowUpReminderQueue } from './follow-up-reminder.queue';
 import { TasksService } from './tasks.service';
 
 @UseGuards(JwtAuthGuard)
 @Controller()
 export class TasksController {
-  constructor(private readonly tasksService: TasksService) {}
+  constructor(
+    private readonly tasksService: TasksService,
+    private readonly reminderQueue: FollowUpReminderQueue,
+  ) {}
 
   @Post('leads/:leadId/tasks')
   create(
@@ -50,7 +54,8 @@ export class TasksController {
   }
 
   @Get('tasks/reminders')
-  listReminders(@CurrentUser() user: AuthenticatedUser) {
+  async listReminders(@CurrentUser() user: AuthenticatedUser) {
+    await this.reminderQueue.sweepIfDue();
     return this.tasksService.listReminders(user);
   }
 

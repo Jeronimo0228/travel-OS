@@ -6,11 +6,15 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Queue, Worker } from 'bullmq';
-import { createBullMqRedisConnection } from '../common/bullmq-redis-connection';
+import {
+  createBullMqRedisConnection,
+  isInlineJobsMode,
+} from '../common/bullmq-redis-connection';
 import { FollowUpReminderService } from './follow-up-reminder.service';
 
 const QUEUE_NAME = 'follow-up-reminders';
 const SCAN_INTERVAL_MS = 5 * 60 * 1000;
+const INLINE_SWEEP_INTERVAL_MS = 60 * 1000;
 
 type FollowUpJobData = Record<string, never>;
 
@@ -25,7 +29,15 @@ export class FollowUpReminderQueue implements OnModuleInit, OnModuleDestroy {
     private readonly reminderService: FollowUpReminderService,
   ) {}
 
+  private inline = false;
+  private lastInlineSweep = 0;
+
   async onModuleInit() {
+    if (isInlineJobsMode(this.config)) {
+      this.inline = true;
+      this.logger.log('Follow-up reminders swept on demand (no Redis worker)');
+      return;
+    }
     const connection = createBullMqRedisConnection(this.config);
     this.queue = new Queue<FollowUpJobData>(QUEUE_NAME, { connection });
     this.worker = new Worker<FollowUpJobData>(
@@ -60,6 +72,26 @@ export class FollowUpReminderQueue implements OnModuleInit, OnModuleDestroy {
 
   async onModuleDestroy() {
     await Promise.all([this.worker?.close(), this.queue?.close()]);
+  }
+
+  /**
+   * In inline mode reminders are created lazily when someone reads them,
+   * at most once per minute per instance. With BullMQ this is a no-op.
+   */
+  async sweepIfDue(now = Date.now()) {
+    if (!this.inline || now - this.lastInlineSweep < INLINE_SWEEP_INTERVAL_MS) {
+      return;
+    }
+    this.lastInlineSweep = now;
+    try {
+      await this.process();
+    } catch (error) {
+      this.logger.error(
+        `Inline reminder sweep failed: ${
+          error instanceof Error ? error.message : String(error)
+        }`,
+      );
+    }
   }
 
   private async process() {
