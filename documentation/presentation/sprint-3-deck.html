@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TravelOS AI — Sprint 3 Review | Portal + Insights + Piloto</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #0b1f2a;
+      --ink-soft: #163445;
+      --sand: #f4efe6;
+      --sand-dim: #e7dfd2;
+      --foam: #faf8f4;
+      --amber: #d4923a;
+      --amber-bright: #e8a54b;
+      --sea: #1f6f78;
+      --sea-bright: #2a9a9a;
+      --coral: #c45c4a;
+      --muted: #6b7c86;
+      --line: rgba(11, 31, 42, 0.12);
+      --shadow: 0 22px 50px rgba(11, 31, 42, 0.16);
+      --pad-y: clamp(0.7rem, 1.6vh, 1.4rem);
+      --pad-x: clamp(1rem, 2.2vw, 2rem);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%; background: #050d12; color: var(--ink);
+      font-family: "Manrope", system-ui, sans-serif; overflow: hidden;
+    }
+    .deck { height: 100vh; width: 100vw; position: relative; }
+    .slide {
+      position: absolute; inset: 0; display: none;
+      padding: var(--pad-y) var(--pad-x);
+      padding-bottom: calc(var(--pad-y) + 2.4rem);
+      background:
+        radial-gradient(1100px 520px at 92% -8%, rgba(42,154,154,.16), transparent 55%),
+        radial-gradient(800px 420px at -8% 110%, rgba(212,146,58,.12), transparent 50%),
+        linear-gradient(160deg, var(--foam) 0%, var(--sand) 55%, var(--sand-dim) 100%);
+      overflow: hidden;
+    }
+    .slide.active { display: flex; flex-direction: column; animation: rise .35s cubic-bezier(.2,.8,.2,1); }
+    @keyframes rise { from { opacity:0; transform:translateY(10px);} to { opacity:1; transform:none;} }
+    .slide::before {
+      content:""; position:absolute; inset:0; pointer-events:none; mix-blend-mode:multiply;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    }
+    .slide > * { position: relative; z-index: 1; }
+    .fill { flex: 1 1 auto; min-height: 0; }
+    .fill.col { display: flex; flex-direction: column; }
+    .kicker {
+      font-size: clamp(0.78rem, 1.15vw, 1rem); letter-spacing: .16em; text-transform: uppercase;
+      font-weight: 800; color: var(--sea); margin-bottom: 0.35rem;
+    }
+    h1, h2 {
+      font-family: "Instrument Serif", Georgia, serif; font-weight: 400;
+      line-height: 1.02; letter-spacing: -.025em;
+    }
+    h1 { font-size: clamp(2.8rem, 6.2vw, 5.4rem); max-width: none; width: min(100%, 20ch); }
+    h2 { font-size: clamp(2rem, 4.2vw, 3.5rem); max-width: none; width: min(100%, 34ch); margin-bottom: 0.45rem; }
+    .lede {
+      font-size: clamp(1.05rem, 1.7vw, 1.35rem); color: var(--ink-soft);
+      max-width: none; width: min(100%, 72ch); line-height: 1.45; font-weight: 500;
+    }
+    .meta {
+      margin-top: auto; flex-shrink: 0;
+      display: flex; justify-content: space-between; align-items: end;
+      gap: .8rem; padding-top: 0.55rem; border-top: 1px solid var(--line);
+      font-size: clamp(0.8rem, 1.1vw, 0.95rem); color: var(--muted); font-weight: 700;
+    }
+    .brand-mark {
+      display: inline-flex; align-items: center; gap: .55rem;
+      font-weight: 800; letter-spacing: -.03em;
+      font-size: clamp(1rem, 1.5vw, 1.25rem);
+    }
+    .brand-mark .dot {
+      width: .75rem; height: .75rem; border-radius: 999px;
+      background: linear-gradient(135deg, var(--amber-bright), var(--sea-bright));
+      box-shadow: 0 0 0 3px rgba(232,165,75,.18);
+    }
+    .grid-2 {
+      display: grid; grid-template-columns: 1.05fr .95fr;
+      gap: clamp(0.8rem, 1.8vw, 1.6rem);
+      flex: 1; align-items: stretch; min-height: 0;
+    }
+    .card {
+      background: rgba(250,248,244,.78); border: 1px solid var(--line);
+      border-radius: 1rem; padding: clamp(0.75rem, 1.4vh, 1.15rem) clamp(0.85rem, 1.2vw, 1.25rem);
+      backdrop-filter: blur(6px);
+    }
+    .stack .card,
+    .pains .card,
+    .map .card,
+    .arch .card,
+    .arch-grid .card,
+    .values .card,
+    .releases .card,
+    .mvp-foot .card { height: 100%; }
+    .card h3 { font-size: clamp(0.95rem, 1.35vw, 1.2rem); font-weight: 800; margin-bottom: .3rem; }
+    .card p, .card li { font-size: clamp(0.88rem, 1.2vw, 1.08rem); color: var(--ink-soft); line-height: 1.38; }
+    .card ul { padding-left: 1.1rem; }
+    .card li + li { margin-top: .28rem; }
+    .pill {
+      display: inline-flex; align-items: center; gap: .35rem;
+      padding: .4rem .8rem; border-radius: 999px;
+      background: rgba(31,111,120,.1); color: var(--sea);
+      font-size: clamp(0.75rem, 1vw, 0.88rem); font-weight: 800; letter-spacing: .04em; text-transform: uppercase;
+    }
+    .pill.ok { background: rgba(42,154,154,.14); color: #0f5e5e; }
+    .team {
+      display: grid; grid-template-columns: repeat(5, 1fr);
+      gap: clamp(0.7rem, 1.4vw, 1.25rem);
+      margin-top: auto; width: 100%; max-width: none; flex: 1;
+      align-content: end; padding-top: 1rem;
+    }
+    .person { text-align: center; min-height: 0; display: flex; flex-direction: column; }
+    .person img {
+      width: 100%; flex: 1; min-height: 0; max-height: min(38vh, 280px);
+      aspect-ratio: 1; object-fit: cover; border-radius: 1.1rem;
+      border: 2px solid rgba(11,31,42,.08); box-shadow: var(--shadow); background: var(--sand-dim);
+    }
+    .person strong {
+      display: block; margin-top: .55rem;
+      font-size: clamp(0.85rem, 1.2vw, 1.05rem); line-height: 1.2;
+    }
+    .person span {
+      display: block; font-size: clamp(0.75rem, 1.05vw, 0.92rem);
+      color: rgba(250,248,244,.75); font-weight: 600; margin-top: .15rem;
+    }
+    .cover .person span { color: rgba(250,248,244,.75); }
+    .cover .person strong { color: var(--foam); }
+    .hero-visual {
+      border-radius: 1.15rem; overflow: hidden; box-shadow: var(--shadow);
+      border: 1px solid var(--line); background: var(--ink);
+      height: 100%; min-height: 0; aspect-ratio: auto;
+    }
+    .hero-visual img { width: 100%; height: 100%; object-fit: cover; object-position: top left; display: block; }
+    .pains {
+      display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(4, 1fr);
+      gap: clamp(0.45rem, 1vh, 0.75rem); margin-top: 0.55rem; flex: 1; min-height: 0;
+    }
+    .pains .card { border-left: 4px solid var(--coral); display: flex; flex-direction: column; justify-content: center; }
+    .pains .card h3 { font-size: clamp(0.95rem, 1.35vw, 1.2rem); }
+    .pains .card p { font-size: clamp(0.85rem, 1.15vw, 1.05rem); }
+    .num {
+      display: inline-grid; place-items: center;
+      width: 1.45rem; height: 1.45rem;
+      border-radius: 999px; background: rgba(196,92,74,.14); color: var(--coral);
+      font-size: .78rem; font-weight: 800; margin-right: .35rem;
+    }
+    .map {
+      display: grid; grid-template-columns: 1fr 1fr; gap: clamp(0.45rem, 1vh, 0.7rem);
+      margin-top: 0.55rem; flex: 1; min-height: 0;
+    }
+    .map .card { border-left: 4px solid var(--sea); display: flex; flex-direction: column; justify-content: center; }
+    .arch {
+      display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: 1fr 1fr;
+      gap: clamp(0.5rem, 1vh, 0.8rem); margin-top: 0.55rem; flex: 1; min-height: 0;
+    }
+    .arch .card { display: flex; flex-direction: column; justify-content: center; }
+    .arch .card .tag {
+      font-size: clamp(0.68rem, 0.95vw, 0.82rem); font-weight: 800; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--amber); margin-bottom: .35rem;
+    }
+    .stack {
+      display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: 1fr 1fr;
+      gap: clamp(0.5rem, 1vh, 0.8rem); margin-top: 0.55rem; flex: 1; min-height: 0;
+    }
+    .stack .card { display: flex; flex-direction: column; justify-content: center; }
+    .releases {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: clamp(0.6rem, 1.2vw, 1rem); margin-top: 0.55rem; flex: 1; min-height: 0;
+    }
+    .releases .card { display: flex; flex-direction: column; }
+    .releases .card h3 { color: var(--sea); font-size: clamp(1.05rem, 1.5vw, 1.35rem); margin-bottom: .45rem; }
+    .releases .card ul { flex: 1; }
+    .shots {
+      display: grid; grid-template-columns: 1.4fr 1fr;
+      gap: clamp(0.55rem, 1.2vw, 0.9rem); flex: 1; min-height: 0; height: 100%;
+    }
+    .shots .main, .shots .side > * {
+      border-radius: 0.95rem; overflow: hidden; border: 1px solid var(--line);
+      box-shadow: var(--shadow); background: var(--ink); min-height: 0;
+    }
+    .shots .main { height: 100%; }
+    .shots .main img, .shots .side img {
+      width: 100%; height: 100%; object-fit: cover; object-position: top left; display: block;
+    }
+    .shots .side { display: grid; grid-template-rows: 1fr 1fr; gap: clamp(0.55rem, 1.2vw, 0.9rem); min-height: 0; height: 100%; }
+    .codebox {
+      margin-top: 0.65rem; background: var(--ink); color: #d7e7ef;
+      border-radius: .95rem; padding: clamp(0.85rem, 1.5vh, 1.2rem) 1.1rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: clamp(0.85rem, 1.2vw, 1.05rem); line-height: 1.55; box-shadow: var(--shadow);
+    }
+    .codebox .ok { color: #7ddec0; }
+    table.comp {
+      width: 100%; border-collapse: separate; border-spacing: 0; margin-top: 0.55rem;
+      font-size: clamp(0.95rem, 1.35vw, 1.2rem); overflow: hidden; border-radius: 1rem;
+      border: 1px solid var(--line); background: rgba(250,248,244,.85);
+      flex: 1;
+    }
+    table.comp th, table.comp td {
+      text-align: left; padding: clamp(0.85rem, 1.6vh, 1.25rem) clamp(0.9rem, 1.3vw, 1.25rem);
+      border-bottom: 1px solid var(--line); vertical-align: middle; line-height: 1.35;
+    }
+    table.comp th {
+      background: var(--ink); color: var(--foam);
+      font-size: clamp(0.78rem, 1.05vw, 0.95rem);
+      letter-spacing: .08em; text-transform: uppercase;
+    }
+    table.comp tr:last-child td { border-bottom: 0; }
+    table.comp td strong { color: var(--ink); }
+    .values {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: clamp(0.5rem, 1vh, 0.8rem); margin-top: 0.5rem; flex: 1; min-height: 0;
+    }
+    .values .card { border-left: 4px solid var(--amber); display: flex; flex-direction: column; justify-content: center; }
+    .check {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: clamp(0.4rem, 0.9vh, 0.65rem) clamp(0.6rem, 1.2vw, 1rem);
+      margin-top: 0.55rem; flex: 1; min-height: 0;
+      font-size: clamp(0.95rem, 1.35vw, 1.2rem); font-weight: 650;
+      align-content: stretch;
+    }
+    .check li {
+      list-style: none; padding: clamp(0.55rem, 1.1vh, 0.9rem) 0.85rem;
+      border-radius: .8rem; background: rgba(250,248,244,.8); border: 1px solid var(--line);
+      display: flex; align-items: center;
+    }
+    .check .ok { color: #0f5e5e; }
+    .check .warn { color: #8a5a12; }
+    .quote {
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: clamp(1.45rem, 2.8vw, 2.25rem); line-height: 1.22;
+      max-width: none; width: min(100%, 36ch); margin: 0.55rem 0 0;
+    }
+    .quote em { color: var(--sea); font-style: italic; }
+    .cover {
+      background:
+        linear-gradient(120deg, rgba(11,31,42,.93) 0%, rgba(22,52,69,.88) 45%, rgba(31,111,120,.78) 100%),
+        url("../sprint-3/evidence/01-dashboard.png") center/cover;
+      color: var(--foam);
+    }
+    .cover .kicker { color: var(--amber-bright); }
+    .cover .lede { color: rgba(250,248,244,.88); width: min(100%, 58ch); }
+    .cover .meta { border-top-color: rgba(255,255,255,.15); color: rgba(250,248,244,.68); }
+    .cover h1 { width: min(100%, 18ch); }
+    .hud {
+      position: fixed; right: 1rem; bottom: 0.75rem; z-index: 20;
+      display: flex; align-items: center; gap: .55rem; color: var(--foam);
+      font-size: .8rem; font-weight: 800; background: rgba(11,31,42,.88);
+      backdrop-filter: blur(8px); padding: .45rem .7rem; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .hud button {
+      border: 0; background: rgba(255,255,255,.12); color: var(--foam);
+      width: 2rem; height: 2rem; border-radius: 999px; cursor: pointer; font-weight: 800;
+    }
+    .hud button:hover { background: rgba(232,165,75,.9); color: var(--ink); }
+    .progress {
+      position: fixed; left: 0; top: 0; height: 4px; z-index: 30;
+      background: linear-gradient(90deg, var(--amber-bright), var(--sea-bright));
+      width: 10%; transition: width .28s ease;
+    }
+    .note {
+      margin-top: 0.4rem; font-size: clamp(0.8rem, 1.05vw, 0.95rem);
+      color: var(--muted); font-weight: 600; flex-shrink: 0;
+    }
+    @media (max-width: 1100px) {
+      .arch, .stack { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(4, auto); }
+      .releases { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 900px) {
+      .grid-2, .pains, .map, .shots, .values, .check, .team { grid-template-columns: 1fr 1fr; }
+      .team { grid-template-columns: repeat(3, 1fr); }
+      .pains { grid-template-rows: none; }
+    }
+    @media print {
+      html, body { overflow: visible; height: auto; background: #fff; }
+      .hud, .progress { display: none !important; }
+      .slide { display: flex !important; position: relative; page-break-after: always; min-height: 100vh; animation: none; }
+    }
+
+    /* 16:9 stage that fills the viewport (presentation mode) */
+    .viewport {
+      width: 100vw; height: 100vh; display: grid; place-items: center;
+      background: #050d12; overflow: hidden;
+    }
+    .stage {
+      width: 1920px; height: 1080px; position: relative;
+      transform-origin: center center;
+      box-shadow: 0 30px 80px rgba(0,0,0,.45);
+      flex-shrink: 0;
+    }
+    .stage .deck { width: 100%; height: 100%; }
+    .stage .slide {
+      width: 1920px; height: 1080px;
+      padding: 48px 64px 72px;
+      font-size: 18px;
+    }
+    .stage h1 { font-size: 72px !important; width: 18ch; }
+    .stage h2 { font-size: 52px !important; width: 28ch; }
+    .stage .lede { font-size: 24px !important; width: 58ch; }
+    .stage .kicker { font-size: 16px !important; }
+    .stage .card h3 { font-size: 22px !important; }
+    .stage .card p, .stage .card li { font-size: 18px !important; }
+    .stage .pains .card h3 { font-size: 20px !important; }
+    .stage .pains .card p { font-size: 17px !important; }
+    .stage table.comp { font-size: 22px !important; }
+    .stage table.comp th { font-size: 14px !important; }
+    .stage .check { font-size: 22px !important; }
+    .stage .quote { font-size: 36px !important; width: 34ch; }
+    .stage .codebox { font-size: 20px !important; }
+    .stage .person strong { font-size: 18px !important; }
+    .stage .person span { font-size: 15px !important; }
+    .stage .person img { max-height: 280px; }
+    .stage .meta { font-size: 16px !important; }
+    .stage .brand-mark { font-size: 22px !important; }
+    .stage .note { font-size: 16px !important; }
+    .stage .pill { font-size: 14px !important; }
+    .hud .hint { opacity: .7; font-weight: 600; margin-right: .35rem; }
+
+    /* ===== Slide 4: Architecture ===== */
+    .arch-slide .lede { width: min(100%, 70ch); }
+    .arch-flow {
+      display: grid;
+      grid-template-columns: 1.1fr 24px 1.1fr 24px 1.1fr;
+      gap: 0.55rem;
+      align-items: stretch;
+      margin: 0.35rem 0 0.65rem;
+      flex: 1.15 1 0;
+      min-height: 0;
+    }
+    .arch-flow .lane {
+      background: rgba(250,248,244,.88);
+      border: 1px solid var(--line);
+      border-radius: 1rem;
+      padding: 0.9rem 1rem;
+      display: flex; flex-direction: column; justify-content: center; gap: 0.45rem;
+      height: 100%;
+    }
+    .arch-flow .lane .tag {
+      font-size: 0.82rem; font-weight: 800; letter-spacing: .12em;
+      text-transform: uppercase; color: #b8751f;
+    }
+    .arch-flow .lane h3 {
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: 1.45rem; font-weight: 400; line-height: 1.15;
+    }
+    .arch-flow .lane p { font-size: 0.95rem; color: var(--ink-soft); line-height: 1.35; }
+    .arch-flow .lane ul { margin: 0; padding-left: 1.1rem; color: var(--ink-soft); font-size: 0.92rem; }
+    .arch-flow .lane li + li { margin-top: 0.2rem; }
+    .arch-flow .arrow {
+      display: grid; place-items: center;
+      color: var(--sea); font-size: 1.6rem; font-weight: 800;
+    }
+    .arch-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.7rem;
+      flex: 1.25 1 0;
+      min-height: 0;
+    }
+    .arch-grid .card {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 1.15rem 1.2rem;
+      border-top: 4px solid var(--sea);
+    }
+    .arch-grid .card .tag {
+      font-size: 0.84rem; font-weight: 800; letter-spacing: .12em;
+      text-transform: uppercase; color: #b8751f; margin-bottom: 0.45rem;
+    }
+    .arch-grid .card h3 { font-size: 1.25rem !important; margin-bottom: 0.35rem; }
+    .arch-grid .card p { font-size: 1.02rem !important; line-height: 1.4; }
+    .arch-principles {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.65rem;
+      margin-top: 0.75rem; flex: 0 0 auto;
+    }
+    .arch-principles .card {
+      border-left: 4px solid var(--amber);
+      padding: 0.85rem 1rem;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .arch-principles h3 { font-size: 1.05rem !important; margin-bottom: 0.2rem; }
+    .arch-principles p { font-size: 0.95rem !important; }
+
+    .stage .arch-flow .lane h3 { font-size: 28px !important; }
+    .stage .arch-flow .lane p, .stage .arch-flow .lane li { font-size: 18px !important; }
+    .stage .arch-grid .card h3 { font-size: 26px !important; }
+    .stage .arch-grid .card p { font-size: 20px !important; }
+    .stage .arch-principles h3 { font-size: 22px !important; }
+    .stage .arch-principles p { font-size: 18px !important; }
+
+    /* ===== Slide 6: MVP Releases ===== */
+    .mvp-slide .lede { width: min(100%, 70ch); }
+    .mvp-track {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.9rem;
+      flex: 1;
+      min-height: 0;
+      margin-top: 0.55rem;
+      position: relative;
+    }
+    .mvp-card {
+      background: rgba(250,248,244,.88);
+      border: 1px solid var(--line);
+      border-radius: 1.15rem;
+      padding: 1.25rem 1.35rem 1.2rem;
+      display: flex; flex-direction: column;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    .mvp-card::before {
+      content: "";
+      position: absolute; left: 0; top: 0; right: 0; height: 6px;
+      background: linear-gradient(90deg, var(--amber-bright), var(--sea-bright));
+    }
+    .mvp-card .phase {
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      font-size: 0.78rem; font-weight: 800; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--sea); margin-bottom: 0.45rem;
+    }
+    .mvp-card .phase .pct {
+      background: rgba(31,111,120,.12); color: var(--sea);
+      padding: 0.2rem 0.55rem; border-radius: 999px;
+    }
+    .mvp-card h3 {
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: 1.7rem; font-weight: 400; line-height: 1.15; margin-bottom: 0.55rem;
+    }
+    .mvp-bar {
+      height: 8px; border-radius: 999px; background: rgba(11,31,42,.08);
+      overflow: hidden; margin-bottom: 0.9rem;
+    }
+    .mvp-bar > i {
+      display: block; height: 100%; border-radius: 999px;
+      background: linear-gradient(90deg, var(--amber-bright), var(--sea-bright));
+    }
+    .mvp-card ul {
+      list-style: none; padding: 0; margin: 0; flex: 1;
+      display: flex; flex-direction: column; gap: 0.55rem;
+      justify-content: stretch;
+    }
+    .mvp-card li {
+      position: relative;
+      flex: 1 1 0;
+      display: flex; align-items: center;
+      padding: 0.7rem 0.85rem 0.7rem 2.3rem;
+      background: rgba(255,255,255,.55);
+      border: 1px solid var(--line);
+      border-radius: 0.75rem;
+      font-size: 1.02rem; font-weight: 600; color: var(--ink-soft); line-height: 1.35;
+    }
+    .mvp-card li::before {
+      content: "✓";
+      position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%);
+      color: var(--sea); font-weight: 800;
+    }
+    .mvp-card .demo {
+      margin-top: 0.9rem; padding-top: 0.75rem;
+      border-top: 1px dashed var(--line);
+      font-size: 0.95rem; font-weight: 700; color: var(--ink);
+    }
+    .mvp-card .demo span { color: var(--sea); }
+    .mvp-foot {
+      margin-top: 0.75rem;
+      display: grid; grid-template-columns: 1.4fr 1fr; gap: 0.75rem;
+      flex: 0 0 auto;
+    }
+    .mvp-foot .card {
+      padding: 0.95rem 1.1rem;
+      display: flex; flex-direction: column; justify-content: center;
+      min-height: 110px;
+      height: 100%;
+    }
+    .mvp-foot h3 { font-size: 1.1rem !important; }
+    .mvp-foot p { font-size: 1rem !important; }
+
+    .stage .mvp-card h3 { font-size: 34px !important; }
+    .stage .mvp-card li { font-size: 20px !important; }
+    .stage .mvp-card .demo { font-size: 18px !important; }
+    .stage .mvp-card .phase { font-size: 15px !important; }
+    .stage .mvp-foot h3 { font-size: 22px !important; }
+    .stage .mvp-foot p { font-size: 18px !important; }
+
+    /* denser impeccable layout for arch + mvp on 1080p stage */
+    .stage .arch-slide,
+    .stage .mvp-slide {
+      padding: 36px 56px 56px !important;
+    }
+    .stage .arch-slide h2,
+    .stage .mvp-slide h2 {
+      font-size: 48px !important;
+      margin-bottom: 0.35rem !important;
+      width: min(100%, 32ch) !important;
+    }
+    .stage .arch-slide .lede,
+    .stage .mvp-slide .lede {
+      font-size: 22px !important;
+      margin-bottom: 0.35rem;
+      width: min(100%, 72ch) !important;
+    }
+    .stage .arch-flow {
+      margin: 0.35rem 0 0.65rem !important;
+      gap: 0.65rem !important;
+    }
+    .stage .arch-flow .lane {
+      padding: 1.15rem 1.25rem !important;
+      min-height: 210px;
+    }
+    .stage .arch-flow .lane h3 { font-size: 30px !important; }
+    .stage .arch-flow .lane p,
+    .stage .arch-flow .lane li { font-size: 19px !important; }
+    .stage .arch-grid {
+      gap: 0.75rem !important;
+      min-height: 240px;
+    }
+    .stage .arch-grid .card {
+      padding: 1.35rem 1.4rem !important;
+    }
+    .stage .arch-grid .card h3 { font-size: 28px !important; }
+    .stage .arch-grid .card p { font-size: 20px !important; }
+    .stage .arch-principles {
+      margin-top: 0.65rem !important;
+      gap: 0.75rem !important;
+    }
+    .stage .arch-principles .card { padding: 1.05rem 1.2rem !important; min-height: 96px; }
+    .stage .arch-principles h3 { font-size: 24px !important; }
+    .stage .arch-principles p { font-size: 19px !important; }
+
+    .stage .mvp-track {
+      gap: 1rem !important;
+      margin-top: 0.4rem !important;
+    }
+    .stage .mvp-card {
+      padding: 1.35rem 1.45rem 1.25rem !important;
+    }
+    .stage .mvp-card h3 { font-size: 36px !important; }
+    .stage .mvp-card li {
+      font-size: 20px !important;
+      padding: 0.85rem 1rem 0.85rem 2.5rem !important;
+    }
+    .stage .mvp-card ul { gap: 0.65rem !important; }
+    .stage .mvp-card .demo { font-size: 19px !important; }
+    .stage .mvp-card .phase { font-size: 15px !important; margin-bottom: 0.55rem !important; }
+    .stage .mvp-bar { height: 10px !important; margin-bottom: 1rem !important; }
+    .stage .mvp-foot {
+      margin-top: 0.7rem !important;
+      gap: 0.85rem !important;
+    }
+    .stage .mvp-foot .card { padding: 1.1rem 1.25rem !important; min-height: 100px; }
+    .stage .mvp-foot h3 { font-size: 24px !important; }
+    .stage .mvp-foot p { font-size: 19px !important; }
+
+    /* ===== Slide Tecnologías ===== */
+    .tech-slide .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: 1fr 1fr;
+      gap: 0.75rem;
+      flex: 1;
+      min-height: 0;
+      margin-top: 0.5rem;
+    }
+    .tech-slide .tech-grid .card {
+      height: 100%;
+      display: flex; flex-direction: column; justify-content: center;
+      border-top: 4px solid var(--sea);
+      padding: 1.2rem 1.25rem;
+    }
+    .tech-slide .tech-grid .tag {
+      font-size: 0.78rem; font-weight: 800; letter-spacing: .12em;
+      text-transform: uppercase; color: #b8751f; margin-bottom: 0.4rem;
+    }
+    .tech-slide .tech-grid h3 { font-size: 1.35rem !important; margin-bottom: 0.35rem; }
+    .tech-slide .tech-grid p { font-size: 1.05rem !important; line-height: 1.4; }
+    .tech-slide .tech-note {
+      margin-top: 0.75rem;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 0.75rem;
+      flex: 0 0 auto;
+    }
+    .tech-slide .tech-note .card {
+      border-left: 4px solid var(--amber);
+      padding: 1rem 1.15rem;
+      display: flex; flex-direction: column; justify-content: center;
+      min-height: 110px;
+    }
+    .tech-slide .tech-note h3 { font-size: 1.15rem !important; }
+    .tech-slide .tech-note p { font-size: 1rem !important; }
+
+    .stage .tech-slide { padding: 36px 56px 56px !important; }
+    .stage .tech-slide h2 { font-size: 48px !important; width: min(100%, 28ch) !important; }
+    .stage .tech-slide .lede { font-size: 22px !important; width: min(100%, 70ch) !important; }
+    .stage .tech-slide .tech-grid .card h3 { font-size: 28px !important; }
+    .stage .tech-slide .tech-grid .card p { font-size: 20px !important; }
+    .stage .tech-slide .tech-note h3 { font-size: 24px !important; }
+    .stage .tech-slide .tech-note p { font-size: 19px !important; }
+
+    /* ===== Slide 7 Prototipos ===== */
+    .proto-slide .proto-layout {
+      display: grid;
+      grid-template-columns: 1.55fr 1fr;
+      gap: 1rem;
+      flex: 1;
+      min-height: 0;
+      margin-top: 0.4rem;
+    }
+    .proto-gallery {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 0.7rem;
+      min-height: 0;
+      height: 100%;
+    }
+    .proto-gallery figure {
+      margin: 0;
+      border-radius: 1rem;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      background: var(--ink);
+      position: relative;
+      min-height: 0;
+    }
+    .proto-gallery figure.hero {
+      grid-row: 1 / span 2;
+    }
+    .proto-gallery img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top left;
+      display: block;
+    }
+    .proto-gallery figcaption {
+      position: absolute;
+      left: 0.7rem;
+      bottom: 0.7rem;
+      padding: 0.35rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(11,31,42,.82);
+      color: var(--foam);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    .proto-side {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      min-height: 0;
+      height: 100%;
+    }
+    .proto-layout { align-items: stretch; }
+    .proto-side .lede { width: 100%; }
+    .proto-files {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+    .proto-files span {
+      display: inline-flex;
+      padding: 0.4rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(31,111,120,.1);
+      color: var(--sea);
+      font-size: 0.85rem;
+      font-weight: 800;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    .proto-side .codebox {
+      flex: 0 0 auto;
+      margin-top: 0;
+      font-size: 1rem;
+      padding: 1rem 1.15rem;
+    }
+    .proto-checks {
+      display: grid;
+      grid-template-rows: 1fr 1fr 1fr;
+      gap: 0.6rem;
+      flex: 1 1 auto;
+      min-height: 0;
+    }
+    .proto-checks .card {
+      border-left: 4px solid var(--sea);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 1.05rem 1.15rem;
+      height: 100%;
+      min-height: 0;
+    }
+    .proto-checks h3 { font-size: 1.1rem !important; margin-bottom: 0.25rem; }
+    .proto-checks p { font-size: 0.98rem !important; }
+
+    .stage .proto-slide { padding: 36px 56px 56px !important; }
+    .stage .proto-slide h2 { font-size: 48px !important; width: min(100%, 28ch) !important; }
+    .stage .proto-slide .lede { font-size: 22px !important; width: min(100%, 70ch) !important; }
+    .stage .proto-gallery figcaption { font-size: 15px !important; padding: 0.45rem 0.85rem !important; }
+    .stage .proto-files span { font-size: 16px !important; padding: 0.5rem 0.85rem !important; }
+    .stage .proto-side .codebox { font-size: 20px !important; padding: 1.15rem 1.3rem !important; }
+    .stage .proto-checks h3 { font-size: 24px !important; }
+    .stage .proto-checks p { font-size: 19px !important; }
+
+    /* ===== Slide 8 Competencia ===== */
+    .comp-slide .comp-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.9rem;
+      flex: 1;
+      min-height: 0;
+      margin-top: 0.45rem;
+    }
+    .comp-card {
+      background: rgba(250,248,244,.88);
+      border: 1px solid var(--line);
+      border-radius: 1.15rem;
+      padding: 1.25rem 1.35rem;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow);
+      min-height: 0;
+      height: 100%;
+    }
+    .comp-card .who {
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: #b8751f;
+      margin-bottom: 0.35rem;
+    }
+    .comp-card h3 {
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: 2rem;
+      font-weight: 400;
+      line-height: 1.1;
+      margin-bottom: 0.85rem;
+    }
+    .comp-card .block {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.55rem;
+      min-height: 0;
+    }
+    .comp-card .block + .block {
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px dashed var(--line);
+    }
+    .comp-card .label {
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--sea);
+    }
+    .comp-card .label.weak { color: var(--coral); }
+    .comp-card p {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--ink-soft);
+      line-height: 1.4;
+    }
+    .comp-foot {
+      margin-top: 0.8rem;
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 0.8rem;
+      flex: 0 0 auto;
+    }
+    .comp-foot .card {
+      border-left: 4px solid var(--amber);
+      padding: 1.05rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 110px;
+      height: 100%;
+    }
+    .comp-foot .card.win {
+      border-left-color: var(--sea);
+      background: linear-gradient(160deg, rgba(42,154,154,.12), rgba(250,248,244,.9));
+    }
+    .comp-foot h3 { font-size: 1.2rem !important; margin-bottom: 0.3rem; }
+    .comp-foot p { font-size: 1.02rem !important; }
+
+    .stage .comp-slide { padding: 36px 56px 56px !important; }
+    .stage .comp-slide h2 { font-size: 48px !important; width: min(100%, 30ch) !important; }
+    .stage .comp-slide .lede { font-size: 22px !important; width: min(100%, 70ch) !important; }
+    .stage .comp-card h3 { font-size: 40px !important; }
+    .stage .comp-card p { font-size: 21px !important; }
+    .stage .comp-card .who,
+    .stage .comp-card .label { font-size: 15px !important; }
+    .stage .comp-foot h3 { font-size: 24px !important; }
+    .stage .comp-foot p { font-size: 20px !important; }
+    .stage .comp-foot .card { min-height: 120px; }
+    /* === Sprint 3 additions === */
+    .phones { display:grid; grid-template-columns: repeat(3, 1fr); gap: 28px; flex:1; min-height:0; align-items:center; }
+    .phone { height: 100%; max-height: 780px; aspect-ratio: 390/844; margin: 0 auto; border-radius: 42px; padding: 12px;
+      background: #0b1f2a; box-shadow: 0 30px 70px rgba(11,31,42,.35); position: relative; }
+    .phone img { width:100%; height:100%; object-fit: cover; object-position: top; border-radius: 32px; display:block; }
+    .phone::after { content:""; position:absolute; top:22px; left:50%; transform:translateX(-50%); width:90px; height:22px; border-radius:20px; background:#0b1f2a; }
+    .phone-cap { text-align:center; font-weight:800; margin-top:12px; color: var(--sea); letter-spacing:.06em; text-transform:uppercase; font-size:15px; }
+    .shot-wide { flex:1; min-height:0; border-radius: 18px; overflow:hidden; border:1px solid var(--line); box-shadow: var(--shadow); background:#fff; }
+    .shot-wide img { width:100%; height:100%; object-fit: cover; object-position: top left; display:block; }
+    .split { display:grid; grid-template-columns: 1.5fr 1fr; gap: 28px; flex:1; min-height:0; }
+    .split .side { display:flex; flex-direction:column; gap: 18px; min-height:0; }
+    .kpis { display:grid; grid-template-columns: repeat(4,1fr); gap: 18px; margin: 10px 0 18px; }
+    .kpi { background: var(--ink); color: var(--foam); border-radius: 18px; padding: 22px 24px; box-shadow: var(--shadow); }
+    .kpi b { display:block; font-family: "Instrument Serif", serif; font-size: 64px; font-weight: 400; line-height: 1; color: var(--amber-bright); }
+    .kpi span { font-size: 17px; font-weight: 700; opacity: .85; }
+    .flow { display:flex; align-items:stretch; gap: 14px; margin-top: 14px; }
+    .flow .step { flex:1; background: rgba(250,248,244,.85); border:1px solid var(--line); border-radius: 16px; padding: 18px; position:relative; }
+    .flow .step + .step::before { content:"→"; position:absolute; left:-14px; top:50%; transform: translate(-50%,-50%); color: var(--amber); font-weight:800; font-size: 26px; }
+    .flow .step h3 { font-size: 24px; margin-bottom: 6px; color: var(--sea); }
+    .flow .step p { font-size: 19px; color: var(--ink-soft); line-height: 1.35; }
+    .tag-done { display:inline-block; padding: 3px 10px; border-radius: 999px; background: rgba(42,154,154,.16); color:#0f5e5e; font-size: 13px; font-weight: 800; letter-spacing:.05em; }
+    .live { display:inline-flex; align-items:center; gap:10px; padding: 12px 22px; border-radius: 999px; background: var(--amber-bright); color: var(--ink); font-weight: 800; font-size: 22px; text-decoration:none; box-shadow: var(--shadow); }
+    .live .dot { width:12px; height:12px; border-radius:999px; background:#c45c4a; animation: pulse 1.4s infinite; }
+    @keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(196,92,74,.6)} 70%{box-shadow:0 0 0 14px rgba(196,92,74,0)} 100%{box-shadow:0 0 0 0 rgba(196,92,74,0)} }
+    table.comp td .tag-done { margin-left: 6px; }
+  </style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+<div class="viewport">
+<div class="stage" id="stage">
+<div class="deck">
+
+<section class="slide cover active" data-title="Portada">
+  <p class="kicker">Proyecto Integrador 2 · EAFIT · Sprint 3 Review</p>
+  <h1>TravelOS AI</h1>
+  <p class="lede">Portal del viajero + insights gerenciales + piloto. El viajero sigue su viaje desde el celular y el gerente dirige la agencia con datos, en vivo.</p>
+  <div class="team">
+    <div class="person"><img src="../team/jeronimo.jpg" alt="Jerónimo Restrepo" /><strong>Jerónimo Restrepo</strong><span>SM + DevSecOps</span></div>
+    <div class="person"><img src="../team/santiago.jpg" alt="Santiago Arboleda" /><strong>Santiago Arboleda</strong><span>Frontend</span></div>
+    <div class="person"><img src="../team/samuel.jpg" alt="Samuel Madrid" /><strong>Samuel Madrid</strong><span>Backend</span></div>
+    <div class="person"><img src="../team/miguel.jpg" alt="Miguel Mercado" /><strong>Miguel Mercado</strong><span>QA</span></div>
+    <div class="person"><img src="../team/juanjose.jpg" alt="Juan José Palacio" /><strong>Juan José Palacio</strong><span>UX/UI</span></div>
+  </div>
+  <div class="meta">
+    <span class="brand-mark"><span class="dot"></span> Punto D' Partida · PO Juan Manuel Restrepo</span>
+    <span>1 / 14</span>
+  </div>
+</section>
+
+<section class="slide" data-title="Agenda">
+  <p class="kicker">01 · Agenda</p>
+  <h2>Qué vamos a demostrar hoy</h2>
+  <ul class="check fill">
+    <li class="ok">Sprint goal y backlog: 5 HU de Sprint 3 + carry-over de Sprint 2, todo en Done</li>
+    <li class="ok">Demo en vivo en producción: dashboard → viaje → enlace → portal en el celular → chat</li>
+    <li class="ok">Automatización de follow-ups (HU-23)</li>
+    <li class="ok">Seguridad del portal y arquitectura del piloto</li>
+    <li class="ok">Calidad: 122 pruebas automatizadas, CI verde, GitHub Flow</li>
+    <li class="ok">UAT del PO y siguiente paso: Sprint 4</li>
+  </ul>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>2 / 14</span></div>
+</section>
+
+<section class="slide" data-title="Sprint goal">
+  <p class="kicker">02 · Sprint goal · Épica E4</p>
+  <h2>Del lead ganado al viajero acompañado</h2>
+  <table class="comp fill">
+    <thead><tr><th>HU</th><th>Historia</th><th>SP</th><th>Estado</th></tr></thead>
+    <tbody>
+      <tr><td><strong>#19</strong></td><td>Portal: ver itinerario del viaje desde el celular</td><td>5</td><td><span class="tag-done">DONE</span></td></tr>
+      <tr><td><strong>#20</strong></td><td>Portal: documentos del viaje (pasaporte, voucher)</td><td>5</td><td><span class="tag-done">DONE</span></td></tr>
+      <tr><td><strong>#21</strong></td><td>Portal: chat básico con la agencia</td><td>5</td><td><span class="tag-done">DONE</span></td></tr>
+      <tr><td><strong>#22</strong></td><td>Dashboard de KPIs gerenciales</td><td>8</td><td><span class="tag-done">DONE</span></td></tr>
+      <tr><td><strong>#23</strong></td><td>Automatización de recordatorio de follow-up</td><td>5</td><td><span class="tag-done">DONE</span></td></tr>
+      <tr><td><strong>Carry-over S2</strong></td><td>Cotizador IA UI (#13–#15, #17), copiloto (#10), itinerario por días (#16)</td><td>—</td><td><span class="tag-done">DONE</span></td></tr>
+    </tbody>
+  </table>
+  <p class="note">28 SP comprometidos · 28 SP entregados · milestone "Sprint 3 — Portal + Insights + Piloto"</p>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>3 / 14</span></div>
+</section>
+
+<section class="slide" data-title="Demo en vivo">
+  <p class="kicker">03 · Demo en vivo (5 min)</p>
+  <h2>Todo esto corre en producción, ahora</h2>
+  <div class="grid-2 fill">
+    <ul class="check">
+      <li class="ok">1. Login como gerente → Comando de Inteligencia</li>
+      <li class="ok">2. Campana: follow-ups vencidos → marcar leído</li>
+      <li class="ok">3. Viajes y Portal → Cartagena (viajera en ruta)</li>
+      <li class="ok">4. Agregar actividad + documento en vivo</li>
+      <li class="ok">5. Generar enlace seguro → abrir en el celular</li>
+      <li class="ok">6. Viajero escribe → la agencia responde en ≤5 s</li>
+      <li class="ok">7. Auditoría: quién emitió el enlace y cuándo se abrieron los documentos</li>
+    </ul>
+    <div class="card" style="display:flex;flex-direction:column;justify-content:center;gap:18px;">
+      <a class="live" href="https://travelos-pdp.vercel.app" target="_blank" rel="noopener"><span class="dot"></span> travelos-pdp.vercel.app</a>
+      <p><strong>Gerente:</strong> gerente@demo.travelos.local</p>
+      <p><strong>Clave:</strong> TravelOS!demo1</p>
+      <p><strong>Ruta del portal:</strong> Viajes y Portal → Cartagena → Generar enlace del portal</p>
+    </div>
+  </div>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>4 / 14</span></div>
+</section>
+
+<section class="slide" data-title="Portal del viajero">
+  <p class="kicker">04 · HU-19 · HU-20 · HU-21</p>
+  <h2>El portal del viajero, en su bolsillo</h2>
+  <div class="phones">
+    <div><div class="phone"><img src="../sprint-3/evidence/05-portal-itinerario.png" alt="Itinerario en el portal" /></div><p class="phone-cap">Itinerario por días</p></div>
+    <div><div class="phone"><img src="../sprint-3/evidence/06-portal-documentos.png" alt="Documentos en el portal" /></div><p class="phone-cap">Documentos del viaje</p></div>
+    <div><div class="phone"><img src="../sprint-3/evidence/07-portal-chat.png" alt="Chat en el portal" /></div><p class="phone-cap">Chat con la agencia</p></div>
+  </div>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> Sin app que instalar · sin contraseña · enlace seguro de 24 h</span><span>5 / 14</span></div>
+</section>
+
+<section class="slide" data-title="Workspace de la agencia">
+  <p class="kicker">05 · Lado agencia · HU-16 + HU-19/20/21</p>
+  <h2>Un viaje, un solo lugar de trabajo</h2>
+  <div class="split">
+    <div class="shot-wide"><img src="../sprint-3/evidence/08-agencia-recibe-chat.png" alt="Workspace del viaje" /></div>
+    <div class="side">
+      <div class="card"><h3>Constructor por días</h3><p>Actividad, hora, lugar y detalles. El viajero lo ve al instante en su línea de tiempo.</p></div>
+      <div class="card"><h3>Documentos HTTPS</h3><p>Voucher, tiquetes, seguro, pasaporte. URLs sin HTTPS o con credenciales se rechazan.</p></div>
+      <div class="card"><h3>Enlace seguro</h3><p>Un clic genera el enlace del portal. Generar otro revoca el anterior.</p></div>
+      <div class="card"><h3>Chat en vivo</h3><p>Conversación por reserva, ordenada y con refresco automático.</p></div>
+    </div>
+  </div>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>6 / 14</span></div>
+</section>
+
+<section class="slide" data-title="KPIs">
+  <p class="kicker">06 · HU-22 · Dashboard gerencial</p>
+  <h2>La agencia en 10 segundos</h2>
+  <div class="kpis">
+    <div class="kpi"><b>$52,1 M</b><span>ventas cerradas (COP)</span></div>
+    <div class="kpi"><b>28,6%</b><span>conversión de leads</span></div>
+    <div class="kpi"><b>3</b><span>viajes activos · 1 en ruta</span></div>
+    <div class="kpi"><b>5</b><span>follow-ups vencidos</span></div>
+  </div>
+  <div class="shot-wide"><img src="../sprint-3/evidence/01-dashboard.png" alt="Dashboard de KPIs" /></div>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> Datos del piloto demo · GET /api/metrics + /api/metrics/operations · solo GERENTE/ADMIN</span><span>7 / 14</span></div>
+</section>
+
+<section class="slide" data-title="Follow-ups">
+  <p class="kicker">07 · HU-23 · Automatización</p>
+  <h2>Ningún lead se enfría por olvido</h2>
+  <div class="split">
+    <div class="side">
+      <div class="flow">
+        <div class="step"><h3>Tarea</h3><p>El asesor agenda un seguimiento con fecha.</p></div>
+        <div class="step"><h3>Worker</h3><p>BullMQ revisa cada 5 min las tareas vencidas.</p></div>
+        <div class="step"><h3>Recordatorio</h3><p>Uno por tarea y vencimiento (deduplicado).</p></div>
+        <div class="step"><h3>Campana</h3><p>Contador coral; marcar leído baja el contador.</p></div>
+      </div>
+      <div class="card" style="flex:1;display:flex;flex-direction:column;justify-content:center;"><h3>Alcance por rol</h3><p>El asesor ve solo los de sus leads; gerente y admin ven toda la agencia. El dashboard suma vencidos y no leídos.</p></div>
+    </div>
+    <div class="shot-wide"><img src="../sprint-3/evidence/02-reminders.png" alt="Campana de recordatorios" style="object-position: top right;" /></div>
+  </div>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>8 / 14</span></div>
+</section>
+
+<section class="slide" data-title="Seguridad">
+  <p class="kicker">08 · DevSecOps · Seguridad del portal</p>
+  <h2>Abierto para el viajero, cerrado para todos los demás</h2>
+  <div class="values fill">
+    <div class="card"><h3>Token</h3><p>32 bytes aleatorios, 24 h, solo se guarda el hash SHA-256. Un enlace nuevo revoca el anterior.</p></div>
+    <div class="card"><h3>Fragmento #t=</h3><p>El token nunca viaja al servidor en la URL: no queda en logs de Vercel ni del API.</p></div>
+    <div class="card"><h3>Anti fuerza bruta</h3><p>Más de 20 tokens inválidos por IP en 60 s → 429.</p></div>
+    <div class="card"><h3>Auditoría</h3><p>PORTAL_ACCESS_ISSUED y PORTAL_DOCUMENTS_VIEWED en el panel de Auditoría.</p></div>
+  </div>
+  <p class="quote">Headers con <em>helmet</em> + HSTS, logs JSON con <em>x-request-id</em> y aislamiento por <em>agencyId</em> en cada consulta.</p>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>9 / 14</span></div>
+</section>
+
+<section class="slide" data-title="Arquitectura del piloto">
+  <p class="kicker">09 · Arquitectura del piloto</p>
+  <h2>Desplegado y reproducible</h2>
+  <div class="flow" style="flex:1;">
+    <div class="step"><h3>Viajero / Agencia</h3><p>Navegador o celular. Next.js 15.5 en Vercel con headers de seguridad.</p></div>
+    <div class="step"><h3>Proxy /api</h3><p>Rewrite de Vercel: cookies first-party, sin CORS en el navegador.</p></div>
+    <div class="step"><h3>Túnel HTTPS</h3><p>cloudflared publica solo el API; nada expuesto en puertos públicos.</p></div>
+    <div class="step"><h3>NestJS API</h3><p>Docker. Migraciones Prisma al arrancar. Health con SELECT 1.</p></div>
+    <div class="step"><h3>Datos</h3><p>PostgreSQL 16 + Redis 7 (BullMQ) en la misma red privada.</p></div>
+  </div>
+  <p class="note">deploy/api.Dockerfile · deploy/docker-compose.pilot.yml · documentation/plans/sprint-3/pilot-runbook.md</p>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>10 / 14</span></div>
+</section>
+
+<section class="slide" data-title="Calidad">
+  <p class="kicker">10 · Calidad del software</p>
+  <h2>122 pruebas automatizadas en verde</h2>
+  <div class="kpis">
+    <div class="kpi"><b>44</b><span>unit API (Jest)</span></div>
+    <div class="kpi"><b>32</b><span>e2e API con Postgres + Redis</span></div>
+    <div class="kpi"><b>46</b><span>unit web (Vitest)</span></div>
+    <div class="kpi"><b>14</b><span>casos de prueba HU-19…23</span></div>
+  </div>
+  <ul class="check fill">
+    <li class="ok">e2e del portal: itinerario, documentos HTTPS, aislamiento 403, token, auditoría, chat, revocación y KPIs</li>
+    <li class="ok">CI de GitHub Actions: lint → unit → e2e → build (API y web) en cada PR</li>
+    <li class="ok">Smoke con Playwright sobre producción: evidencias en documentation/sprint-3/evidence</li>
+    <li class="ok">Next.js actualizado a 15.5.28 por vulnerabilidades RSC detectadas en el deploy</li>
+  </ul>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>11 / 14</span></div>
+</section>
+
+<section class="slide" data-title="Gestión">
+  <p class="kicker">11 · Gestión del proyecto</p>
+  <h2>GitHub Flow de punta a punta</h2>
+  <table class="comp fill">
+    <thead><tr><th>PR</th><th>Rama</th><th>Cierra</th></tr></thead>
+    <tbody>
+      <tr><td>#36 · #37</td><td>feature/HU-14-cotizador-ui · feature/HU-10-copiloto</td><td>Carry-over Sprint 2 (cotizador UI, copiloto)</td></tr>
+      <tr><td>#38</td><td>feat/sprint-3-backend</td><td>APIs de portal, chat, recordatorios y métricas</td></tr>
+      <tr><td>#39</td><td>feature/HU-22-metricas-operativas</td><td>#22</td></tr>
+      <tr><td>#40</td><td>feature/HU-19-20-21-portal-viajero</td><td>#19 #20 #21 #16</td></tr>
+      <tr><td>#41</td><td>feature/HU-23-recordatorios-ui</td><td>#23</td></tr>
+      <tr><td>#42 · #43</td><td>chore/sprint-3-devsecops · docs/sprint-3-qa-ux-cierre</td><td>Piloto, e2e, UAT, UX y este deck</td></tr>
+    </tbody>
+  </table>
+  <p class="note">Conventional commits · DoD por PR · CI verde antes de merge · issues cerrados desde el PR</p>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>12 / 14</span></div>
+</section>
+
+<section class="slide" data-title="UAT">
+  <p class="kicker">12 · UAT del PO</p>
+  <h2>Lo validamos con usted, en esta review</h2>
+  <ul class="check fill">
+    <li class="ok">Dashboard legible en menos de 10 segundos</li>
+    <li class="ok">Campana de follow-ups y marcar leído</li>
+    <li class="ok">Itinerario y documentos agregados aparecen al instante</li>
+    <li class="ok">Enlace del portal abierto en el celular del PO</li>
+    <li class="ok">Chat ida y vuelta en ≤5 s</li>
+    <li class="ok">Enlace anterior revocado al generar uno nuevo</li>
+    <li class="ok">Auditoría de acceso al portal</li>
+  </ul>
+  <p class="note">Checklist firmable: documentation/plans/sprint-3/uat-po.md</p>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>13 / 14</span></div>
+</section>
+
+<section class="slide" data-title="Cierre">
+  <p class="kicker">13 · Cierre</p>
+  <h2>Sprint 3 cerrado. Siguiente: piloto real.</h2>
+  <div class="grid-2 fill">
+    <ul class="check">
+      <li class="ok">5/5 HU de Sprint 3 en Done + carry-over de Sprint 2</li>
+      <li class="ok">Producción: travelos-pdp.vercel.app</li>
+      <li class="ok">122 pruebas automatizadas en verde</li>
+      <li class="ok">Portal seguro, auditado y desplegado</li>
+    </ul>
+    <div class="card">
+      <h3>Sprint 4 (propuesta)</h3>
+      <ul>
+        <li>Envío del enlace del portal por correo/WhatsApp</li>
+        <li>Dominio fijo para el API (túnel con nombre)</li>
+        <li>HU-24: base de conocimiento de la agencia para la IA</li>
+        <li>Carga de archivos (no solo URLs) para documentos</li>
+      </ul>
+    </div>
+  </div>
+  <p class="lede" style="margin-top:.8rem;">Repo: <strong>github.com/Jeronimo0228/travel-OS</strong></p>
+  <div class="meta"><span>Gracias. ¿Preguntas?</span><span>14 / 14</span></div>
+</section>
+
+</div>
+</div>
+</div>
+
+<div class="hud">
+    <span class="hint">F pantalla · ← →</span>
+    <button type="button" id="prev" aria-label="Anterior">‹</button>
+    <span id="counter">1 / 14</span>
+    <button type="button" id="next" aria-label="Siguiente">›</button>
+  </div>
+  <script>
+    (function () {
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const progress = document.getElementById("progress");
+      const counter = document.getElementById("counter");
+      const stage = document.getElementById("stage");
+      let i = 0;
+
+      function fit() {
+        if (!stage) return;
+        const sx = window.innerWidth / 1920;
+        const sy = window.innerHeight / 1080;
+        const s = Math.min(sx, sy);
+        stage.style.transform = "scale(" + s + ")";
+      }
+
+      function show(n) {
+        i = Math.max(0, Math.min(slides.length - 1, n));
+        slides.forEach((s, idx) => s.classList.toggle("active", idx === i));
+        counter.textContent = (i + 1) + " / " + slides.length;
+        progress.style.width = ((i + 1) / slides.length * 100) + "%";
+        document.title = "TravelOS AI — " + (slides[i].dataset.title || "Sprint 3");
+      }
+
+      document.getElementById("prev").addEventListener("click", () => show(i - 1));
+      document.getElementById("next").addEventListener("click", () => show(i + 1));
+
+      window.addEventListener("keydown", (e) => {
+        if (["ArrowRight", "PageDown", " ", "Enter"].includes(e.key)) { e.preventDefault(); show(i + 1); }
+        else if (["ArrowLeft", "PageUp", "Backspace"].includes(e.key)) { e.preventDefault(); show(i - 1); }
+        else if (e.key === "Home") show(0);
+        else if (e.key === "End") show(slides.length - 1);
+        else if (e.key === "f" || e.key === "F") {
+          if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+          else document.exitFullscreen?.();
+        }
+      });
+
+      let touchX = null;
+      window.addEventListener("touchstart", (e) => { touchX = e.changedTouches[0].screenX; }, { passive: true });
+      window.addEventListener("touchend", (e) => {
+        if (touchX == null) return;
+        const dx = e.changedTouches[0].screenX - touchX;
+        if (Math.abs(dx) > 50) show(i + (dx < 0 ? 1 : -1));
+        touchX = null;
+      }, { passive: true });
+
+      window.addEventListener("resize", fit);
+      fit();
+      const params = new URLSearchParams(location.search);
+      const start = Math.max(0, (parseInt(params.get("s") || "1", 10) || 1) - 1);
+      show(start);
+    })();
+  </script>
+</body>
+</html>
