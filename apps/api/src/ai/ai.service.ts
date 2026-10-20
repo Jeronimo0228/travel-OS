@@ -10,7 +10,9 @@ import { z } from 'zod';
 
 const DEFAULT_MODEL = 'openai/gpt-oss-120b';
 /** Comma-separated fallback chain; the next model is tried on 429/5xx. */
-const DEFAULT_GEMINI_MODELS = 'gemini-2.5-flash,gemini-2.5-flash-lite';
+const DEFAULT_GEMINI_MODELS =
+  'gemini-3.5-flash-lite,gemini-flash-lite-latest,gemini-2.5-flash-lite,gemini-2.5-flash';
+const DEFAULT_RETRY_PAUSE_MS = 3000;
 const GEMINI_ENDPOINT =
   'https://generativelanguage.googleapis.com/v1beta/models';
 
@@ -99,7 +101,22 @@ export class AiService {
       .filter(Boolean);
 
     let lastStatus = 0;
-    for (const model of models) {
+    // Free-tier quotas are per model and per minute: walk the chain, and if
+    // every model is rate limited wait briefly and walk it once more.
+    const chain = [...models, ...models];
+    for (const [attempt, model] of chain.entries()) {
+      if (attempt === models.length) {
+        if (lastStatus !== 429 && lastStatus < 500) break;
+        await new Promise((resolve) =>
+          setTimeout(
+            resolve,
+            Number(
+              this.config.get<string>('AI_RETRY_PAUSE_MS') ??
+                DEFAULT_RETRY_PAUSE_MS,
+            ),
+          ),
+        );
+      }
       let response: Response;
       try {
         response = await fetch(

@@ -86,6 +86,28 @@ describe('AiService (Gemini provider)', () => {
     expect(fetchMock.mock.calls[1][0]).toContain('/models/b:generateContent');
   });
 
+  it('walks the model chain a second time when every model is rate limited', async () => {
+    fetchMock
+      .mockResolvedValueOnce({ ok: false, status: 429 })
+      .mockResolvedValueOnce({ ok: false, status: 429 })
+      .mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+        json: () => Promise.resolve(geminiBody('{"score":3}')),
+      });
+    const service = new AiService(
+      new ConfigService({
+        GEMINI_API_KEY: 'k',
+        GEMINI_MODEL: 'a,b',
+        AI_RETRY_PAUSE_MS: '0',
+      }),
+    );
+    await expect(service.generateJson('s', 'u', schema)).resolves.toEqual({
+      score: 3,
+    });
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+  });
+
   it('does not retry on client errors', async () => {
     fetchMock.mockResolvedValue({ ok: false, status: 400 });
     const service = new AiService(
@@ -100,7 +122,7 @@ describe('AiService (Gemini provider)', () => {
   it('maps HTTP errors to 503 without leaking the key', async () => {
     fetchMock.mockResolvedValue({ ok: false, status: 429 });
     const service = new AiService(
-      new ConfigService({ GEMINI_API_KEY: 'secret' }),
+      new ConfigService({ GEMINI_API_KEY: 'secret', AI_RETRY_PAUSE_MS: '0' }),
     );
 
     const error = await service
