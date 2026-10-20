@@ -51,6 +51,10 @@ model Agency {
   slug         String   @unique
   logoUrl      String?
   primaryColor String   @default("#4648d4")
+  /// HU-24: knowledge base injected into AI prompts.
+  aiTone       String   @default("")
+  aiPolicies   String   @default("")
+  aiFaqs       Json     @default("[]")
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 

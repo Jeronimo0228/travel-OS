@@ -7,6 +7,7 @@ export const auditActions = [
   'LEAD_ASSIGN',
   'LEAD_DELETE',
   'BRANDING_UPDATE',
+  'KNOWLEDGE_UPDATE',
   'PORTAL_ACCESS_ISSUED',
   'PORTAL_DOCUMENTS_VIEWED',
 ] as const;

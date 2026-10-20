@@ -1,3 +1,4 @@
+import { AgencyKnowledgeService } from '../ai/agency-knowledge.service';
 import { BadGatewayException } from '@nestjs/common';
 import {
   CatalogKind,
@@ -31,7 +32,18 @@ describe('QuotesService', () => {
   const leadsService = { findOne: findLead } as unknown as LeadsService;
   const aiService = { generateJson } as unknown as AiService;
   const pdfQueue = { enqueue: enqueuePdf } as unknown as QuotePdfQueue;
-  const service = new QuotesService(prisma, leadsService, aiService, pdfQueue);
+  const knowledgeService = {
+    promptFor: jest
+      .fn()
+      .mockResolvedValue('\n\nBase de conocimiento: tono cálido'),
+  } as unknown as AgencyKnowledgeService;
+  const service = new QuotesService(
+    prisma,
+    leadsService,
+    aiService,
+    pdfQueue,
+    knowledgeService,
+  );
   const user = {
     id: 'advisor-a',
     agencyId: 'agency-a',
@@ -141,6 +153,9 @@ describe('QuotesService', () => {
     expect(findCatalogItems).toHaveBeenCalledWith(
       expect.objectContaining({ where: { agencyId: 'agency-a' } }),
     );
+    // HU-24: the agency knowledge base reaches the alternatives prompt.
+    expect(knowledgeService.promptFor).toHaveBeenCalledWith('agency-a');
+    expect(generateJson.mock.calls[1]?.[0]).toContain('tono cálido');
     const createInput = createQuote.mock.calls[0]?.[0];
     expect(createInput.data).toMatchObject({
       agencyId: 'agency-a',

@@ -43,7 +43,7 @@ describe('CatalogService', () => {
         skipDuplicates: boolean;
       },
     ];
-    expect(input.data).toHaveLength(10);
+    expect(input.data).toHaveLength(26);
     expect(input.data.every((item) => item.agencyId === 'agency-a')).toBe(true);
     expect(input.skipDuplicates).toBe(true);
   });
