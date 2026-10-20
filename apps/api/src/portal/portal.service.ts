@@ -12,6 +12,7 @@ import type {
 } from '@travelos/shared';
 import { createHash, randomBytes } from 'node:crypto';
 import type { AuthenticatedUser } from '../common/authenticated-user.interface';
+import { AuditService } from '../audit/audit.service';
 import { LeadsService } from '../leads/leads.service';
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -22,6 +23,7 @@ export class PortalService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly leadsService: LeadsService,
+    private readonly auditService: AuditService,
   ) {}
 
   async createReservation(
@@ -133,6 +135,13 @@ export class PortalService {
       }),
     ]);
 
+    await this.auditService.log(
+      user.agencyId,
+      user.id,
+      'PORTAL_ACCESS_ISSUED',
+      { reservationId: reservation.id, expiresAt: expiresAt.toISOString() },
+    );
+
     return { accessToken: token, expiresAt };
   }
 
@@ -189,11 +198,26 @@ export class PortalService {
     });
   }
 
-  listTravelerDocuments(reservationId: string) {
-    return this.prisma.reservationDocument.findMany({
-      where: { reservationId },
-      orderBy: { createdAt: 'desc' },
-    });
+  async listTravelerDocuments(reservationId: string) {
+    const [reservation, documents] = await Promise.all([
+      this.prisma.reservation.findUnique({
+        where: { id: reservationId },
+        select: { agencyId: true },
+      }),
+      this.prisma.reservationDocument.findMany({
+        where: { reservationId },
+        orderBy: { createdAt: 'desc' },
+      }),
+    ]);
+    if (reservation) {
+      await this.auditService.log(
+        reservation.agencyId,
+        undefined,
+        'PORTAL_DOCUMENTS_VIEWED',
+        { reservationId, documentCount: documents.length },
+      );
+    }
+    return documents;
   }
 
   listTravelerMessages(reservationId: string) {

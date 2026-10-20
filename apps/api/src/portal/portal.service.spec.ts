@@ -1,6 +1,7 @@
 import { ForbiddenException, UnauthorizedException } from '@nestjs/common';
 import { PortalMessageSender, Role } from '@prisma/client';
 import type { AuthenticatedUser } from '../common/authenticated-user.interface';
+import { AuditService } from '../audit/audit.service';
 import { LeadsService } from '../leads/leads.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { PortalService } from './portal.service';
@@ -27,7 +28,8 @@ describe('PortalService', () => {
     $transaction: transaction,
   } as unknown as PrismaService;
   const leadsService = {} as LeadsService;
-  const service = new PortalService(prisma, leadsService);
+  const auditService = { log: jest.fn() } as unknown as AuditService;
+  const service = new PortalService(prisma, leadsService, auditService);
 
   beforeEach(() => {
     findFirst.mockReset();
@@ -73,6 +75,37 @@ describe('PortalService', () => {
     );
     expect(create.mock.calls[0][0].data.tokenHash).not.toBe(result.accessToken);
     expect(transaction).toHaveBeenCalledTimes(1);
+    expect(auditService.log).toHaveBeenCalledWith(
+      user.agencyId,
+      user.id,
+      'PORTAL_ACCESS_ISSUED',
+      expect.objectContaining({ reservationId: 'reservation-1' }),
+    );
+  });
+
+  it('audits traveler document access against the owning agency', async () => {
+    const docsPrisma = {
+      reservation: {
+        findUnique: jest.fn().mockResolvedValue({ agencyId: 'agency-a' }),
+      },
+      reservationDocument: {
+        findMany: jest.fn().mockResolvedValue([{ id: 'doc-1' }]),
+      },
+    } as unknown as PrismaService;
+    const log = jest.fn();
+    const docsService = new PortalService(docsPrisma, leadsService, {
+      log,
+    } as unknown as AuditService);
+
+    await expect(
+      docsService.listTravelerDocuments('reservation-1'),
+    ).resolves.toEqual([{ id: 'doc-1' }]);
+    expect(log).toHaveBeenCalledWith(
+      'agency-a',
+      undefined,
+      'PORTAL_DOCUMENTS_VIEWED',
+      { reservationId: 'reservation-1', documentCount: 1 },
+    );
   });
 
   it('rejects traveler access after its reservation has been removed', async () => {
@@ -80,7 +113,11 @@ describe('PortalService', () => {
     const travelerPrisma = {
       reservation: { findUnique },
     } as unknown as PrismaService;
-    const travelerService = new PortalService(travelerPrisma, leadsService);
+    const travelerService = new PortalService(
+      travelerPrisma,
+      leadsService,
+      auditService,
+    );
 
     await expect(
       travelerService.getTravelerReservation('reservation-removed'),
@@ -92,7 +129,11 @@ describe('PortalService', () => {
     const chatPrisma = {
       chatMessage: { create: messageCreate },
     } as unknown as PrismaService;
-    const chatService = new PortalService(chatPrisma, leadsService);
+    const chatService = new PortalService(
+      chatPrisma,
+      leadsService,
+      auditService,
+    );
 
     await chatService.addTravelerMessage('reservation-1', { body: 'Hello' });
 
@@ -112,7 +153,11 @@ describe('PortalService', () => {
     const chatPrisma = {
       chatMessage: { findMany },
     } as unknown as PrismaService;
-    const chatService = new PortalService(chatPrisma, leadsService);
+    const chatService = new PortalService(
+      chatPrisma,
+      leadsService,
+      auditService,
+    );
 
     await expect(
       chatService.listTravelerMessages('reservation-1'),
