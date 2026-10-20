@@ -1,5 +1,5 @@
-import { coPilotInsights } from "./mock-data";
 import { KpiCards } from "./KpiCards";
+import { PriorityInsights } from "./PriorityInsights";
 
 export function CoPilotPanel() {
   return (
@@ -13,28 +13,7 @@ export function CoPilotPanel() {
             </span>
             <h3 className="font-headline text-headline-md">Co-Piloto IA</h3>
           </div>
-          <div className="space-y-4">
-            {coPilotInsights.map((insight) => (
-              <div
-                key={insight.id}
-                className="bg-white/5 border border-white/10 p-4 rounded-lg flex items-start gap-3 hover:bg-white/10 transition-colors cursor-pointer"
-              >
-                <span
-                  className={`material-symbols-outlined mt-1 ${insight.iconClass}`}
-                >
-                  {insight.icon}
-                </span>
-                <div>
-                  <p className="font-body-custom text-label-md">
-                    {insight.title}
-                  </p>
-                  <p className="text-[12px] opacity-70 mt-1">
-                    {insight.detail}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
+          <PriorityInsights />
         </div>
       </div>
 
