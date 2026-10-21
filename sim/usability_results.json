@@ -1,0 +1,386 @@
+{
+  "run_at": "2026-10-21 06:26:07 -0500",
+  "base": "https://api.travel-os.pdpcomunica.com/api",
+  "tasks": [
+    {
+      "persona": "admin",
+      "id": "admin-1",
+      "task": "Iniciar sesion",
+      "passed": true,
+      "ms": 638,
+      "detail": "HTTP 200"
+    },
+    {
+      "persona": "admin",
+      "id": "admin-2",
+      "task": "Ver pipeline de leads",
+      "passed": true,
+      "ms": 496,
+      "detail": "HTTP 200, 10 leads"
+    },
+    {
+      "persona": "admin",
+      "id": "admin-3",
+      "task": "Ver cotizaciones",
+      "passed": true,
+      "ms": 929,
+      "detail": "HTTP 200, 20 cotizaciones"
+    },
+    {
+      "persona": "admin",
+      "id": "admin-4",
+      "task": "Ver reservas del portal",
+      "passed": true,
+      "ms": 404,
+      "detail": "HTTP 200, 3 reservas"
+    },
+    {
+      "persona": "admin",
+      "id": "admin-5",
+      "task": "Gestionar usuarios (listar)",
+      "passed": true,
+      "ms": 513,
+      "detail": "HTTP 200, 5 usuarios"
+    },
+    {
+      "persona": "admin",
+      "id": "admin-6",
+      "task": "Revisar auditoria",
+      "passed": true,
+      "ms": 610,
+      "detail": "HTTP 200"
+    },
+    {
+      "persona": "admin",
+      "id": "admin-7",
+      "task": "Ver marca de la agencia",
+      "passed": true,
+      "ms": 514,
+      "detail": "HTTP 200"
+    },
+    {
+      "persona": "admin",
+      "id": "admin-Z",
+      "task": "Cerrar sesion (y quedar fuera)",
+      "passed": true,
+      "ms": 934,
+      "detail": "logout HTTP 204, then /leads HTTP 401"
+    },
+    {
+      "persona": "gerente",
+      "id": "gerente-1",
+      "task": "Iniciar sesion",
+      "passed": true,
+      "ms": 505,
+      "detail": "HTTP 200"
+    },
+    {
+      "persona": "gerente",
+      "id": "gerente-2",
+      "task": "Ver pipeline de leads",
+      "passed": true,
+      "ms": 620,
+      "detail": "HTTP 200, 10 leads"
+    },
+    {
+      "persona": "gerente",
+      "id": "gerente-3",
+      "task": "Ver cotizaciones",
+      "passed": true,
+      "ms": 3685,
+      "detail": "HTTP 200, 20 cotizaciones"
+    },
+    {
+      "persona": "gerente",
+      "id": "gerente-4",
+      "task": "Ver reservas del portal",
+      "passed": true,
+      "ms": 714,
+      "detail": "HTTP 200, 3 reservas"
+    },
+    {
+      "persona": "gerente",
+      "id": "gerente-5",
+      "task": "Ver tablero de operaciones",
+      "passed": true,
+      "ms": 398,
+      "detail": "HTTP 200"
+    },
+    {
+      "persona": "gerente",
+      "id": "gerente-6",
+      "task": "Priorizar leads con IA",
+      "passed": true,
+      "ms": 1635,
+      "detail": "HTTP 200 en 1635 ms"
+    },
+    {
+      "persona": "gerente",
+      "id": "gerente-7",
+      "task": "Consultar auditoria segun rol",
+      "passed": true,
+      "ms": 514,
+      "detail": "HTTP 403 (control de acceso por rol)"
+    },
+    {
+      "persona": "gerente",
+      "id": "gerente-Z",
+      "task": "Cerrar sesion (y quedar fuera)",
+      "passed": true,
+      "ms": 828,
+      "detail": "logout HTTP 204, then /leads HTTP 401"
+    },
+    {
+      "persona": "asesor1",
+      "id": "asesor1-1",
+      "task": "Iniciar sesion",
+      "passed": true,
+      "ms": 600,
+      "detail": "HTTP 200"
+    },
+    {
+      "persona": "asesor1",
+      "id": "asesor1-2",
+      "task": "Ver pipeline de leads",
+      "passed": true,
+      "ms": 510,
+      "detail": "HTTP 200, 2 leads"
+    },
+    {
+      "persona": "asesor1",
+      "id": "asesor1-3",
+      "task": "Ver cotizaciones",
+      "passed": true,
+      "ms": 516,
+      "detail": "HTTP 200, 4 cotizaciones"
+    },
+    {
+      "persona": "asesor1",
+      "id": "asesor1-4",
+      "task": "Ver reservas del portal",
+      "passed": true,
+      "ms": 418,
+      "detail": "HTTP 200, 2 reservas"
+    },
+    {
+      "persona": "asesor1",
+      "id": "asesor1-5",
+      "task": "Crear, abrir y borrar un lead",
+      "passed": true,
+      "ms": 2280,
+      "detail": "create 201, read 200, delete 204, read-after 403"
+    },
+    {
+      "persona": "asesor1",
+      "id": "asesor1-6",
+      "task": "Ver recordatorios",
+      "passed": true,
+      "ms": 368,
+      "detail": "HTTP 200"
+    },
+    {
+      "persona": "asesor1",
+      "id": "asesor1-7",
+      "task": "Intentar cambiar un rol (debe negarse)",
+      "passed": true,
+      "ms": 618,
+      "detail": "HTTP 403 (debe ser 403)"
+    },
+    {
+      "persona": "asesor1",
+      "id": "asesor1-Z",
+      "task": "Cerrar sesion (y quedar fuera)",
+      "passed": true,
+      "ms": 832,
+      "detail": "logout HTTP 204, then /leads HTTP 401"
+    },
+    {
+      "persona": "asesor2",
+      "id": "asesor2-1",
+      "task": "Iniciar sesion",
+      "passed": true,
+      "ms": 505,
+      "detail": "HTTP 200"
+    },
+    {
+      "persona": "asesor2",
+      "id": "asesor2-2",
+      "task": "Ver pipeline de leads",
+      "passed": true,
+      "ms": 499,
+      "detail": "HTTP 200, 4 leads"
+    },
+    {
+      "persona": "asesor2",
+      "id": "asesor2-3",
+      "task": "Ver cotizaciones",
+      "passed": true,
+      "ms": 1540,
+      "detail": "HTTP 200, 4 cotizaciones"
+    },
+    {
+      "persona": "asesor2",
+      "id": "asesor2-4",
+      "task": "Ver reservas del portal",
+      "passed": true,
+      "ms": 422,
+      "detail": "HTTP 200, 1 reservas"
+    },
+    {
+      "persona": "asesor2",
+      "id": "asesor2-5",
+      "task": "Crear, abrir y borrar un lead",
+      "passed": true,
+      "ms": 2030,
+      "detail": "create 201, read 200, delete 204, read-after 403"
+    },
+    {
+      "persona": "asesor2",
+      "id": "asesor2-6",
+      "task": "Ver recordatorios",
+      "passed": true,
+      "ms": 614,
+      "detail": "HTTP 200"
+    },
+    {
+      "persona": "asesor2",
+      "id": "asesor2-7",
+      "task": "Intentar cambiar un rol (debe negarse)",
+      "passed": true,
+      "ms": 516,
+      "detail": "HTTP 403 (debe ser 403)"
+    },
+    {
+      "persona": "asesor2",
+      "id": "asesor2-Z",
+      "task": "Cerrar sesion (y quedar fuera)",
+      "passed": true,
+      "ms": 1039,
+      "detail": "logout HTTP 204, then /leads HTTP 401"
+    },
+    {
+      "persona": "viajero",
+      "id": "viajero-1",
+      "task": "Abrir la web publica",
+      "passed": true,
+      "ms": 1329,
+      "detail": "HTTP 200 en 1329 ms"
+    },
+    {
+      "persona": "viajero",
+      "id": "viajero-2",
+      "task": "Portal sin enlace se protege",
+      "passed": true,
+      "ms": 697,
+      "detail": "HTTP 401 sin enlace (debe negarse)"
+    },
+    {
+      "persona": "viajero",
+      "id": "viajero-3",
+      "task": "Enlace invalido se rechaza",
+      "passed": true,
+      "ms": 315,
+      "detail": "HTTP 401 con enlace invalido"
+    },
+    {
+      "persona": "viajero",
+      "id": "viajero-4",
+      "task": "Servicio disponible",
+      "passed": true,
+      "ms": 507,
+      "detail": "HTTP 200 en 507 ms"
+    }
+  ],
+  "personas": {
+    "admin": {
+      "passed": 8,
+      "total": 8,
+      "sus_answers": [
+        5,
+        1,
+        5,
+        1,
+        5,
+        1,
+        5,
+        1,
+        5,
+        1
+      ],
+      "sus": 100.0
+    },
+    "gerente": {
+      "passed": 8,
+      "total": 8,
+      "sus_answers": [
+        4,
+        2,
+        4,
+        2,
+        4,
+        2,
+        4,
+        2,
+        4,
+        2
+      ],
+      "sus": 75.0
+    },
+    "asesor1": {
+      "passed": 8,
+      "total": 8,
+      "sus_answers": [
+        4,
+        2,
+        4,
+        2,
+        4,
+        2,
+        4,
+        2,
+        4,
+        2
+      ],
+      "sus": 75.0
+    },
+    "asesor2": {
+      "passed": 8,
+      "total": 8,
+      "sus_answers": [
+        4,
+        2,
+        4,
+        2,
+        4,
+        2,
+        4,
+        2,
+        4,
+        2
+      ],
+      "sus": 75.0
+    },
+    "viajero": {
+      "passed": 4,
+      "total": 4,
+      "sus_answers": [
+        5,
+        1,
+        5,
+        1,
+        5,
+        1,
+        5,
+        1,
+        5,
+        1
+      ],
+      "sus": 100.0
+    }
+  },
+  "total_passed": 36,
+  "total": 36,
+  "sus_avg": 85.0,
+  "leftovers": 0,
+  "uncleaned": 0
+}

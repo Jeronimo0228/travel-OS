@@ -16,7 +16,14 @@ const DEFAULT_RETRY_PAUSE_MS = 3000;
 const GEMINI_ENDPOINT =
   'https://generativelanguage.googleapis.com/v1beta/models';
 
-export type AiProvider = 'gemini' | 'groq';
+export type AiProvider = 'gemini' | 'groq' | 'openrouter';
+
+const KEY_COOLDOWN_MS = 60_000;
+const OPENROUTER_ENDPOINT = 'https://openrouter.ai/api/v1/chat/completions';
+const DEFAULT_OPENROUTER_MODELS =
+  'meta-llama/llama-3.3-70b-instruct:free,deepseek/deepseek-chat-v3-0324:free';
+
+/** Per-process cooldowns, keyed by key index (never by key value). */
 
 interface GeminiResponse {
   candidates?: { content?: { parts?: { text?: string }[] } }[];
@@ -38,10 +45,11 @@ export class AiService {
       throw new ServiceUnavailableException('AI service is not configured');
     }
 
-    const content =
-      provider === 'gemini'
-        ? await this.completeWithGemini(systemPrompt, userPrompt)
-        : await this.completeWithGroq(systemPrompt, userPrompt);
+    const content = await this.completeWithFallback(
+      provider,
+      systemPrompt,
+      userPrompt,
+    );
 
     if (!content) {
       throw new BadGatewayException('AI provider returned an empty response');
@@ -79,20 +87,193 @@ export class AiService {
    */
   resolveProvider(): AiProvider | null {
     const forced = this.config.get<string>('AI_PROVIDER')?.toLowerCase();
-    const hasGemini = Boolean(this.config.get<string>('GEMINI_API_KEY'));
+    const hasGemini = this.geminiKeys().length > 0;
     const hasGroq = Boolean(this.config.get<string>('GROQ_API_KEY'));
+    const hasOpenRouter = Boolean(
+      this.config.get<string>('OPENROUTER_API_KEY'),
+    );
     if (forced === 'gemini') return hasGemini ? 'gemini' : null;
     if (forced === 'groq') return hasGroq ? 'groq' : null;
+    if (forced === 'openrouter') return hasOpenRouter ? 'openrouter' : null;
     if (hasGemini) return 'gemini';
     if (hasGroq) return 'groq';
+    if (hasOpenRouter) return 'openrouter';
     return null;
+  }
+
+  /** GEMINI_API_KEYS (comma list) plus legacy GEMINI_API_KEY, de-duplicated. */
+  geminiKeys(): string[] {
+    const list = [
+      ...(this.config.get<string>('GEMINI_API_KEYS') ?? '').split(','),
+      this.config.get<string>('GEMINI_API_KEY') ?? '',
+    ]
+      .map((key) => key.trim())
+      .filter(Boolean);
+    return [...new Set(list)];
+  }
+
+  /** Provider chain after the primary one, unless AI_PROVIDER pins a provider. */
+  providerChain(primary: AiProvider): AiProvider[] {
+    if (this.config.get<string>('AI_PROVIDER')) return [primary];
+    const chain: AiProvider[] = [];
+    if (this.geminiKeys().length) chain.push('gemini');
+    if (this.config.get<string>('GROQ_API_KEY')) chain.push('groq');
+    if (this.config.get<string>('OPENROUTER_API_KEY')) chain.push('openrouter');
+    return chain.slice(chain.indexOf(primary));
+  }
+
+  /** Safe status: counts and cooldowns only, never key values. */
+  status() {
+    const now = Date.now();
+    const keys = this.geminiKeys();
+    const cooling = keys
+      .map((_, index) => this.geminiCooldowns.get(index) ?? 0)
+      .filter((until) => until > now);
+    return {
+      provider: this.resolveProvider(),
+      forced: Boolean(this.config.get<string>('AI_PROVIDER')),
+      gemini: {
+        keys: keys.length,
+        available: keys.length - cooling.length,
+        coolingDown: cooling.length,
+        cooldownSecondsRemaining: cooling.map((until) =>
+          Math.ceil((until - now) / 1000),
+        ),
+      },
+      groq: Boolean(this.config.get<string>('GROQ_API_KEY')),
+      openrouter: Boolean(this.config.get<string>('OPENROUTER_API_KEY')),
+    };
+  }
+
+  resetCooldowns(): void {
+    this.geminiCooldowns.clear();
+  }
+
+  private async completeWithFallback(
+    primary: AiProvider,
+    systemPrompt: string,
+    userPrompt: string,
+  ): Promise<string | null | undefined> {
+    const chain = this.providerChain(primary);
+    let lastError: unknown;
+    for (const provider of chain) {
+      try {
+        if (provider === 'gemini')
+          return await this.completeWithGeminiKeys(systemPrompt, userPrompt);
+        if (provider === 'groq')
+          return await this.completeWithGroq(systemPrompt, userPrompt);
+        return await this.completeWithOpenRouter(systemPrompt, userPrompt);
+      } catch (error) {
+        lastError = error;
+        if (!(error instanceof ServiceUnavailableException)) throw error;
+        this.logger.warn(`AI provider ${provider} unavailable, trying next`);
+      }
+    }
+    throw (
+      lastError ?? new ServiceUnavailableException('AI provider is unavailable')
+    );
+  }
+
+  /** Rotates keys; a key that ends rate limited (429) cools down for 60 s. */
+  private async completeWithGeminiKeys(
+    systemPrompt: string,
+    userPrompt: string,
+  ): Promise<string | undefined> {
+    const keys = this.geminiKeys();
+    const now = Date.now();
+    let indexes = keys
+      .map((_, index) => index)
+      .filter((index) => (this.geminiCooldowns.get(index) ?? 0) <= now);
+    if (!indexes.length) {
+      throw new ServiceUnavailableException(
+        'AI provider request failed with status 429 (all Gemini keys cooling down)',
+      );
+    }
+    // Start at a rotating offset so load spreads across keys.
+    const offset = this.rotation++ % indexes.length;
+    indexes = [...indexes.slice(offset), ...indexes.slice(0, offset)];
+    let lastError: unknown;
+    for (const index of indexes) {
+      try {
+        return await this.completeWithGemini(
+          systemPrompt,
+          userPrompt,
+          keys[index],
+        );
+      } catch (error) {
+        lastError = error;
+        if (
+          error instanceof ServiceUnavailableException &&
+          error.message.includes('429')
+        ) {
+          this.geminiCooldowns.set(index, Date.now() + KEY_COOLDOWN_MS);
+          this.logger.warn(
+            `Gemini key #${index + 1} rate limited; cooling 60s`,
+          );
+          continue;
+        }
+        throw error;
+      }
+    }
+    throw lastError;
+  }
+
+  private rotation = 0;
+  private readonly geminiCooldowns = new Map<number, number>();
+
+  private async completeWithOpenRouter(
+    systemPrompt: string,
+    userPrompt: string,
+  ): Promise<string | undefined> {
+    const apiKey = this.config.getOrThrow<string>('OPENROUTER_API_KEY');
+    const models = (
+      this.config.get<string>('OPENROUTER_MODEL') || DEFAULT_OPENROUTER_MODELS
+    )
+      .split(',')
+      .map((m) => m.trim())
+      .filter(Boolean);
+    let lastStatus = 0;
+    for (const model of models) {
+      let response: Response;
+      try {
+        response = await fetch(OPENROUTER_ENDPOINT, {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+            authorization: `Bearer ${apiKey}`,
+          },
+          body: JSON.stringify({
+            model,
+            response_format: { type: 'json_object' },
+            messages: [
+              { role: 'system', content: systemPrompt },
+              { role: 'user', content: userPrompt },
+            ],
+          }),
+          signal: AbortSignal.timeout(45_000),
+        });
+      } catch {
+        continue;
+      }
+      if (response.ok) {
+        const body = (await response.json()) as {
+          choices?: { message?: { content?: string } }[];
+        };
+        return body.choices?.[0]?.message?.content?.trim();
+      }
+      lastStatus = response.status;
+      if (response.status !== 429 && response.status < 500) break;
+    }
+    throw new ServiceUnavailableException(
+      `AI provider request failed with status ${lastStatus || 'n/a'} (openrouter)`,
+    );
   }
 
   private async completeWithGemini(
     systemPrompt: string,
     userPrompt: string,
+    apiKey: string,
   ): Promise<string | undefined> {
-    const apiKey = this.config.getOrThrow<string>('GEMINI_API_KEY');
     const models = (
       this.config.get<string>('GEMINI_MODEL') || DEFAULT_GEMINI_MODELS
     )

@@ -5,12 +5,22 @@ import type { AuthenticatedUser } from '../common/authenticated-user.interface';
 import { CurrentUser } from '../common/current-user.decorator';
 import { JwtAuthGuard } from '../common/jwt-auth.guard';
 import { ZodValidationPipe } from '../common/zod-validation.pipe';
+import { AiService } from './ai.service';
 import { LeadPrioritizationService } from './lead-prioritization.service';
 
 @Controller('ai')
 @UseGuards(JwtAuthGuard)
 export class AiController {
-  constructor(private readonly leadPrioritization: LeadPrioritizationService) {}
+  constructor(
+    private readonly leadPrioritization: LeadPrioritizationService,
+    private readonly ai: AiService,
+  ) {}
+
+  /** Provider health: key counts and cooldowns, never key values. */
+  @Get('status')
+  status() {
+    return this.ai.status();
+  }
 
   @Get('leads/prioritized')
   prioritizeLeads(
