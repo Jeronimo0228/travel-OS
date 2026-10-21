@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState, type FormEvent } from "react";
 import { ChatThread } from "@/components/portal/ChatThread";
 import { DocumentList } from "@/components/portal/DocumentList";
 import { ItineraryTimeline } from "@/components/portal/ItineraryTimeline";
+import { CatalogLibrary } from "@/components/trips/CatalogLibrary";
 import { buildPortalLink } from "@/lib/portal";
 import {
   addItineraryItem,
@@ -201,6 +202,13 @@ export function TripWorkspace({ id }: { id: string }) {
           <ItineraryTimeline
             items={trip.itinerary}
             emptyText="Agrega la primera actividad del viaje."
+          />
+          <CatalogLibrary
+            trip={trip}
+            onAdd={async (input) => {
+              await addItineraryItem(id, input);
+              await load();
+            }}
           />
           <form
             onSubmit={(event) =>
