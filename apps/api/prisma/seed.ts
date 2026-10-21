@@ -237,6 +237,29 @@ async function main() {
 
   await seedSprint3Demo(prisma, agency.id, passwordHash);
 
+  // HU-24: demo knowledge base, only when the agency has none yet.
+  await prisma.agency.updateMany({
+    where: { id: agency.id, aiTone: '', aiPolicies: '' },
+    data: {
+      aiTone:
+        'Cercano, cálido y paisa, sin exagerar. Tutea al cliente y destaca la tranquilidad de viajar con acompañamiento de la agencia.',
+      aiPolicies:
+        '- Precios en COP, impuestos incluidos.\n- Reserva con 30 % de anticipo; saldo 15 días antes del viaje.\n- Cancelación sin penalidad hasta 15 días antes; después se retiene el anticipo.\n- Toda cotización incluye asistencia 24/7 por WhatsApp.',
+      aiFaqs: [
+        {
+          question: '¿Las cotizaciones incluyen tiquetes aéreos?',
+          answer:
+            'No, salvo que se indique. Los cotizamos aparte según fechas.',
+        },
+        {
+          question: '¿Puedo pagar a cuotas?',
+          answer:
+            'Sí, con tarjeta de crédito o en abonos antes del saldo final.',
+        },
+      ],
+    },
+  });
+
   console.log('Seed OK agency:', agency.slug);
   console.log(
     `Demo data ready: ${demoLeads.length} open leads and one PDF test quote.`,

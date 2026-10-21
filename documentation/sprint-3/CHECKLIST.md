@@ -18,7 +18,7 @@ Sprint goal: **the traveler follows the trip from the phone and the manager runs
 
 ## Demo
 
-- Web: https://travelos-pdp.vercel.app
+- Web: https://travel-os.pdpcomunica.com
 - Gerente: `gerente@demo.travelos.local` / `TravelOS!demo1`
 - Portal: *Viajes y Portal → Cartagena → Generar enlace del portal* y abrir el enlace en el celular.
 
@@ -26,7 +26,7 @@ Sprint goal: **the traveler follows the trip from the phone and the manager runs
 
 | Suite | Resultado |
 |---|---|
-| API unit (Jest) | 44/44 |
-| API e2e (Jest + Postgres + Redis) | 32/32 (incluye 8 de portal/KPIs) |
-| Web unit (Vitest) | 46/46 |
+| API unit (Jest) | 60/60 |
+| API e2e (Jest + Postgres + Redis) | 35/35 (portal/KPIs + base de conocimiento) |
+| Web unit (Vitest) | 50/50 |
 | Lint + build API y web | OK |

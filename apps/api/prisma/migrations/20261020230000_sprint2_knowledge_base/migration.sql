@@ -1,0 +1,4 @@
+-- HU-24: agency knowledge base for AI
+ALTER TABLE "Agency" ADD COLUMN "aiTone" TEXT NOT NULL DEFAULT '';
+ALTER TABLE "Agency" ADD COLUMN "aiPolicies" TEXT NOT NULL DEFAULT '';
+ALTER TABLE "Agency" ADD COLUMN "aiFaqs" JSONB NOT NULL DEFAULT '[]';

@@ -1,3 +1,4 @@
+import { AgencyKnowledgeService } from './agency-knowledge.service';
 import { BadGatewayException } from '@nestjs/common';
 import { LeadStage, Role } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
@@ -11,7 +12,16 @@ describe('LeadPrioritizationService', () => {
     lead: { findMany },
   } as unknown as PrismaService;
   const aiService = { generateJson } as unknown as AiService;
-  const service = new LeadPrioritizationService(prisma, aiService);
+  const knowledgeService = {
+    promptFor: jest
+      .fn()
+      .mockResolvedValue('\n\nBase de conocimiento: tono cálido'),
+  } as unknown as AgencyKnowledgeService;
+  const service = new LeadPrioritizationService(
+    prisma,
+    aiService,
+    knowledgeService,
+  );
   const advisor = {
     id: 'advisor-a',
     agencyId: 'agency-a',

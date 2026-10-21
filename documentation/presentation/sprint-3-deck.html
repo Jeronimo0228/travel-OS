@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>TravelOS AI — Sprint 3 Review | Portal + Insights + Piloto</title>
+  <title>TravelOS AI — Sprint 2 + 3 Review | Portal + Insights + Piloto</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -806,7 +806,7 @@
     .stage .comp-foot h3 { font-size: 24px !important; }
     .stage .comp-foot p { font-size: 20px !important; }
     .stage .comp-foot .card { min-height: 120px; }
-    /* === Sprint 3 additions === */
+    /* === Sprint 2 + 3 additions === */
     .phones { display:grid; grid-template-columns: repeat(3, 1fr); gap: 28px; flex:1; min-height:0; align-items:center; }
     .phone { height: 100%; max-height: 780px; aspect-ratio: 390/844; margin: 0 auto; border-radius: 42px; padding: 12px;
       background: #0b1f2a; box-shadow: 0 30px 70px rgba(11,31,42,.35); position: relative; }
@@ -841,9 +841,9 @@
 <div class="deck">
 
 <section class="slide cover active" data-title="Portada">
-  <p class="kicker">Proyecto Integrador 2 · EAFIT · Sprint 3 Review</p>
+  <p class="kicker">Proyecto Integrador 2 · EAFIT · Review conjunta Sprint 2 + Sprint 3</p>
   <h1>TravelOS AI</h1>
-  <p class="lede">Portal del viajero + insights gerenciales + piloto. El viajero sigue su viaje desde el celular y el gerente dirige la agencia con datos, en vivo.</p>
+  <p class="lede">De «quiero ir a Cartagena con mi pareja» a una cotización en COP, con PDF, en segundos. Y del lead ganado al viajero acompañado desde su celular.</p>
   <div class="team">
     <div class="person"><img src="../team/jeronimo.jpg" alt="Jerónimo Restrepo" /><strong>Jerónimo Restrepo</strong><span>SM + DevSecOps</span></div>
     <div class="person"><img src="../team/santiago.jpg" alt="Santiago Arboleda" /><strong>Santiago Arboleda</strong><span>Frontend</span></div>
@@ -851,80 +851,136 @@
     <div class="person"><img src="../team/miguel.jpg" alt="Miguel Mercado" /><strong>Miguel Mercado</strong><span>QA</span></div>
     <div class="person"><img src="../team/juanjose.jpg" alt="Juan José Palacio" /><strong>Juan José Palacio</strong><span>UX/UI</span></div>
   </div>
-  <div class="meta">
-    <span class="brand-mark"><span class="dot"></span> Punto D' Partida · PO Juan Manuel Restrepo</span>
-    <span>1 / 14</span>
-  </div>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> Punto D' Partida · PO Juan Manuel Restrepo · travel-os.pdpcomunica.com</span><span>1 / 19</span></div>
 </section>
 
 <section class="slide" data-title="Agenda">
   <p class="kicker">01 · Agenda</p>
   <h2>Qué vamos a demostrar hoy</h2>
   <ul class="check fill">
-    <li class="ok">Sprint goal y backlog: 5 HU de Sprint 3 + carry-over de Sprint 2, todo en Done</li>
-    <li class="ok">Demo en vivo en producción: dashboard → viaje → enlace → portal en el celular → chat</li>
-    <li class="ok">Automatización de follow-ups (HU-23)</li>
-    <li class="ok">Seguridad del portal y arquitectura del piloto</li>
-    <li class="ok">Calidad: 122 pruebas automatizadas, CI verde, GitHub Flow</li>
-    <li class="ok">UAT del PO y siguiente paso: Sprint 4</li>
+    <li class="ok">Sprint 2: cotizador IA, alternativas, PDF, itinerario, copiloto y base de conocimiento (HU-10, 13–18, 24)</li>
+    <li class="ok">Sprint 3: portal del viajero, KPIs y follow-ups automáticos (HU-19 a 23)</li>
+    <li class="ok">Demo en vivo de 7 minutos en travel-os.pdpcomunica.com</li>
+    <li class="ok">Caso de negocio v2 (finanzas, riesgos) y viabilidad</li>
+    <li class="ok">Protocolo de usabilidad y pruebas automáticas (145 en verde)</li>
+    <li class="ok">Gestión, ceremonias y siguiente paso</li>
   </ul>
-  <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>2 / 14</span></div>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>2 / 19</span></div>
 </section>
 
-<section class="slide" data-title="Sprint goal">
-  <p class="kicker">02 · Sprint goal · Épica E4</p>
-  <h2>Del lead ganado al viajero acompañado</h2>
-  <table class="comp fill">
-    <thead><tr><th>HU</th><th>Historia</th><th>SP</th><th>Estado</th></tr></thead>
+<section class="slide" data-title="Backlog">
+  <p class="kicker">02 · Sprint goals · milestones cerrados</p>
+  <h2>13 historias, todas en Done</h2>
+  <div class="grid-2 fill">
+  <table class="comp">
+    <thead><tr><th colspan="2">Sprint 2 — Cotizador IA + Itinerarios</th></tr></thead>
     <tbody>
-      <tr><td><strong>#19</strong></td><td>Portal: ver itinerario del viaje desde el celular</td><td>5</td><td><span class="tag-done">DONE</span></td></tr>
-      <tr><td><strong>#20</strong></td><td>Portal: documentos del viaje (pasaporte, voucher)</td><td>5</td><td><span class="tag-done">DONE</span></td></tr>
-      <tr><td><strong>#21</strong></td><td>Portal: chat básico con la agencia</td><td>5</td><td><span class="tag-done">DONE</span></td></tr>
-      <tr><td><strong>#22</strong></td><td>Dashboard de KPIs gerenciales</td><td>8</td><td><span class="tag-done">DONE</span></td></tr>
-      <tr><td><strong>#23</strong></td><td>Automatización de recordatorio de follow-up</td><td>5</td><td><span class="tag-done">DONE</span></td></tr>
-      <tr><td><strong>Carry-over S2</strong></td><td>Cotizador IA UI (#13–#15, #17), copiloto (#10), itinerario por días (#16)</td><td>—</td><td><span class="tag-done">DONE</span></td></tr>
+      <tr><td><strong>#13 #14</strong></td><td>Cotización en lenguaje natural con alternativas <span class="tag-done">DONE</span></td></tr>
+      <tr><td><strong>#15</strong></td><td>PDF de la cotización <span class="tag-done">DONE</span></td></tr>
+      <tr><td><strong>#16</strong></td><td>Itinerario por días <span class="tag-done">DONE</span></td></tr>
+      <tr><td><strong>#17 #18</strong></td><td>Vincular a lead · catálogo propio <span class="tag-done">DONE</span></td></tr>
+      <tr><td><strong>#10</strong></td><td>Copiloto IA de priorización <span class="tag-done">DONE</span></td></tr>
+      <tr><td><strong>#24</strong></td><td>Base de conocimiento para la IA <span class="tag-done">DONE</span></td></tr>
     </tbody>
   </table>
-  <p class="note">28 SP comprometidos · 28 SP entregados · milestone "Sprint 3 — Portal + Insights + Piloto"</p>
-  <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>3 / 14</span></div>
+  <table class="comp">
+    <thead><tr><th colspan="2">Sprint 3 — Portal + Insights + Piloto</th></tr></thead>
+    <tbody>
+      <tr><td><strong>#19</strong></td><td>Portal: itinerario <span class="tag-done">DONE</span></td></tr>
+      <tr><td><strong>#20</strong></td><td>Portal: documentos <span class="tag-done">DONE</span></td></tr>
+      <tr><td><strong>#21</strong></td><td>Portal: chat con la agencia <span class="tag-done">DONE</span></td></tr>
+      <tr><td><strong>#22</strong></td><td>Dashboard de KPIs <span class="tag-done">DONE</span></td></tr>
+      <tr><td><strong>#23</strong></td><td>Follow-ups automáticos <span class="tag-done">DONE</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> Milestones Sprint 2 y Sprint 3 cerrados en GitHub</span><span>3 / 19</span></div>
 </section>
 
 <section class="slide" data-title="Demo en vivo">
-  <p class="kicker">03 · Demo en vivo (5 min)</p>
-  <h2>Todo esto corre en producción, ahora</h2>
+  <p class="kicker">03 · Demo en vivo (7 min)</p>
+  <h2>Un cliente escribe por WhatsApp. Miren lo que pasa.</h2>
   <div class="grid-2 fill">
     <ul class="check">
-      <li class="ok">1. Login como gerente → Comando de Inteligencia</li>
-      <li class="ok">2. Campana: follow-ups vencidos → marcar leído</li>
-      <li class="ok">3. Viajes y Portal → Cartagena (viajera en ruta)</li>
-      <li class="ok">4. Agregar actividad + documento en vivo</li>
-      <li class="ok">5. Generar enlace seguro → abrir en el celular</li>
-      <li class="ok">6. Viajero escribe → la agencia responde en ≤5 s</li>
-      <li class="ok">7. Auditoría: quién emitió el enlace y cuándo se abrieron los documentos</li>
+      <li class="ok">1. Base IA: «30 % de anticipo, asistencia 24/7, tono cercano»</li>
+      <li class="ok">2. Cotizador: «Pareja a Cartagena 4 noches, frente al mar y Rosario»</li>
+      <li class="ok">3. Dos alternativas en COP en ~5 s, con el tono de la agencia → PDF</li>
+      <li class="ok">4. Vincular a Ana Martínez → CRM → copiloto dice a quién llamar y por qué</li>
+      <li class="ok">5. Dashboard del gerente → campana de follow-ups</li>
+      <li class="ok">6. Viajes → Cartagena → enlace seguro → celular del PO</li>
+      <li class="ok">7. El viajero pregunta en el chat → la agencia responde</li>
     </ul>
     <div class="card" style="display:flex;flex-direction:column;justify-content:center;gap:18px;">
-      <a class="live" href="https://travelos-pdp.vercel.app" target="_blank" rel="noopener"><span class="dot"></span> travelos-pdp.vercel.app</a>
+      <a class="live" href="https://travel-os.pdpcomunica.com" target="_blank" rel="noopener"><span class="dot"></span> travel-os.pdpcomunica.com</a>
       <p><strong>Gerente:</strong> gerente@demo.travelos.local</p>
-      <p><strong>Clave:</strong> TravelOS!demo1</p>
-      <p><strong>Ruta del portal:</strong> Viajes y Portal → Cartagena → Generar enlace del portal</p>
+      <p><strong>Clave:</strong> TravelOS!demo1 · agencia demo-agencia</p>
+      <p><strong>Manual en la app:</strong> barra lateral → Manual de uso</p>
     </div>
   </div>
-  <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>4 / 14</span></div>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> Producción real · infraestructura PDP</span><span>4 / 19</span></div>
+</section>
+
+<section class="slide" data-title="Cotizador IA">
+  <p class="kicker">04 · Sprint 2 · HU-13 · HU-14 · HU-15 · HU-17</p>
+  <h2>Cotizar hablando, no llenando formularios</h2>
+  <div class="split">
+    <div class="shot-wide"><img src="../sprint-3/evidence/09-cotizador-ia.png" alt="Cotizador IA con dos alternativas" /></div>
+    <div class="side">
+      <div class="card"><h3>Lenguaje natural</h3><p>La IA extrae destino, días, viajeros y preferencias.</p></div>
+      <div class="card"><h3>Solo tu catálogo</h3><p>La IA elige IDs del catálogo; el backend calcula precios y totales. Cero precios inventados.</p></div>
+      <div class="card"><h3>Comparables</h3><p>2–3 alternativas lado a lado, «más económica» marcada.</p></div>
+      <div class="card"><h3>PDF + lead</h3><p>PDF listo para enviar y cotización vinculada al cliente.</p></div>
+    </div>
+  </div>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> CP2-01: propuesta en 4,4 s en producción (meta del PO: < 60 s)</span><span>5 / 19</span></div>
+</section>
+
+<section class="slide" data-title="Base de conocimiento">
+  <p class="kicker">05 · Sprint 2 · HU-24</p>
+  <h2>La IA habla como su agencia</h2>
+  <div class="split">
+    <div class="shot-wide"><img src="../sprint-3/evidence/11-base-conocimiento.png" alt="Base de conocimiento" /></div>
+    <div class="side">
+      <div class="card"><h3>Tono · políticas · FAQ</h3><p>El gerente las escribe una vez en «Base IA».</p></div>
+      <div class="card"><h3>En cada propuesta</h3><p>Títulos y resúmenes mencionan la asistencia 24/7 y la tranquilidad, como pidió la agencia.</p></div>
+      <div class="card"><h3>Seguro</h3><p>Se inyecta como datos de referencia, no como instrucciones; aislado por agencia y auditado (KNOWLEDGE_UPDATE).</p></div>
+    </div>
+  </div>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> e2e: guardar, aislamiento entre agencias, 400 y 401</span><span>6 / 19</span></div>
+</section>
+
+<section class="slide" data-title="Copiloto">
+  <p class="kicker">06 · Sprint 2 · HU-10</p>
+  <h2>A quién llamar primero, y por qué</h2>
+  <div class="shot-wide fill"><img src="../sprint-3/evidence/10-crm-copiloto.png" alt="CRM con copiloto IA" /></div>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> Score 0–100 con razón observable · el asesor solo ve sus leads</span><span>7 / 19</span></div>
+</section>
+
+<section class="slide" data-title="IA resiliente">
+  <p class="kicker">07 · IA en producción · Google Gemini</p>
+  <h2>Una IA que no se cae en la demo</h2>
+  <div class="values fill">
+    <div class="card"><h3>Cadena de modelos</h3><p>Si un modelo responde 429/503, se intenta el siguiente; si todos, pausa y segunda vuelta.</p></div>
+    <div class="card"><h3>Validación estricta</h3><p>Cada respuesta pasa por un esquema Zod. Si la propuesta es inválida, se regenera una vez.</p></div>
+    <div class="card"><h3>Multi-proveedor</h3><p>AI_PROVIDER=gemini o groq, sin cambiar código.</p></div>
+    <div class="card"><h3>Sin secretos en logs</h3><p>La clave vive solo en Vercel; los errores nunca la incluyen (probado).</p></div>
+  </div>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> apps/api/src/ai/ai.service.ts · 21 pruebas unitarias de IA</span><span>8 / 19</span></div>
 </section>
 
 <section class="slide" data-title="Portal del viajero">
-  <p class="kicker">04 · HU-19 · HU-20 · HU-21</p>
+  <p class="kicker">Sprint 3 · HU-19 · HU-20 · HU-21</p>
   <h2>El portal del viajero, en su bolsillo</h2>
   <div class="phones">
     <div><div class="phone"><img src="../sprint-3/evidence/05-portal-itinerario.png" alt="Itinerario en el portal" /></div><p class="phone-cap">Itinerario por días</p></div>
     <div><div class="phone"><img src="../sprint-3/evidence/06-portal-documentos.png" alt="Documentos en el portal" /></div><p class="phone-cap">Documentos del viaje</p></div>
     <div><div class="phone"><img src="../sprint-3/evidence/07-portal-chat.png" alt="Chat en el portal" /></div><p class="phone-cap">Chat con la agencia</p></div>
   </div>
-  <div class="meta"><span class="brand-mark"><span class="dot"></span> Sin app que instalar · sin contraseña · enlace seguro de 24 h</span><span>5 / 14</span></div>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> Sin app que instalar · sin contraseña · enlace seguro de 24 h</span><span>9 / 19</span></div>
 </section>
 
 <section class="slide" data-title="Workspace de la agencia">
-  <p class="kicker">05 · Lado agencia · HU-16 + HU-19/20/21</p>
+  <p class="kicker">Sprint 3 · Lado agencia · HU-16 + HU-19/20/21</p>
   <h2>Un viaje, un solo lugar de trabajo</h2>
   <div class="split">
     <div class="shot-wide"><img src="../sprint-3/evidence/08-agencia-recibe-chat.png" alt="Workspace del viaje" /></div>
@@ -935,11 +991,11 @@
       <div class="card"><h3>Chat en vivo</h3><p>Conversación por reserva, ordenada y con refresco automático.</p></div>
     </div>
   </div>
-  <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>6 / 14</span></div>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>10 / 19</span></div>
 </section>
 
 <section class="slide" data-title="KPIs">
-  <p class="kicker">06 · HU-22 · Dashboard gerencial</p>
+  <p class="kicker">Sprint 3 · HU-22 · Dashboard gerencial</p>
   <h2>La agencia en 10 segundos</h2>
   <div class="kpis">
     <div class="kpi"><b>$52,1 M</b><span>ventas cerradas (COP)</span></div>
@@ -948,17 +1004,17 @@
     <div class="kpi"><b>5</b><span>follow-ups vencidos</span></div>
   </div>
   <div class="shot-wide"><img src="../sprint-3/evidence/01-dashboard.png" alt="Dashboard de KPIs" /></div>
-  <div class="meta"><span class="brand-mark"><span class="dot"></span> Datos del piloto demo · GET /api/metrics + /api/metrics/operations · solo GERENTE/ADMIN</span><span>7 / 14</span></div>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> Datos del piloto demo · GET /api/metrics + /api/metrics/operations · solo GERENTE/ADMIN</span><span>11 / 19</span></div>
 </section>
 
 <section class="slide" data-title="Follow-ups">
-  <p class="kicker">07 · HU-23 · Automatización</p>
+  <p class="kicker">Sprint 3 · HU-23 · Automatización</p>
   <h2>Ningún lead se enfría por olvido</h2>
   <div class="split">
     <div class="side">
       <div class="flow">
         <div class="step"><h3>Tarea</h3><p>El asesor agenda un seguimiento con fecha.</p></div>
-        <div class="step"><h3>Worker</h3><p>BullMQ revisa cada 5 min las tareas vencidas.</p></div>
+        <div class="step"><h3>Worker</h3><p>BullMQ cada 5 min, o barrido al consultar (serverless).</p></div>
         <div class="step"><h3>Recordatorio</h3><p>Uno por tarea y vencimiento (deduplicado).</p></div>
         <div class="step"><h3>Campana</h3><p>Contador coral; marcar leído baja el contador.</p></div>
       </div>
@@ -966,11 +1022,11 @@
     </div>
     <div class="shot-wide"><img src="../sprint-3/evidence/02-reminders.png" alt="Campana de recordatorios" style="object-position: top right;" /></div>
   </div>
-  <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>8 / 14</span></div>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>12 / 19</span></div>
 </section>
 
 <section class="slide" data-title="Seguridad">
-  <p class="kicker">08 · DevSecOps · Seguridad del portal</p>
+  <p class="kicker">Sprint 3 · DevSecOps · Seguridad del portal</p>
   <h2>Abierto para el viajero, cerrado para todos los demás</h2>
   <div class="values fill">
     <div class="card"><h3>Token</h3><p>32 bytes aleatorios, 24 h, solo se guarda el hash SHA-256. Un enlace nuevo revoca el anterior.</p></div>
@@ -979,97 +1035,116 @@
     <div class="card"><h3>Auditoría</h3><p>PORTAL_ACCESS_ISSUED y PORTAL_DOCUMENTS_VIEWED en el panel de Auditoría.</p></div>
   </div>
   <p class="quote">Headers con <em>helmet</em> + HSTS, logs JSON con <em>x-request-id</em> y aislamiento por <em>agencyId</em> en cada consulta.</p>
-  <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>9 / 14</span></div>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>13 / 19</span></div>
 </section>
 
-<section class="slide" data-title="Arquitectura del piloto">
-  <p class="kicker">09 · Arquitectura del piloto</p>
-  <h2>Desplegado y reproducible</h2>
+<section class="slide" data-title="Arquitectura">
+  <p class="kicker">Arquitectura · 100 % infraestructura PDP</p>
+  <h2>Desplegado, con dominio propio y HTTPS</h2>
   <div class="flow" style="flex:1;">
-    <div class="step"><h3>Viajero / Agencia</h3><p>Navegador o celular. Next.js 15.5 en Vercel con headers de seguridad.</p></div>
-    <div class="step"><h3>Proxy /api</h3><p>Rewrite de Vercel: cookies first-party, sin CORS en el navegador.</p></div>
-    <div class="step"><h3>Túnel HTTPS</h3><p>cloudflared publica solo el API; nada expuesto en puertos públicos.</p></div>
-    <div class="step"><h3>NestJS API</h3><p>Docker. Migraciones Prisma al arrancar. Health con SELECT 1.</p></div>
-    <div class="step"><h3>Datos</h3><p>PostgreSQL 16 + Redis 7 (BullMQ) en la misma red privada.</p></div>
+    <div class="step"><h3>travel-os.pdpcomunica.com</h3><p>Next.js 15.5 en Vercel (equipo PDP), headers de seguridad.</p></div>
+    <div class="step"><h3>Proxy /api</h3><p>Rewrite: cookies first-party, sin CORS en el navegador.</p></div>
+    <div class="step"><h3>api.travel-os…</h3><p>NestJS 11 como Vercel Function, con arranque reutilizado.</p></div>
+    <div class="step"><h3>Neon Postgres</h3><p>Integración del marketplace de Vercel; migraciones Prisma.</p></div>
+    <div class="step"><h3>Gemini</h3><p>Cotizador y copiloto; Groq como alternativa.</p></div>
   </div>
-  <p class="note">deploy/api.Dockerfile · deploy/docker-compose.pilot.yml · documentation/plans/sprint-3/pilot-runbook.md</p>
-  <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>10 / 14</span></div>
+  <p class="note">DNS en el cPanel de pdpcomunica.com · runbook: documentation/plans/sprint-3/pilot-runbook.md</p>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>14 / 19</span></div>
 </section>
 
-<section class="slide" data-title="Calidad">
-  <p class="kicker">10 · Calidad del software</p>
-  <h2>122 pruebas automatizadas en verde</h2>
+<section class="slide" data-title="Caso de negocio">
+  <p class="kicker">Caso de negocio v2 · Finanzas y riesgos</p>
+  <h2>Viable con 10 agencias pagando</h2>
   <div class="kpis">
-    <div class="kpi"><b>44</b><span>unit API (Jest)</span></div>
-    <div class="kpi"><b>32</b><span>e2e API con Postgres + Redis</span></div>
-    <div class="kpi"><b>46</b><span>unit web (Vitest)</span></div>
-    <div class="kpi"><b>14</b><span>casos de prueba HU-19…23</span></div>
+    <div class="kpi"><b>$37,3 M</b><span>pre-operación (COP)</span></div>
+    <div class="kpi"><b>$1,18 M</b><span>costo fijo mensual</span></div>
+    <div class="kpi"><b>$119.500</b><span>margen por agencia/mes</span></div>
+    <div class="kpi"><b>10</b><span>agencias = punto de equilibrio</span></div>
+  </div>
+  <table class="comp fill">
+    <thead><tr><th>Riesgo top</th><th>Nivel</th><th>Mitigación</th></tr></thead>
+    <tbody>
+      <tr><td>R1 Límite o caída de la IA</td><td>Moderado</td><td>Cadena de modelos, reintento, Groq de respaldo</td></tr>
+      <tr><td>R5 Baja adopción de asesores</td><td>Moderado</td><td>Usabilidad, manual en la app, Base IA con su tono</td></tr>
+      <tr><td>R3 Fuga entre agencias</td><td>Moderado</td><td>Filtro por agencyId + e2e de aislamiento en CI</td></tr>
+    </tbody>
+  </table>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> Supuestos de tarifas por validar con el PO · RACI y matriz completas en la wiki</span><span>15 / 19</span></div>
+</section>
+
+<section class="slide" data-title="Usabilidad">
+  <p class="kicker">Protocolo de pruebas de usabilidad</p>
+  <h2>9 tareas reales, 8 hipótesis medibles</h2>
+  <div class="grid-2 fill">
+    <ul class="check">
+      <li class="ok">6 participantes: 3 asesores, 1 gerente, 2 viajeros</li>
+      <li class="ok">T1 cotizar ≤ 90 s · T6 Base IA ≤ 60 s · T7 dashboard ≤ 10 s</li>
+      <li class="ok">Éxito, tiempo, errores, SEQ por tarea y SUS ≥ 70</li>
+      <li class="ok">Moderador UX + observador QA, grabación con consentimiento</li>
+    </ul>
+    <div class="card"><h3>Estado</h3><p>Protocolo listo (Sprint 2). Ejecución con usuarios de Punto D' Partida <strong>pendiente de agendar</strong>; la plantilla de resultados está preparada y no contiene datos inventados.</p></div>
+  </div>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> documentation/sprint-2/usability-protocol.md · sprint-3/usability/results.md</span><span>16 / 19</span></div>
+</section>
+
+<section class="slide" data-title="Pruebas automáticas">
+  <p class="kicker">Calidad del software</p>
+  <h2>145 pruebas automatizadas en verde</h2>
+  <div class="kpis">
+    <div class="kpi"><b>60</b><span>unit API (Jest)</span></div>
+    <div class="kpi"><b>35</b><span>e2e API con Postgres + Redis</span></div>
+    <div class="kpi"><b>50</b><span>unit web (Vitest)</span></div>
+    <div class="kpi"><b>2+</b><span>pruebas por funcionalidad: happy + alternativa</span></div>
   </div>
   <ul class="check fill">
-    <li class="ok">e2e del portal: itinerario, documentos HTTPS, aislamiento 403, token, auditoría, chat, revocación y KPIs</li>
-    <li class="ok">CI de GitHub Actions: lint → unit → e2e → build (API y web) en cada PR</li>
-    <li class="ok">Smoke con Playwright sobre producción: evidencias en documentation/sprint-3/evidence</li>
-    <li class="ok">Next.js actualizado a 15.5.28 por vulnerabilidades RSC detectadas en el deploy</li>
+    <li class="ok">IA simulada en unitarias: se prueban las reglas que la limitan (catálogo, totales, reintento)</li>
+    <li class="ok">e2e: auth, aislamiento, portal, chat, revocación, KPIs y base de conocimiento</li>
+    <li class="ok">CI en cada PR: lint → unit → e2e → build; merge solo en verde</li>
   </ul>
-  <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>11 / 14</span></div>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> Estrategia: documentation/sprint-2/test-strategy.md</span><span>17 / 19</span></div>
 </section>
 
 <section class="slide" data-title="Gestión">
-  <p class="kicker">11 · Gestión del proyecto</p>
-  <h2>GitHub Flow de punta a punta</h2>
-  <table class="comp fill">
-    <thead><tr><th>PR</th><th>Rama</th><th>Cierra</th></tr></thead>
+  <p class="kicker">Gestión del proyecto</p>
+  <h2>GitHub Flow y ceremonias documentadas</h2>
+  <div class="grid-2 fill">
+  <table class="comp">
+    <thead><tr><th>PR</th><th>Entrega</th></tr></thead>
     <tbody>
-      <tr><td>#36 · #37</td><td>feature/HU-14-cotizador-ui · feature/HU-10-copiloto</td><td>Carry-over Sprint 2 (cotizador UI, copiloto)</td></tr>
-      <tr><td>#38</td><td>feat/sprint-3-backend</td><td>APIs de portal, chat, recordatorios y métricas</td></tr>
-      <tr><td>#39</td><td>feature/HU-22-metricas-operativas</td><td>#22</td></tr>
-      <tr><td>#40</td><td>feature/HU-19-20-21-portal-viajero</td><td>#19 #20 #21 #16</td></tr>
-      <tr><td>#41</td><td>feature/HU-23-recordatorios-ui</td><td>#23</td></tr>
-      <tr><td>#42 · #43</td><td>chore/sprint-3-devsecops · docs/sprint-3-qa-ux-cierre</td><td>Piloto, e2e, UAT, UX y este deck</td></tr>
+      <tr><td>#34</td><td>Backend Sprint 2 (cotización, catálogo, PDF)</td></tr>
+      <tr><td>#35 · #36 · #37</td><td>UX S2 · cotizador UI · copiloto</td></tr>
+      <tr><td>#38</td><td>Backend Sprint 3</td></tr>
+      <tr><td>#39 – #43</td><td>KPIs, portal, campana, DevSecOps, QA/UX</td></tr>
+      <tr><td>#44</td><td>Gemini, hosting PDP, HU-24, manual, cierre</td></tr>
     </tbody>
   </table>
-  <p class="note">Conventional commits · DoD por PR · CI verde antes de merge · issues cerrados desde el PR</p>
-  <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>12 / 14</span></div>
-</section>
-
-<section class="slide" data-title="UAT">
-  <p class="kicker">12 · UAT del PO</p>
-  <h2>Lo validamos con usted, en esta review</h2>
-  <ul class="check fill">
-    <li class="ok">Dashboard legible en menos de 10 segundos</li>
-    <li class="ok">Campana de follow-ups y marcar leído</li>
-    <li class="ok">Itinerario y documentos agregados aparecen al instante</li>
-    <li class="ok">Enlace del portal abierto en el celular del PO</li>
-    <li class="ok">Chat ida y vuelta en ≤5 s</li>
-    <li class="ok">Enlace anterior revocado al generar uno nuevo</li>
-    <li class="ok">Auditoría de acceso al portal</li>
-  </ul>
-  <p class="note">Checklist firmable: documentation/plans/sprint-3/uat-po.md</p>
-  <div class="meta"><span class="brand-mark"><span class="dot"></span> TravelOS AI</span><span>13 / 14</span></div>
+  <div class="card"><h3>Ceremonias</h3><p>Actas de planning, dailies, refinamiento, reunión con el PO, review y retro de ambos sprints en documentation/ceremonies (MINUTES-008 a 017), marcadas como borrador para validación del equipo.</p></div>
+  </div>
+  <div class="meta"><span class="brand-mark"><span class="dot"></span> Conventional commits · DoD por PR · issues cerrados desde el PR</span><span>18 / 19</span></div>
 </section>
 
 <section class="slide" data-title="Cierre">
-  <p class="kicker">13 · Cierre</p>
-  <h2>Sprint 3 cerrado. Siguiente: piloto real.</h2>
+  <p class="kicker">Cierre</p>
+  <h2>Sprint 2 y 3 cerrados. Siguiente: piloto con usuarios reales.</h2>
   <div class="grid-2 fill">
     <ul class="check">
-      <li class="ok">5/5 HU de Sprint 3 en Done + carry-over de Sprint 2</li>
-      <li class="ok">Producción: travelos-pdp.vercel.app</li>
-      <li class="ok">122 pruebas automatizadas en verde</li>
-      <li class="ok">Portal seguro, auditado y desplegado</li>
+      <li class="ok">13/13 historias en Done, milestones cerrados</li>
+      <li class="ok">Producción: travel-os.pdpcomunica.com</li>
+      <li class="ok">IA con Gemini y base de conocimiento propia</li>
+      <li class="ok">145 pruebas automatizadas en verde</li>
     </ul>
     <div class="card">
       <h3>Sprint 4 (propuesta)</h3>
       <ul>
-        <li>Envío del enlace del portal por correo/WhatsApp</li>
-        <li>Dominio fijo para el API (túnel con nombre)</li>
-        <li>HU-24: base de conocimiento de la agencia para la IA</li>
-        <li>Carga de archivos (no solo URLs) para documentos</li>
+        <li>Ejecutar las pruebas de usabilidad y corregir hallazgos</li>
+        <li>Enviar el enlace del portal por correo/WhatsApp</li>
+        <li>Carga de archivos para documentos</li>
+        <li>Plan de pago de IA si el piloto crece</li>
       </ul>
     </div>
   </div>
   <p class="lede" style="margin-top:.8rem;">Repo: <strong>github.com/Jeronimo0228/travel-OS</strong></p>
-  <div class="meta"><span>Gracias. ¿Preguntas?</span><span>14 / 14</span></div>
+  <div class="meta"><span>Gracias. ¿Preguntas?</span><span>19 / 19</span></div>
 </section>
 
 </div>
@@ -1079,7 +1154,7 @@
 <div class="hud">
     <span class="hint">F pantalla · ← →</span>
     <button type="button" id="prev" aria-label="Anterior">‹</button>
-    <span id="counter">1 / 14</span>
+    <span id="counter">1 / 19</span>
     <button type="button" id="next" aria-label="Siguiente">›</button>
   </div>
   <script>
