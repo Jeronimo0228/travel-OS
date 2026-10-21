@@ -239,6 +239,24 @@ const catalogItems: Omit<Prisma.CatalogItemCreateManyInput, 'agencyId'>[] = [
     pricingUnit: CatalogPricingUnit.PER_PERSON,
     price: 280000,
   },
+  {
+    slug: 'santa-marta-hotel-taganga',
+    kind: CatalogKind.HOTEL,
+    name: 'Hostal Bahía Taganga',
+    destination: 'Santa Marta',
+    description: 'Hostal económico con vista a la bahía de Taganga.',
+    pricingUnit: CatalogPricingUnit.PER_NIGHT,
+    price: 150000,
+  },
+  {
+    slug: 'santa-marta-activity-minca',
+    kind: CatalogKind.ACTIVITY,
+    name: 'Minca y cascadas',
+    destination: 'Santa Marta',
+    description: 'Tour a Minca con cascada Pozo Azul y finca de cacao.',
+    pricingUnit: CatalogPricingUnit.PER_PERSON,
+    price: 120000,
+  },
 ];
 
 export async function seedCatalogForAgency(
