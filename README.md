@@ -15,14 +15,18 @@ Intelligent Operating System for Travel Agencies — **Integrative Project 2 (EA
 | Backlog / issues | https://github.com/Jeronimo0228/travel-OS/issues |
 | Milestones | https://github.com/Jeronimo0228/travel-OS/milestones |
 
-## Producción (Sprint 3)
+## Producción (Sprint 2 + 3)
 
 | | URL |
 |---|---|
 | Web | https://travel-os.pdpcomunica.com |
 | API | https://api.travel-os.pdpcomunica.com/api/health |
 | Presentación | [`documentation/presentation/sprint-3-deck.html`](documentation/presentation/sprint-3-deck.html) |
-| Manual de usuario | [`documentation/sprint-3/user-manual.md`](documentation/sprint-3/user-manual.md) |
+| Manual de usuario | [`documentation/sprint-3/user-manual.md`](documentation/sprint-3/user-manual.md) · en la app: `/ayuda` |
+| Caso de negocio | [v2 (finanzas, riesgos)](documentation/sprint-2/business-case-v2.md) · [sección 6](documentation/sprint-3/business-case-section-6.md) |
+| Pruebas | [estrategia](documentation/sprint-2/test-strategy.md) · [casos S2](documentation/sprint-2/functional-tests/README.md) · [casos S3](documentation/sprint-3/functional-tests/README.md) |
+| Usabilidad | [protocolo](documentation/sprint-2/usability-protocol.md) · [resultados (pendiente de ejecución)](documentation/sprint-3/usability/results.md) |
+| Actas | [`documentation/ceremonies/`](documentation/ceremonies/) (Sprint 2 y 3 en borrador) |
 
 Usuario demo: `gerente@demo.travelos.local` / `TravelOS!demo1`, agencia `demo-agencia`.
 

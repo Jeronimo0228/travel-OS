@@ -28,10 +28,10 @@ npm run dev   # http://127.0.0.1:5173
 
 ---
 
-# Sprint 3 — Review (Portal + Insights + Piloto)
+# Review conjunta Sprint 2 + Sprint 3
 
-- [`sprint-3-deck.html`](./sprint-3-deck.html) — 14 diapositivas, mismo motor que Sprint 0/1 (stage 1920×1080, `F` pantalla completa, flechas).
-- Demo en vivo: https://travelos-pdp.vercel.app (gerente@demo.travelos.local / TravelOS!demo1).
+- [`sprint-3-deck.html`](./sprint-3-deck.html) — 19 diapositivas (Sprint 2 y 3), mismo motor que Sprint 0/1 (stage 1920×1080, `F` pantalla completa, flechas).
+- Demo en vivo: https://travel-os.pdpcomunica.com (gerente@demo.travelos.local / TravelOS!demo1).
 
 ```bash
 cd travel-OS

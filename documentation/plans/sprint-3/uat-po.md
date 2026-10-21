@@ -1,6 +1,6 @@
 # UAT del PO — Sprint 3
 
-PO: Juan Manuel Restrepo Molina (Punto D' Partida). Entorno: https://travelos-pdp.vercel.app
+PO: Juan Manuel Restrepo Molina (Punto D' Partida). Entorno: https://travel-os.pdpcomunica.com
 
 | # | Paso | Resultado esperado | OK |
 |---|---|---|---|
