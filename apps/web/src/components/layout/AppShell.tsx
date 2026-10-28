@@ -3,6 +3,7 @@ import { Sidebar } from "./Sidebar";
 import { Topbar } from "./Topbar";
 import { AiAssistantWidget } from "./AiAssistantWidget";
 import { TenantBrandingProvider } from "@/components/branding/TenantBrandingProvider";
+import { DemoBanner } from "./DemoBanner";
 import { RequireSession } from "@/components/auth/SessionProvider";
 
 type AppShellProps = {
@@ -28,6 +29,7 @@ export function AppShell({ children, searchPlaceholder }: AppShellProps) {
               id="main-content"
               className="p-container-margin flex flex-col gap-6"
             >
+              <DemoBanner />
               {children}
             </main>
           </div>
