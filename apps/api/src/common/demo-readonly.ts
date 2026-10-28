@@ -8,6 +8,7 @@ const ALLOWED_WRITES: RegExp[] = [
   /^\/api\/auth\/logout\/?$/,
   /^\/api\/quotes\/?$/, // probar el cotizador con IA
   /^\/api\/quotes\/[^/]+\/pdf\/?$/,
+  /^\/api\/reservations\/[^/]+\/portal-access\/?$/, // abrir el portal del viajero
 ];
 
 export function demoReadonlyAgencies(env = process.env.DEMO_READONLY_AGENCY_IDS): Set<string> {

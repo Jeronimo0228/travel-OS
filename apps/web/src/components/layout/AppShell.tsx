@@ -15,7 +15,7 @@ export function AppShell({ children, searchPlaceholder }: AppShellProps) {
   return (
     <RequireSession>
       <TenantBrandingProvider>
-        <div className="min-h-screen bg-surface">
+        <div className="min-h-screen bg-surface overflow-x-clip">
           <a
             href="#main-content"
             className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-on-primary focus:rounded-lg focus:font-body-custom focus:text-label-md"
@@ -23,11 +23,11 @@ export function AppShell({ children, searchPlaceholder }: AppShellProps) {
             Saltar al contenido
           </a>
           <Sidebar />
-          <div className="ml-64 min-h-screen flex flex-col">
+          <div className="lg:ml-64 min-h-screen flex flex-col min-w-0">
             <Topbar searchPlaceholder={searchPlaceholder} />
             <main
               id="main-content"
-              className="p-container-margin flex flex-col gap-6"
+              className="p-4 sm:p-container-margin flex flex-col gap-6 min-w-0"
             >
               <DemoBanner />
               {children}

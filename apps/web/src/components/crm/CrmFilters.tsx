@@ -29,7 +29,7 @@ export function CrmFilters({
 }: CrmFiltersProps) {
   return (
     <div className="flex flex-wrap items-center gap-3 bg-surface-container-lowest border border-outline-variant rounded-xl p-4">
-      <div className="relative flex-1 min-w-[220px]">
+      <div className="relative flex-1 min-w-0 basis-full sm:basis-auto sm:min-w-[220px]">
         <label className="sr-only" htmlFor="crm-search">
           Buscar por nombre
         </label>

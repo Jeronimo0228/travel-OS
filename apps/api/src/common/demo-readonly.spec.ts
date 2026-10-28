@@ -15,6 +15,7 @@ describe('assertDemoCanWrite', () => {
   it('allows trying the quote generator', () => {
     expect(() => assertDemoCanWrite('agency-demo', 'POST', '/api/quotes', demo)).not.toThrow();
     expect(() => assertDemoCanWrite('agency-demo', 'POST', '/api/quotes/abc/pdf', demo)).not.toThrow();
+    expect(() => assertDemoCanWrite('agency-demo', 'POST', '/api/reservations/r1/portal-access', demo)).not.toThrow();
   });
 
   it('blocks other writes for the demo agency', () => {

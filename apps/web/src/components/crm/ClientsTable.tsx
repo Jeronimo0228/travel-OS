@@ -109,7 +109,7 @@ export function ClientsTable({
             description="Ningún prospecto coincide con los filtros aplicados. Ajusta la búsqueda o la etapa seleccionada."
           />
         ) : (
-          <div className="overflow-x-auto">
+          <div className="relative overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-data-table-header border-b border-outline-variant">
@@ -165,7 +165,7 @@ export function ClientsTable({
                             onChange={(event) =>
                               updateStage(lead.id, event.target.value as Lead["stage"])
                             }
-                            className={`px-3 py-1 text-[12px] font-bold rounded-full border-none outline-none cursor-pointer ${stageBadgeClass[stage]}`}
+                            className={`min-h-11 px-3 py-2 text-[12px] font-bold rounded-full border-none outline-none cursor-pointer ${stageBadgeClass[stage]}`}
                           >
                             {leadStages.map((option) => (
                               <option key={option} value={option}>
@@ -185,7 +185,7 @@ export function ClientsTable({
                               onChange={(event) =>
                                 void handleAssign(lead.id, event.target.value)
                               }
-                              className="border border-outline-variant rounded-lg px-2 py-1 font-body-custom text-body-sm bg-surface-container-lowest max-w-[160px]"
+                              className="border border-outline-variant rounded-lg px-2 py-2 min-h-11 font-body-custom text-body-sm bg-surface-container-lowest max-w-[160px]"
                             >
                               <option value="" disabled>
                                 Sin asignar
@@ -213,7 +213,7 @@ export function ClientsTable({
                               }
                               aria-label={`${isExpanded ? "Ocultar" : "Ver"} tareas de ${lead.name}`}
                               aria-expanded={isExpanded}
-                              className="text-on-surface-variant hover:text-primary transition-colors"
+                              className="w-11 h-11 inline-flex items-center justify-center rounded-full text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors"
                             >
                               <span className="material-symbols-outlined">
                                 {isExpanded ? "expand_less" : "checklist"}
@@ -223,7 +223,7 @@ export function ClientsTable({
                               type="button"
                               onClick={() => onEdit(lead)}
                               aria-label={`Editar ${lead.name}`}
-                              className="text-on-surface-variant hover:text-primary transition-colors"
+                              className="w-11 h-11 inline-flex items-center justify-center rounded-full text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors"
                             >
                               <span className="material-symbols-outlined">edit</span>
                             </button>
@@ -231,7 +231,7 @@ export function ClientsTable({
                               type="button"
                               onClick={() => void handleDelete(lead)}
                               aria-label={`Eliminar ${lead.name}`}
-                              className="text-on-surface-variant hover:text-alert-coral transition-colors"
+                              className="w-11 h-11 inline-flex items-center justify-center rounded-full text-on-surface-variant hover:text-alert-coral hover:bg-surface-container-low transition-colors"
                             >
                               <span className="material-symbols-outlined">delete</span>
                             </button>

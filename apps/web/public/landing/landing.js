@@ -63,6 +63,8 @@ let ran=0;function runTab(){if(ran)return;ran=1;$$('[data-n]').forEach(el=>{cons
  hb('#ases',[['Valentina (ficticia)','$31,5 M',100],['Mateo (ficticio)','$24,1 M',76],['Camila (ficticia)','$18,0 M',57],['Andrés (ficticio)','$10,6 M',34]]);
  hb('#dest',[['Cartagena','11 viajes',100],['San Andrés','8 viajes',73],['Eje Cafetero','6 viajes',55],['Cusco','2 viajes',18]])}
 
+// menú móvil
+const bg=$("#burger"),nv=$("#nav");if(bg){bg.onclick=()=>{const o=nv.classList.toggle("open");bg.setAttribute("aria-expanded",o);bg.setAttribute("aria-label",o?"Cerrar menú":"Abrir menú")};$$(".links a").forEach(a=>a.addEventListener("click",()=>{nv.classList.remove("open");bg.setAttribute("aria-expanded","false")}))}
 // capturas reales
 $$('.shot').forEach(b=>b.onclick=()=>{$$('.shot').forEach(x=>x.classList.remove('on'));b.classList.add('on');const im=$('#shotimg');im.style.opacity='0';setTimeout(()=>{im.src='/landing/'+b.dataset.img+'.webp';im.style.opacity='1'},180);$('#shotcap').textContent=b.dataset.cap});
 // demo real

@@ -15,7 +15,7 @@ export default function LoginPage() {
           </Link>
           <br />
           ¿Solo quieres mirar?{" "}
-          <Link href="/#entrar" className="text-secondary hover:underline">
+          <Link href="/#entrar" className="inline-block py-3 text-secondary hover:underline">
             Entrar a la demo
           </Link>
         </>
