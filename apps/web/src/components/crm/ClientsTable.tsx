@@ -165,7 +165,7 @@ export function ClientsTable({
                             onChange={(event) =>
                               updateStage(lead.id, event.target.value as Lead["stage"])
                             }
-                            className={`px-3 py-1 text-[12px] font-bold rounded-full border-none outline-none cursor-pointer ${stageBadgeClass[stage]}`}
+                            className={`px-3 py-1 text-[12px] font-bold rounded-full border-none outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-secondary-container ${stageBadgeClass[stage]}`}
                           >
                             {leadStages.map((option) => (
                               <option key={option} value={option}>

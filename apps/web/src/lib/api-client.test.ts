@@ -1,5 +1,10 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { ApiError, SessionExpiredError, apiFetch } from "./api-client";
+import {
+  ApiError,
+  SessionExpiredError,
+  apiFetch,
+  onSessionExpired,
+} from "./api-client";
 
 function mockFetch(response: Response | Error) {
   const fetchMock = vi.fn(async () => {
@@ -152,5 +157,78 @@ describe("apiFetch · errors", () => {
     expect(error).toBeInstanceOf(ApiError);
     expect(error.status).toBeUndefined();
     expect(error.message).toContain("No se pudo conectar con el servidor");
+  });
+});
+
+describe("apiFetch · session expiry", () => {
+  let stopListening: (() => void) | undefined;
+
+  afterEach(() => {
+    stopListening?.();
+    stopListening = undefined;
+  });
+
+  it("notifies the listener when an authenticated request gets a 401", async () => {
+    mockFetch(json({}, 401));
+    const listener = vi.fn();
+    stopListening = onSessionExpired(listener);
+
+    const error = await captureError(apiFetch("/api/leads"));
+
+    expect(listener).toHaveBeenCalledTimes(1);
+    expect(error).toBeInstanceOf(SessionExpiredError);
+  });
+
+  it("does not notify for auth endpoints: a wrong password is not an expired session", async () => {
+    mockFetch(json({}, 401));
+    const listener = vi.fn();
+    stopListening = onSessionExpired(listener);
+
+    await captureError(apiFetch("/api/auth/login", { method: "POST" }));
+    await captureError(apiFetch("/api/auth/logout", { method: "POST" }));
+
+    expect(listener).not.toHaveBeenCalled();
+  });
+
+  it("does not notify for traveler portal calls, which authenticate with a token", async () => {
+    mockFetch(json({}, 401));
+    const listener = vi.fn();
+    stopListening = onSessionExpired(listener);
+
+    await captureError(apiFetch("/api/portal/itinerary", { credentials: "omit" }));
+
+    expect(listener).not.toHaveBeenCalled();
+  });
+
+  it("does not notify for other errors", async () => {
+    mockFetch(json({ message: "Forbidden" }, 403));
+    const listener = vi.fn();
+    stopListening = onSessionExpired(listener);
+
+    await captureError(apiFetch("/api/leads"));
+
+    expect(listener).not.toHaveBeenCalled();
+  });
+
+  it("stops notifying after unsubscribing", async () => {
+    mockFetch(json({}, 401));
+    const listener = vi.fn();
+    onSessionExpired(listener)();
+
+    await captureError(apiFetch("/api/leads"));
+
+    expect(listener).not.toHaveBeenCalled();
+  });
+});
+
+describe("apiFetch · login errors", () => {
+  it("explains a failed login as wrong credentials, not as an expired session", async () => {
+    mockFetch(json({ message: "Invalid credentials" }, 401));
+
+    const error = await captureError(apiFetch("/api/auth/login", { method: "POST" }));
+
+    expect(error).not.toBeInstanceOf(SessionExpiredError);
+    expect(error.status).toBe(401);
+    expect(error.message).toBe("Correo o contraseña incorrectos.");
   });
 });
