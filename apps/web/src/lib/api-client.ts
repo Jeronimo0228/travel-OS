@@ -86,11 +86,11 @@ export async function apiFetch<T = unknown>(
   try {
     res = await fetch(`${API_URL}${path}`, {
       credentials: "include",
+      ...options,
       headers: {
         "Content-Type": "application/json",
         ...options.headers,
       },
-      ...options,
     });
   } catch {
     throw new ApiError(
