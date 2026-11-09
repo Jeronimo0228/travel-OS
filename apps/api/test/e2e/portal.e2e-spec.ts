@@ -11,6 +11,12 @@ import {
 
 const SUITE_PREFIX = makeE2ePrefix('portal');
 
+// Trip dates are relative to the run: "active trips" counts reservations that
+// have not ended yet, so fixed calendar dates make this suite expire.
+const DAY_MS = 86_400_000;
+const daysFromNow = (days: number) =>
+  new Date(Date.now() + days * DAY_MS).toISOString();
+
 describe('Traveler portal + KPIs (e2e) — HU-19/20/21/22', () => {
   let app: INestApplication<App>;
   let prisma: PrismaService;
@@ -52,8 +58,8 @@ describe('Traveler portal + KPIs (e2e) — HU-19/20/21/22', () => {
         travelerName: 'Ana Viajera',
         travelerEmail: 'ana.viajera@example.com',
         destination: 'Cartagena',
-        startsAt: '2026-11-02T05:00:00.000Z',
-        endsAt: '2026-11-06T05:00:00.000Z',
+        startsAt: daysFromNow(1),
+        endsAt: daysFromNow(5),
       })
       .expect(201);
     reservationId = reservation.body.id;
@@ -72,7 +78,7 @@ describe('Traveler portal + KPIs (e2e) — HU-19/20/21/22', () => {
       .set('Authorization', `Bearer ${staffA}`)
       .send({
         title: 'Tour Islas del Rosario',
-        startsAt: '2026-11-03T13:00:00.000Z',
+        startsAt: daysFromNow(2),
       })
       .expect(201);
     await http()
