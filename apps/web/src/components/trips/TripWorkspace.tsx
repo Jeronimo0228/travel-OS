@@ -6,7 +6,11 @@ import { ChatThread } from "@/components/portal/ChatThread";
 import { DocumentList } from "@/components/portal/DocumentList";
 import { ItineraryTimeline } from "@/components/portal/ItineraryTimeline";
 import { CatalogLibrary } from "@/components/trips/CatalogLibrary";
-import { buildPortalLink } from "@/lib/portal";
+import {
+  buildMailtoLink,
+  buildPortalLink,
+  buildWhatsAppLink,
+} from "@/lib/portal";
 import {
   addItineraryItem,
   addTripDocument,
@@ -177,6 +181,37 @@ export function TripWorkspace({ id }: { id: string }) {
               className="px-4 py-2 border border-outline-variant rounded-lg text-label-md whitespace-nowrap"
             >
               Abrir
+            </a>
+          </div>
+          <div className="flex flex-wrap gap-2 mt-3">
+            <a
+              href={buildWhatsAppLink(
+                portalLink.url,
+                trip.travelerName,
+                trip.destination,
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 border border-outline-variant rounded-lg text-label-md flex items-center gap-2"
+            >
+              <span className="material-symbols-outlined text-[18px]" aria-hidden="true">
+                chat
+              </span>
+              Enviar por WhatsApp
+            </a>
+            <a
+              href={buildMailtoLink(
+                trip.travelerEmail,
+                portalLink.url,
+                trip.travelerName,
+                trip.destination,
+              )}
+              className="px-4 py-2 border border-outline-variant rounded-lg text-label-md flex items-center gap-2"
+            >
+              <span className="material-symbols-outlined text-[18px]" aria-hidden="true">
+                mail
+              </span>
+              Enviar por correo
             </a>
           </div>
         </div>
