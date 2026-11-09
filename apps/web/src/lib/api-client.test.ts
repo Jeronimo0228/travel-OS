@@ -70,6 +70,15 @@ describe("apiFetch · success", () => {
     });
   });
 
+  it("does not force a JSON content type for FormData: the browser sets the multipart boundary", async () => {
+    const fetchMock = mockFetch(json({}));
+
+    await apiFetch("/api/x", { method: "POST", body: new FormData() });
+
+    const [, init] = fetchMock.mock.calls[0] as unknown as [string, RequestInit];
+    expect(init.headers).not.toHaveProperty("Content-Type");
+  });
+
   it("lets the caller override credentials (traveler portal uses omit)", async () => {
     const fetchMock = mockFetch(json({}));
 

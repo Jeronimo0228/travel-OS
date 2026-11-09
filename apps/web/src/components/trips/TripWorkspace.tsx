@@ -6,6 +6,9 @@ import { ChatThread } from "@/components/portal/ChatThread";
 import { DocumentList } from "@/components/portal/DocumentList";
 import { ItineraryTimeline } from "@/components/portal/ItineraryTimeline";
 import { CatalogLibrary } from "@/components/trips/CatalogLibrary";
+import { DocumentUpload } from "@/components/trips/DocumentUpload";
+import { ItineraryItemActions } from "@/components/trips/ItineraryItemActions";
+import { features } from "@/lib/features";
 import {
   buildMailtoLink,
   buildPortalLink,
@@ -14,10 +17,13 @@ import {
 import {
   addItineraryItem,
   addTripDocument,
+  deleteItineraryItem,
   getReservation,
   issuePortalAccess,
   listTripMessages,
   sendAgencyMessage,
+  updateItineraryItem,
+  uploadTripDocument,
   type ChatMessage,
   type ReservationDetail,
 } from "@/lib/reservations";
@@ -237,6 +243,24 @@ export function TripWorkspace({ id }: { id: string }) {
           <ItineraryTimeline
             items={trip.itinerary}
             emptyText="Agrega la primera actividad del viaje."
+            renderActions={
+              features.itineraryEdit
+                ? (item) => (
+                    <ItineraryItemActions
+                      key={item.id}
+                      item={item}
+                      onUpdate={async (itemId, changes) => {
+                        await updateItineraryItem(id, itemId, changes);
+                        await load();
+                      }}
+                      onDelete={async (itemId) => {
+                        await deleteItineraryItem(id, itemId);
+                        await load();
+                      }}
+                    />
+                  )
+                : undefined
+            }
           />
           <CatalogLibrary
             trip={trip}
@@ -299,6 +323,14 @@ export function TripWorkspace({ id }: { id: string }) {
               documents={trip.documents}
               emptyText="Sin documentos todavía."
             />
+            {features.documentUpload && (
+              <DocumentUpload
+                onUpload={async (file, name) => {
+                  await uploadTripDocument(id, file, name);
+                  await load();
+                }}
+              />
+            )}
             <form
               onSubmit={(event) =>
                 submit(event, (form) =>

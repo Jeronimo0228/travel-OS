@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { groupItineraryByDay } from "@/lib/portal";
 import type { ItineraryItem } from "@/lib/reservations";
 
@@ -10,9 +11,11 @@ const timeFormat = new Intl.DateTimeFormat("es-CO", {
 export function ItineraryTimeline({
   items,
   emptyText,
+  renderActions,
 }: {
   items: ItineraryItem[];
   emptyText: string;
+  renderActions?: (item: ItineraryItem) => ReactNode;
 }) {
   const days = groupItineraryByDay(items);
   if (days.length === 0) {
@@ -61,6 +64,7 @@ export function ItineraryTimeline({
                   {item.details && (
                     <p className="text-body-sm mt-2">{item.details}</p>
                   )}
+                  {renderActions?.(item)}
                 </div>
               </li>
             ))}
