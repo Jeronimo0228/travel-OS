@@ -10,6 +10,10 @@ const PRIVATE = [
   "/agentes",
   "/settings",
   "/ayuda",
+  "/red",
+  "/recuperar",
+  "/restablecer",
+  "/invitacion",
 ];
 
 export default function robots(): MetadataRoute.Robots {

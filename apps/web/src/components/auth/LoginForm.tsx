@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { loginSchema } from "@travelos/shared";
@@ -87,6 +88,11 @@ export function LoginForm() {
           <p className="text-alert-coral text-body-sm mt-1">{fieldErrors.password}</p>
         )}
       </div>
+      <p className="-mt-2 text-right text-body-sm">
+        <Link href="/recuperar" className="text-secondary hover:underline">
+          ¿Olvidaste tu contraseña?
+        </Link>
+      </p>
 
       {formError && (
         <p

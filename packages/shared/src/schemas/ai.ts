@@ -16,6 +16,10 @@ export const ASSISTANT_ROUTES = [
   "/settings/knowledge",
   "/settings/branding",
   "/settings/audit",
+  "/settings/catalog",
+  "/settings/users",
+  "/red",
+  "/recuperar",
   "/agentes",
 ] as const;
 
