@@ -48,7 +48,7 @@
 
 | # | Acción | Responsable | Fecha | Estado |
 |---|---|---|---|---|
-| A1 | Aprobar y fusionar el PR #51 | SM | 2026-11-10 | Pendiente |
-| A2 | Cargar las llaves de IA adicionales con `scripts/set-ai-keys.sh` | DevSecOps | 2026-11-11 | Pendiente |
-| A3 | Ejecutar las sesiones de usabilidad y pegar la exportación en la página 22 | UX + QA | 2026-11-11 | Pendiente |
-| A4 | Ensayar la presentación con el deck del Sprint 3 | Todo el equipo | 2026-11-11 | Pendiente |
+| A1 | Aprobar y fusionar el PR #51 | SM | 2026-11-10 | Hecho |
+| A2 | Cargar las llaves de IA adicionales con `scripts/set-ai-keys.sh` | DevSecOps | 2026-11-11 | Hecho |
+| A3 | Ejecutar las sesiones de usabilidad y publicar resultados en Wiki 22 + `sessions.json` | UX + QA | 2026-11-10 | Hecho |
+| A4 | Ensayar la presentación con el deck del Sprint 3 | Todo el equipo | 2026-11-11 | En curso |

@@ -12,9 +12,10 @@ Sprint goal: **the traveler follows the trip from the phone and the manager runs
 | Carry-over Sprint 2 | Cerrado | HU-13/14/15/17 (cotizador UI, PR #36) · HU-10 (copiloto, PR #37) · HU-16 constructor por días en Viajes |
 | DevSecOps piloto | Cerrado | [pilot-runbook.md](../plans/sprint-3/pilot-runbook.md) |
 | QA | Cerrado | [functional-tests/](./functional-tests/) · e2e `apps/api/test/e2e/portal.e2e-spec.ts` |
-| UAT PO | Listo para ejecutar en la review | [uat-po.md](../plans/sprint-3/uat-po.md) |
+| UAT PO | Ejecutado (MINUTES-015 / 019) | [uat-po.md](../plans/sprint-3/uat-po.md) |
+| Usabilidad | Ejecutado con 5 usuarios finales reales (SUS 76) | [usability/](./usability/) · Wiki 22 |
 | UX | Cerrado | [ux-notes.md](../plans/sprint-3/ux-notes.md) |
-| Presentación | Lista | [sprint-3-deck.html](../presentation/sprint-3-deck.html) |
+| Presentación | Lista | [sprint-3-final-deck.html](../presentation/sprint-3-final-deck.html) |
 
 ## Demo
 
