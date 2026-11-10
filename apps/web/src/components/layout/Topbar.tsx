@@ -1,6 +1,10 @@
 "use client";
 
+import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import { OPEN_ASSISTANT_EVENT } from "./AiAssistantWidget";
+
+export const CRM_SEARCH_EVENT = "travelos:crm-search";
 import { Avatar } from "@/components/shared/Avatar";
 import { useSession } from "@/components/auth/SessionProvider";
 import { RemindersBell } from "./RemindersBell";
@@ -10,11 +14,21 @@ type TopbarProps = {
 };
 
 export function Topbar({
-  searchPlaceholder = "Buscar itinerarios, agentes o insights...",
+  searchPlaceholder = "Buscar prospectos por nombre, correo o destino...",
 }: TopbarProps) {
   const { user, logout } = useSession();
   const router = useRouter();
   const displayName = user?.name ?? "Invitado";
+  const [query, setQuery] = useState("");
+
+  function handleSearch(event: FormEvent) {
+    event.preventDefault();
+    const term = query.trim();
+    if (window.location.pathname === "/crm") {
+      window.dispatchEvent(new CustomEvent(CRM_SEARCH_EVENT, { detail: term }));
+    }
+    router.push(term ? `/crm?q=${encodeURIComponent(term)}` : "/crm");
+  }
 
   async function handleLogout() {
     await logout();
@@ -33,7 +47,11 @@ export function Topbar({
         >
           <span className="material-symbols-outlined">menu</span>
         </button>
-        <div className="hidden sm:block relative w-full max-w-md focus-within:ring-2 focus-within:ring-secondary-container rounded-lg overflow-hidden">
+        <form
+          role="search"
+          onSubmit={handleSearch}
+          className="hidden sm:block relative w-full max-w-md focus-within:ring-2 focus-within:ring-secondary-container rounded-lg overflow-hidden"
+        >
           <label className="sr-only" htmlFor="topbar-search">
             {searchPlaceholder}
           </label>
@@ -42,16 +60,20 @@ export function Topbar({
           </span>
           <input
             id="topbar-search"
-            type="text"
+            type="search"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            maxLength={100}
             placeholder={searchPlaceholder}
             className="w-full bg-surface-container-low border-none pl-10 pr-4 py-2 font-body-custom text-body-sm outline-none rounded-full"
           />
-        </div>
+        </form>
       </div>
       <div className="flex items-center gap-2 sm:gap-4 shrink-0">
         <button
           type="button"
-          aria-label="Análisis IA"
+          aria-label="Análisis IA: abrir el asistente"
+          onClick={() => window.dispatchEvent(new Event(OPEN_ASSISTANT_EVENT))}
           className="flex items-center gap-2 min-h-11 px-3 sm:px-4 py-2 bg-gradient-to-r from-secondary to-tertiary-fixed-dim text-white rounded-full font-body-custom text-label-md shadow-lg shadow-secondary/20 hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-container transition-transform"
         >
           <span

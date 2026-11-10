@@ -1,0 +1,33 @@
+# Travel OS
+
+> Travel OS es un software en la nube (SaaS) para agencias de viajes y mayoristas en Colombia y Latinoamérica. Reúne CRM de viajes, cotizador con inteligencia artificial sobre el catálogo propio de la agencia, itinerarios por días, portal del viajero sin app y tablero gerencial. Es un producto de PDP Comunica (Grupo Ve Por Más), Medellín, Colombia.
+
+## Producto
+
+- [Landing y demo real de solo lectura](https://travel-os.pdpcomunica.com/): funciones, capturas reales y preguntas frecuentes.
+- [Iniciar sesión](https://travel-os.pdpcomunica.com/login)
+
+## Funciones disponibles hoy
+
+- CRM con embudo por etapas (Prospecto, Cotizando, En cierre, Ganado, Perdido), asesor asignado, tareas con fecha y recordatorios.
+- Copiloto de priorización: puntaje de 0 a 100 por prospecto con la razón (etapa, tareas vencidas, antigüedad).
+- Cotizador con IA: el asesor escribe la solicitud en lenguaje natural y recibe 2 o 3 alternativas con hoteles y actividades del catálogo de la agencia; los precios y totales los calcula el sistema, no la IA. Exporta PDF.
+- Itinerario por días, documentos del viaje y chat con el viajero.
+- Portal del viajero: enlace seguro con vencimiento, sin contraseña ni app.
+- Base de conocimiento de la agencia (tono, políticas, preguntas frecuentes) que la IA usa como referencia.
+- Tablero gerencial: ventas cerradas, conversión, viajes activos, seguimientos vencidos, desempeño por asesor y destino.
+- Multiempresa con datos aislados, roles (administrador, gerente, asesor) y registro de auditoría.
+
+## En desarrollo (no disponible todavía)
+
+- Red de agencias aliadas para mayoristas (tarifas netas, cupos, comisiones).
+- Editor de catálogo desde la aplicación.
+
+## Datos técnicos
+
+- Web (Next.js) y API (NestJS) con PostgreSQL; desplegado en Vercel y Neon. Idioma español, moneda COP.
+- IA: Google Gemini con respaldo en Groq y OpenRouter; varias llaves por agente y salida validada contra esquemas.
+
+## Contacto
+
+- contacto@pdpcomunica.com

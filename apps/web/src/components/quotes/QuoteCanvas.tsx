@@ -3,6 +3,7 @@
 import { EmptyState } from "@/components/crm/EmptyState";
 import { formatRelativeTime, pluralize } from "@/lib/format";
 import { cheapestOptionId } from "@/lib/quote-logic";
+import { quoteWhatsAppLink } from "@/lib/quote-share";
 import { LeadLinker } from "./LeadLinker";
 import { QuoteOptionCard } from "./QuoteOptionCard";
 import { QuotePdfButton } from "./QuotePdfButton";
@@ -54,19 +55,17 @@ export function QuoteCanvas() {
         <div className="flex flex-wrap items-start gap-3">
           <LeadLinker quote={selected} />
           <QuotePdfButton quote={selected} />
-          <button
-            type="button"
-            disabled
-            className="flex cursor-not-allowed items-center gap-2 rounded-lg bg-primary px-4 py-2 font-body-custom text-label-md text-on-primary opacity-50"
+          <a
+            href={quoteWhatsAppLink(selected)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex min-h-11 items-center gap-2 rounded-lg bg-primary px-4 py-2 font-body-custom text-label-md text-on-primary hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-container"
           >
             <span className="material-symbols-outlined text-[20px]" aria-hidden="true">
               send
             </span>
-            Enviar al viajero
-            <span className="rounded-full bg-on-primary/20 px-2 py-0.5 text-label-sm">
-              Próximamente
-            </span>
-          </button>
+            Enviar por WhatsApp
+          </a>
         </div>
       </header>
 

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import { SessionProvider } from "@/components/auth/SessionProvider";
 import "./globals.css";
@@ -15,9 +15,17 @@ const headlineFont = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "TravelOS AI",
-  description: "S.O. de Agencia — TravelOS AI",
+  metadataBase: new URL("https://travel-os.pdpcomunica.com"),
+  title: { default: "Travel OS", template: "%s · Travel OS" },
+  description:
+    "Software para agencias de viajes y mayoristas: CRM, cotizador con IA, itinerarios, portal del viajero y tablero gerencial.",
+  applicationName: "Travel OS",
+  manifest: "/manifest.webmanifest",
+  // Las pantallas internas requieren sesión: fuera del índice salvo que la página diga lo contrario.
+  robots: { index: false, follow: false },
 };
+
+export const viewport: Viewport = { themeColor: "#0b1530" };
 
 export default function RootLayout({
   children,

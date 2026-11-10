@@ -3,7 +3,7 @@ import { KnowledgeForm } from "@/components/knowledge/KnowledgeForm";
 
 export default function KnowledgeSettingsPage() {
   return (
-    <AppShell searchPlaceholder="Buscar en configuración...">
+    <AppShell>
       <div>
         <h2 className="font-headline text-headline-xl text-primary mb-1">
           Base de conocimiento IA

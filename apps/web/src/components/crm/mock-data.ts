@@ -22,7 +22,3 @@ export const funnelStageOrder: Array<{
   { stage: "GANADO", label: "Ganados" },
 ];
 
-export const kpiCards = [
-  { label: "Prospectos Activos", value: "142", delta: "+12%", deltaClass: "text-success-emerald" },
-  { label: "Valor de Pipeline", value: "$1.2M", delta: "Estable", deltaClass: "text-secondary" },
-];

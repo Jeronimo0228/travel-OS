@@ -8,10 +8,11 @@ const description =
   "Travel OS reúne CRM, cotizador con inteligencia artificial, itinerarios, portal del viajero y tablero gerencial para agencias de viajes y mayoristas. Entra a la demo real.";
 
 export const metadata: Metadata = {
-  title,
+  title: { absolute: title },
   description,
   metadataBase: new URL("https://travel-os.pdpcomunica.com"),
   alternates: { canonical: "/" },
+  robots: { index: true, follow: true },
   keywords: [
     "software agencias de viajes",
     "CRM agencia de viajes",

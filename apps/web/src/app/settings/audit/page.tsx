@@ -97,7 +97,7 @@ function AuditContent() {
 
 export default function AuditSettingsPage() {
   return (
-    <AppShell searchPlaceholder="Buscar en auditoría...">
+    <AppShell>
       <AuditContent />
     </AppShell>
   );

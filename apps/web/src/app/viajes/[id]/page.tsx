@@ -8,7 +8,7 @@ export default async function ViajePage({
 }) {
   const { id } = await params;
   return (
-    <AppShell searchPlaceholder="Buscar viajes o viajeros...">
+    <AppShell>
       <TripWorkspace id={id} />
     </AppShell>
   );
