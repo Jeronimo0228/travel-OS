@@ -16,7 +16,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,md,json}\" --ignore-path .gitignore"
   },
   "devDependencies": {
-    "prettier": "^3.5.3",
+    "prettier": "^3.9.10",
     "typescript": "^5.8.2"
   },
   "pnpm": {
