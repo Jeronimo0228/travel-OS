@@ -23,3 +23,19 @@ export const roleSchema = z.enum(ROLES);
 
 export type RegisterAgencyInput = z.infer<typeof registerAgencySchema>;
 export type LoginInput = z.infer<typeof loginSchema>;
+
+/** HU-37 / HU-38: tokens de un solo uso enviados por enlace (base64url de 32 bytes). */
+export const oneTimeTokenSchema = z.string().trim().regex(/^[A-Za-z0-9_-]{43}$/, 'invalid token');
+export const passwordSchema = z.string().min(8).max(128);
+
+export const forgotPasswordSchema = z.object({ email: z.string().trim().toLowerCase().email().max(200) });
+export const resetPasswordSchema = z.object({ token: oneTimeTokenSchema, password: passwordSchema });
+export const acceptInvitationSchema = z.object({
+  token: oneTimeTokenSchema,
+  name: z.string().trim().min(2).max(120),
+  password: passwordSchema,
+});
+
+export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>;
+export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;
+export type AcceptInvitationInput = z.infer<typeof acceptInvitationSchema>;

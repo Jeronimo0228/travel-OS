@@ -1,23 +1,32 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  HttpCode,
   Param,
+  Patch,
   Post,
   Req,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import {
   createItineraryItemSchema,
   createPortalMessageSchema,
   createReservationDocumentSchema,
   createReservationSchema,
+  documentUploadLimits,
+  updateItineraryItemSchema,
 } from '@travelos/shared';
 import type {
   CreateItineraryItemInput,
   CreatePortalMessageInput,
   CreateReservationDocumentInput,
   CreateReservationInput,
+  UpdateItineraryItemInput,
 } from '@travelos/shared';
 import { z } from 'zod';
 import type { AuthenticatedUser } from '../common/authenticated-user.interface';
@@ -67,6 +76,66 @@ export class ReservationsController {
     input: CreateItineraryItemInput,
   ) {
     return this.portalService.addItineraryItem(user, reservationId, input);
+  }
+
+  @Patch('reservations/:id/itinerary/:itemId')
+  updateItineraryItem(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('id', new ZodValidationPipe(reservationIdSchema))
+    reservationId: string,
+    @Param('itemId', new ZodValidationPipe(reservationIdSchema)) itemId: string,
+    @Body(new ZodValidationPipe(updateItineraryItemSchema))
+    input: UpdateItineraryItemInput,
+  ) {
+    return this.portalService.updateItineraryItem(
+      user,
+      reservationId,
+      itemId,
+      input,
+    );
+  }
+
+  @Delete('reservations/:id/itinerary/:itemId')
+  @HttpCode(204)
+  deleteItineraryItem(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('id', new ZodValidationPipe(reservationIdSchema))
+    reservationId: string,
+    @Param('itemId', new ZodValidationPipe(reservationIdSchema)) itemId: string,
+  ) {
+    return this.portalService.deleteItineraryItem(user, reservationId, itemId);
+  }
+
+  @Post('reservations/:id/documents/upload')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      // Sin `storage`, multer deja el archivo en memoria (buffer) y nunca en disco.
+      // +1 byte: multer corta en el límite y el servicio responde 413 con mensaje claro.
+      limits: {
+        fileSize: documentUploadLimits.maxBytes + 1,
+        files: 1,
+        fields: 2,
+      },
+    }),
+  )
+  uploadDocument(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('id', new ZodValidationPipe(reservationIdSchema))
+    reservationId: string,
+    @UploadedFile() file: Express.Multer.File | undefined,
+    @Body(
+      new ZodValidationPipe(
+        z.object({ name: z.string().trim().max(200).optional() }),
+      ),
+    )
+    body: { name?: string },
+  ) {
+    return this.portalService.uploadDocument(
+      user,
+      reservationId,
+      file,
+      body.name,
+    );
   }
 
   @Post('reservations/:id/documents')

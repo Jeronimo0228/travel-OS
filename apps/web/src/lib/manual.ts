@@ -51,7 +51,7 @@ export const MANUAL_SECTIONS: ManualSection[] = [
     roles: ["Admin", "Gerente"],
     image: "/manual/11-base-conocimiento.png",
     steps: [
-      "En la barra lateral entra a «Base IA».",
+      "Entra a «Base IA» en el menú principal (o desde el aviso del cotizador cuando falta información).",
       "Escribe el tono de comunicación, las políticas (anticipos, cancelación, qué incluye) y las preguntas frecuentes.",
       "Guarda. Las siguientes cotizaciones y el copiloto usarán ese contenido en títulos, resúmenes y razones.",
     ],
@@ -64,6 +64,7 @@ export const MANUAL_SECTIONS: ManualSection[] = [
     steps: [
       "Entra a «Viajes y Portal» y abre una reserva.",
       "Agrega actividades por día al itinerario. Con la «Biblioteca del catálogo» añades hoteles y actividades de tu catálogo eligiendo el día y la hora.",
+      "Cada actividad tiene «Editar» y «Eliminar». En «Documentos» puedes subir el voucher o el tiquete (PDF, JPG o PNG de hasta 4 MB) y el viajero lo ve en su portal.",
       "Pulsa «Generar enlace del portal» y envíalo con los botones de WhatsApp o correo. El enlace dura 24 horas y generar uno nuevo invalida el anterior.",
       "Responde los mensajes del viajero desde el chat de la reserva.",
     ],
@@ -101,8 +102,41 @@ export const MANUAL_SECTIONS: ManualSection[] = [
     ],
   },
   {
+    id: "catalogo",
+    title: "9. Mantener el catálogo",
+    roles: ["Admin", "Gerente"],
+    steps: [
+      "En la barra lateral entra a «Catálogo». Verás los hoteles y actividades que usa el cotizador, con su precio por noche o por persona.",
+      "«Nuevo ítem» agrega un producto; «Editar» cambia nombre, destino, descripción o precio. La descripción ayuda a la IA a elegir.",
+      "«Archivar» saca un producto de las nuevas cotizaciones sin borrar las que ya lo usan; «Mostrar archivados» y «Restaurar» lo devuelven.",
+      "«Importar CSV»: descarga la plantilla, llénala en Excel o Google Sheets y súbela. Si una fila tiene error, el sistema dice cuál y no importa nada.",
+    ],
+  },
+  {
+    id: "usuarios",
+    title: "10. Invitar a tu equipo y gestionar accesos",
+    roles: ["Admin"],
+    steps: [
+      "Entra a «Usuarios». Escribe el correo y el rol (asesor, gerente o administrador) y pulsa «Invitar».",
+      "La persona recibe el enlace por correo; también puedes copiarlo o enviarlo por WhatsApp. Vence en 7 días y sirve una sola vez.",
+      "Cambia el rol desde la lista. «Desactivar» impide entrar y cierra de inmediato sus sesiones abiertas; «Reactivar» lo devuelve.",
+      "Si alguien olvidó su contraseña, pulsa «Enlace de contraseña» y envíaselo (vence en 30 minutos). También puede usar «¿Olvidaste tu contraseña?» en el inicio de sesión.",
+    ],
+  },
+  {
+    id: "red",
+    title: "11. Red mayorista",
+    roles: ["Admin", "Gerente", "Asesor"],
+    steps: [
+      "Agencia aliada: en «Red mayorista» → «Mis mayoristas» el administrador acepta la invitación del mayorista.",
+      "En «Programas disponibles» ves la tarifa neta, tu comisión y los cupos de cada salida. Elige la salida, escribe el viajero y los pasajeros y pulsa «Solicitar cupos».",
+      "En «Mis reservas» sigues el estado (solicitada, confirmada o cancelada) y puedes cancelar mientras el mayorista no la confirme.",
+      "Mayorista: el administrador activa «Operar también como mayorista». Luego crea programas con sus salidas y cupos, los publica, invita agencias por su identificador con un porcentaje de comisión y confirma las reservas en «Reservas recibidas».",
+    ],
+  },
+  {
     id: "admin",
-    title: "9. Configuración de la agencia",
+    title: "12. Configuración de la agencia",
     roles: ["Admin", "Gerente"],
     steps: [
       "«Marca blanca»: sube el logo y elige el color principal de tu agencia.",

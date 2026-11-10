@@ -10,3 +10,4 @@ export * from './schemas/catalog';
 export * from './schemas/quote';
 export * from './schemas/portal';
 export * from './schemas/knowledge';
+export * from './schemas/wholesale';

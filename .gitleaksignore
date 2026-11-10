@@ -1,2 +1,4 @@
 # Falso positivo: nombre de almacenamiento local de la planilla de usabilidad, no es una credencial.
 a5c521e9ad2607c65fa73bf77a6edd173a031532:documentation/sprint-3/usability/planilla.html:generic-api-key:118
+# Falso positivo: contraseña ficticia de una prueba e2e (base de datos de prueba del CI).
+774e84f991fb4e9f13fef79a06069bc8a84f84de:apps/api/test/e2e/sprint4.e2e-spec.ts:generic-api-key:96

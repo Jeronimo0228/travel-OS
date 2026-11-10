@@ -14,6 +14,23 @@ enum Role {
   ASESOR
 }
 
+enum AgencyKind {
+  AGENCY
+  WHOLESALER
+}
+
+enum PartnershipStatus {
+  PENDING
+  ACTIVE
+  ENDED
+}
+
+enum ProgramBookingStatus {
+  REQUESTED
+  CONFIRMED
+  CANCELLED
+}
+
 enum LeadStage {
   PROSPECTO
   COTIZANDO
@@ -45,46 +62,60 @@ enum PortalMessageSender {
 }
 
 model Agency {
-  id           String   @id @default(cuid())
+  id           String     @id @default(cuid())
   name         String
-  nit          String   @unique
-  slug         String   @unique
+  nit          String     @unique
+  slug         String     @unique
   logoUrl      String?
-  primaryColor String   @default("#4648d4")
+  primaryColor String     @default("#4648d4")
   /// HU-24: knowledge base injected into AI prompts.
-  aiTone       String   @default("")
-  aiPolicies   String   @default("")
-  aiFaqs       Json     @default("[]")
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  aiTone       String     @default("")
+  aiPolicies   String     @default("")
+  aiFaqs       Json       @default("[]")
+  /// HU-33: una agencia puede operar como mayorista.
+  kind         AgencyKind @default(AGENCY)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
 
-  users         User[]
-  leads         Lead[]
-  tasks         Task[]
-  auditLogs     AuditLog[]
-  catalogItems  CatalogItem[]
-  quotes        Quote[]
-  reservations  Reservation[]
-  taskReminders TaskReminder[]
+  users                User[]
+  leads                Lead[]
+  tasks                Task[]
+  auditLogs            AuditLog[]
+  catalogItems         CatalogItem[]
+  quotes               Quote[]
+  reservations         Reservation[]
+  taskReminders        TaskReminder[]
+  invitations          UserInvitation[]
+  programs             Program[]        @relation("WholesalerPrograms")
+  partnersAsWholesaler Partnership[]    @relation("PartnershipWholesaler")
+  partnersAsAgency     Partnership[]    @relation("PartnershipAgency")
+  bookingsAsAgency     ProgramBooking[] @relation("BookingAgency")
+  bookingsAsWholesaler ProgramBooking[] @relation("BookingWholesaler")
 }
 
 model User {
-  id           String   @id @default(cuid())
-  agencyId     String
-  email        String
-  passwordHash String
-  name         String
-  role         Role     @default(ASESOR)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id             String    @id @default(cuid())
+  agencyId       String
+  email          String
+  passwordHash   String
+  name           String
+  role           Role      @default(ASESOR)
+  /// HU-38: usuario desactivado por el administrador.
+  disabledAt     DateTime?
+  /// Sube al cambiar contraseña o desactivar: invalida los JWT emitidos antes.
+  sessionVersion Int       @default(0)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 
-  agency         Agency         @relation(fields: [agencyId], references: [id], onDelete: Cascade)
-  assignedLeads  Lead[]         @relation("LeadAssignee")
-  tasks          Task[]
-  auditLogs      AuditLog[]
-  createdQuotes  Quote[]
-  portalMessages ChatMessage[]
-  taskReminders  TaskReminder[]
+  agency          Agency               @relation(fields: [agencyId], references: [id], onDelete: Cascade)
+  assignedLeads   Lead[]               @relation("LeadAssignee")
+  tasks           Task[]
+  auditLogs       AuditLog[]
+  createdQuotes   Quote[]
+  portalMessages  ChatMessage[]
+  taskReminders   TaskReminder[]
+  passwordResets  PasswordResetToken[]
+  invitationsSent UserInvitation[]     @relation("InvitationCreatedBy")
 
   @@unique([agencyId, email])
   @@index([agencyId])
@@ -124,7 +155,10 @@ model CatalogItem {
   pricingUnit CatalogPricingUnit
   price       Decimal            @db.Decimal(12, 2)
   currency    String             @default("COP")
+  /// HU-34: los ítems archivados no se usan en nuevas cotizaciones.
+  archivedAt  DateTime?
   createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @default(now()) @updatedAt
 
   agency     Agency            @relation(fields: [agencyId], references: [id], onDelete: Cascade)
   quoteItems QuoteOptionItem[]
@@ -314,4 +348,128 @@ model AuditLog {
   user   User?  @relation(fields: [userId], references: [id])
 
   @@index([agencyId, createdAt])
+}
+
+/// HU-37: enlace de un solo uso para restablecer la contraseña (solo se guarda el hash).
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+/// HU-38: invitación de un usuario a la agencia.
+model UserInvitation {
+  id          String    @id @default(cuid())
+  agencyId    String
+  email       String
+  role        Role      @default(ASESOR)
+  tokenHash   String    @unique
+  createdById String?
+  expiresAt   DateTime
+  acceptedAt  DateTime?
+  revokedAt   DateTime?
+  createdAt   DateTime  @default(now())
+
+  agency    Agency @relation(fields: [agencyId], references: [id], onDelete: Cascade)
+  createdBy User?  @relation("InvitationCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@index([agencyId])
+}
+
+/// HU-31: contadores de límite de uso compartidos entre instancias.
+model RateCounter {
+  key         String
+  windowStart DateTime
+  count       Int      @default(0)
+
+  @@id([key, windowStart])
+  @@index([windowStart])
+}
+
+/// HU-31: llave de IA en descanso, identificada por el SHA-256 de la llave (nunca la llave).
+model AiKeyCooldown {
+  keyHash String   @id
+  until   DateTime
+}
+
+/// HU-33: relación entre un mayorista y una agencia aliada.
+model Partnership {
+  id            String            @id @default(cuid())
+  wholesalerId  String
+  agencyId      String
+  commissionPct Decimal           @db.Decimal(5, 2)
+  status        PartnershipStatus @default(PENDING)
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  wholesaler Agency @relation("PartnershipWholesaler", fields: [wholesalerId], references: [id], onDelete: Cascade)
+  agency     Agency @relation("PartnershipAgency", fields: [agencyId], references: [id], onDelete: Cascade)
+
+  @@unique([wholesalerId, agencyId])
+  @@index([agencyId])
+}
+
+/// HU-33: programa de varios días que el mayorista vende por medio de sus aliadas.
+model Program {
+  id           String    @id @default(cuid())
+  wholesalerId String
+  name         String
+  destination  String
+  days         Int
+  description  String    @default("")
+  netPrice     Decimal   @db.Decimal(12, 2)
+  currency     String    @default("COP")
+  publishedAt  DateTime?
+  archivedAt   DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  wholesaler Agency      @relation("WholesalerPrograms", fields: [wholesalerId], references: [id], onDelete: Cascade)
+  departures Departure[]
+
+  @@index([wholesalerId])
+}
+
+model Departure {
+  id        String   @id @default(cuid())
+  programId String
+  startsOn  DateTime
+  seats     Int
+  createdAt DateTime @default(now())
+
+  program  Program          @relation(fields: [programId], references: [id], onDelete: Cascade)
+  bookings ProgramBooking[]
+
+  @@index([programId, startsOn])
+}
+
+model ProgramBooking {
+  id              String               @id @default(cuid())
+  departureId     String
+  agencyId        String
+  wholesalerId    String
+  travelerName    String
+  pax             Int
+  status          ProgramBookingStatus @default(REQUESTED)
+  netTotal        Decimal              @db.Decimal(12, 2)
+  commissionPct   Decimal              @db.Decimal(5, 2)
+  commissionTotal Decimal              @db.Decimal(12, 2)
+  createdById     String?
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+
+  departure  Departure @relation(fields: [departureId], references: [id], onDelete: Cascade)
+  agency     Agency    @relation("BookingAgency", fields: [agencyId], references: [id], onDelete: Cascade)
+  wholesaler Agency    @relation("BookingWholesaler", fields: [wholesalerId], references: [id], onDelete: Cascade)
+
+  @@index([agencyId])
+  @@index([wholesalerId])
+  @@index([departureId])
 }

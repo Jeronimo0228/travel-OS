@@ -24,6 +24,8 @@ type MessageErrorBody = {
 export class ApiError extends Error {
   fieldErrors?: Record<string, string>;
   status?: number;
+  /** Cuerpo JSON original del error (p. ej. errores por fila de una importación). */
+  body?: unknown;
 
   constructor(
     message: string,
@@ -54,6 +56,11 @@ function flattenFieldErrors(body: ZodErrorBody): Record<string, string> | undefi
 }
 
 async function parseErrorBody(res: Response): Promise<ApiError> {
+  const error = await buildErrorFromBody(res);
+  return error;
+}
+
+async function buildErrorFromBody(res: Response): Promise<ApiError> {
   if (res.status === 401) return new SessionExpiredError();
 
   const body = await res.json().catch(() => null) as
@@ -69,12 +76,13 @@ async function parseErrorBody(res: Response): Promise<ApiError> {
   }
 
   const fieldErrors = flattenFieldErrors(body);
+  const withBody = (error: ApiError) => Object.assign(error, { body });
 
   if (typeof body.message === "string") {
-    return new ApiError(body.message, fieldErrors, res.status);
+    return withBody(new ApiError(body.message, fieldErrors, res.status));
   }
   if (Array.isArray(body.message) && body.message.length > 0) {
-    return new ApiError(body.message.join(" "), fieldErrors, res.status);
+    return withBody(new ApiError(body.message.join(" "), fieldErrors, res.status));
   }
   if (body.formErrors?.length) {
     return new ApiError(body.formErrors.join(" "), fieldErrors, res.status);

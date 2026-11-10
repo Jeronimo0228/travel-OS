@@ -1,4 +1,10 @@
 import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  NotFoundException,
+  PayloadTooLargeException,
+  UnsupportedMediaTypeException,
   ForbiddenException,
   Injectable,
   UnauthorizedException,
@@ -9,12 +15,16 @@ import type {
   CreatePortalMessageInput,
   CreateReservationDocumentInput,
   CreateReservationInput,
+  UpdateItineraryItemInput,
 } from '@travelos/shared';
+import { documentUploadLimits } from '@travelos/shared';
 import { createHash, randomBytes } from 'node:crypto';
 import type { AuthenticatedUser } from '../common/authenticated-user.interface';
 import { AuditService } from '../audit/audit.service';
 import { LeadsService } from '../leads/leads.service';
 import { PrismaService } from '../prisma/prisma.service';
+import { BlobStorageService } from '../storage/blob-storage.service';
+import { detectContentType, EXTENSION } from '../storage/file-signature';
 
 const PORTAL_TOKEN_LIFETIME_MS = 24 * 60 * 60 * 1000;
 
@@ -24,6 +34,7 @@ export class PortalService {
     private readonly prisma: PrismaService,
     private readonly leadsService: LeadsService,
     private readonly auditService: AuditService,
+    private readonly storage?: BlobStorageService,
   ) {}
 
   async createReservation(
@@ -241,6 +252,139 @@ export class PortalService {
         body: input.body,
       },
     });
+  }
+
+  /** HU-35: editar una actividad del itinerario (solo los campos enviados). */
+  async updateItineraryItem(
+    user: AuthenticatedUser,
+    reservationId: string,
+    itemId: string,
+    input: UpdateItineraryItemInput,
+  ) {
+    const reservation = await this.findAccessibleReservation(
+      user,
+      reservationId,
+    );
+    const item = await this.prisma.itineraryItem.findFirst({
+      where: { id: itemId, reservationId: reservation.id },
+    });
+    if (!item) throw new NotFoundException('Itinerary item not found');
+    const toDate = (value: string | null | undefined) =>
+      value === undefined ? undefined : value === null ? null : new Date(value);
+    const startsAt = toDate(input.startsAt);
+    const endsAt = toDate(input.endsAt);
+    const finalStart = startsAt === undefined ? item.startsAt : startsAt;
+    const finalEnd = endsAt === undefined ? item.endsAt : endsAt;
+    if (finalStart && finalEnd && finalEnd <= finalStart) {
+      throw new BadRequestException('endsAt must be after startsAt');
+    }
+    const updated = await this.prisma.itineraryItem.update({
+      where: { id: item.id },
+      data: {
+        title: input.title,
+        details: input.details,
+        location: input.location,
+        startsAt,
+        endsAt,
+        position: input.position,
+      },
+    });
+    await this.auditService.log(
+      user.agencyId,
+      user.id,
+      'ITINERARY_ITEM_UPDATE',
+      {
+        reservationId: reservation.id,
+        itemId: item.id,
+      },
+    );
+    return updated;
+  }
+
+  async deleteItineraryItem(
+    user: AuthenticatedUser,
+    reservationId: string,
+    itemId: string,
+  ) {
+    const reservation = await this.findAccessibleReservation(
+      user,
+      reservationId,
+    );
+    const result = await this.prisma.itineraryItem.deleteMany({
+      where: { id: itemId, reservationId: reservation.id },
+    });
+    if (result.count === 0)
+      throw new NotFoundException('Itinerary item not found');
+    await this.auditService.log(
+      user.agencyId,
+      user.id,
+      'ITINERARY_ITEM_DELETE',
+      {
+        reservationId: reservation.id,
+        itemId,
+      },
+    );
+  }
+
+  /** HU-35: subir un PDF, JPG o PNG (≤ 4 MB) validando su contenido real. */
+  async uploadDocument(
+    user: AuthenticatedUser,
+    reservationId: string,
+    file: { buffer: Buffer; size: number; originalname: string } | undefined,
+    name?: string,
+  ) {
+    const reservation = await this.findAccessibleReservation(
+      user,
+      reservationId,
+    );
+    if (!file || file.size === 0)
+      throw new BadRequestException('file is required');
+    if (file.size > documentUploadLimits.maxBytes) {
+      throw new PayloadTooLargeException('El archivo supera los 4 MB.');
+    }
+    const contentType = detectContentType(file.buffer);
+    if (!contentType) {
+      throw new UnsupportedMediaTypeException(
+        'Solo se permiten archivos PDF, JPG o PNG.',
+      );
+    }
+    if (!this.storage) {
+      throw new HttpException(
+        'Storage unavailable',
+        HttpStatus.SERVICE_UNAVAILABLE,
+      );
+    }
+    const url = await this.storage.upload(
+      user.agencyId,
+      EXTENSION[contentType],
+      contentType,
+      file.buffer,
+    );
+    const displayName = (
+      name?.trim() ||
+      file.originalname ||
+      'Documento'
+    ).slice(0, 200);
+    const document = await this.prisma.reservationDocument.create({
+      data: {
+        reservationId: reservation.id,
+        name: displayName,
+        url,
+        contentType,
+      },
+    });
+    await this.auditService.log(
+      user.agencyId,
+      user.id,
+      'RESERVATION_DOCUMENT_UPLOAD',
+      {
+        reservationId: reservation.id,
+        documentId: document.id,
+        contentType,
+        size: file.size,
+      },
+    );
+    return document;
   }
 
   private async findAccessibleReservation(

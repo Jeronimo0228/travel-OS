@@ -15,13 +15,13 @@ describe("validateDocumentFile", () => {
     expect(validateDocumentFile(file({ type: "image/png", name: "a.png" }))).toBeNull();
   });
 
-  it("accepts a file of exactly 5 MB", () => {
-    expect(validateDocumentFile(file({ size: 5 * 1024 * 1024 }))).toBeNull();
+  it("accepts a file of exactly 4 MB", () => {
+    expect(validateDocumentFile(file({ size: 4 * 1024 * 1024 }))).toBeNull();
   });
 
-  it("rejects files larger than 5 MB", () => {
-    expect(validateDocumentFile(file({ size: 5 * 1024 * 1024 + 1 }))).toBe(
-      "El archivo supera los 5 MB.",
+  it("rejects files larger than 4 MB", () => {
+    expect(validateDocumentFile(file({ size: 4 * 1024 * 1024 + 1 }))).toBe(
+      "El archivo supera los 4 MB.",
     );
   });
 

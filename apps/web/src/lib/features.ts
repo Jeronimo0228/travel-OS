@@ -1,7 +1,7 @@
-// Features whose backend endpoints are specified but not delivered yet.
-// NEXT_PUBLIC_* values are inlined at build time: set them in the web
-// project's environment and redeploy once the API supports the feature.
-const enabled = (value: string | undefined) => value === "true";
+// Funciones que se pueden apagar desde el entorno del proyecto web (NEXT_PUBLIC_*=false).
+// HU-35: el API ya entrega edición de itinerario y subida de documentos, por eso
+// quedan encendidas por defecto.
+const enabled = (value: string | undefined) => value !== "false";
 
 export const features = {
   itineraryEdit: enabled(process.env.NEXT_PUBLIC_FEATURE_ITINERARY_EDIT),

@@ -112,7 +112,7 @@ export class QuotesService {
       'quote-extract',
     );
     const catalog = await this.prisma.catalogItem.findMany({
-      where: { agencyId: user.agencyId },
+      where: { agencyId: user.agencyId, archivedAt: null },
       orderBy: [{ kind: 'asc' }, { name: 'asc' }],
       take: 200,
     });

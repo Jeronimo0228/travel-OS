@@ -18,10 +18,9 @@
 - Tablero gerencial: ventas cerradas, conversión, viajes activos, seguimientos vencidos, desempeño por asesor y destino.
 - Multiempresa con datos aislados, roles (administrador, gerente, asesor) y registro de auditoría.
 
-## En desarrollo (no disponible todavía)
-
-- Red de agencias aliadas para mayoristas (tarifas netas, cupos, comisiones).
-- Editor de catálogo desde la aplicación.
+- Red mayorista: programas con salidas y cupos, tarifa neta y comisión por agencia aliada; reservas sin sobreventa.
+- Editor de catálogo con importación CSV; usuarios con invitación, roles, desactivación y recuperación de contraseña.
+- Subida de documentos del viaje (PDF, JPG, PNG) que el viajero ve en su portal.
 
 ## Datos técnicos
 

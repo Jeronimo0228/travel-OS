@@ -24,6 +24,7 @@ describe('CatalogService', () => {
     expect(findMany).toHaveBeenCalledWith({
       where: {
         agencyId: 'agency-a',
+        archivedAt: null,
         kind: CatalogKind.HOTEL,
         destination: { contains: 'Cartagena', mode: 'insensitive' },
       },

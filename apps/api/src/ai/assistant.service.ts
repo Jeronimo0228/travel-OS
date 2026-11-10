@@ -21,7 +21,11 @@ const APP_GUIDE = `Pantallas de Travel OS:
 - "/viajes" Viajes: itinerario por días, documentos, chat con el viajero y enlace seguro del portal del viajero.
 - "/settings/knowledge" Base de conocimiento: tono, políticas y preguntas frecuentes que usa la IA.
 - "/settings/branding" Marca: logo y color.
+- "/settings/catalog" Catálogo: crear, editar, archivar e importar por CSV los hoteles y actividades que usa el cotizador (gerente y administrador).
+- "/settings/users" Usuarios: invitar al equipo, cambiar roles, desactivar y generar enlaces para restablecer contraseña (administrador).
+- "/red" Red mayorista: programas de mayoristas con tarifa neta, comisión y cupos; reservas; si la agencia opera como mayorista, sus programas y agencias aliadas.
 - "/settings/audit" Auditoría (administrador).
+- "/recuperar" Recuperar la contraseña desde la pantalla de inicio de sesión.
 - "/ayuda" Manual de uso paso a paso.`;
 
 const SYSTEM_PROMPT = `Eres el asistente de Travel OS dentro de una agencia de viajes. Respondes en español, breve (máximo 5 frases), con tono profesional y cálido.

@@ -152,8 +152,8 @@
   <h2>Todo lo comprometido, <em>en Done</em></h2>
   <div class="body" style="gap:26px">
     <div class="stats">
-      <div class="stat"><b>11</b><span>historias del Sprint 3 cerradas (HU-19 a HU-23 y HU-25 a HU-30)</span></div>
-      <div class="stat"><b>234</b><span>pruebas automáticas en CI, todas en verde</span></div>
+      <div class="stat"><b>19</b><span>historias cerradas en el cierre: Sprint 3 (HU-19 a HU-30) y Sprint 4 (HU-31 a HU-38)</span></div>
+      <div class="stat"><b>271</b><span>pruebas automáticas en CI, todas en verde</span></div>
       <div class="stat"><b>10/10</b><span>verificaciones de los agentes de IA en producción</span></div>
       <div class="stat"><b>0</b><span>vulnerabilidades altas o críticas (eran 36)</span></div>
     </div>
@@ -283,7 +283,7 @@
   <div class="body" style="gap:24px">
     <div class="flow">
       <div class="step"><h4>1 · PR</h4><p>Rama por historia, GitHub Flow</p></div><div class="arrow">→</div>
-      <div class="step"><h4>2 · CI</h4><p>Lint, 88 unitarias, 35 e2e con PostgreSQL y Redis, 111 web, build</p></div><div class="arrow">→</div>
+      <div class="step"><h4>2 · CI</h4><p>Lint, 96 unitarias, 56 e2e con PostgreSQL y Redis, 119 web, build</p></div><div class="arrow">→</div>
       <div class="step"><h4>3 · Security</h4><p>gitleaks, pnpm audit, CodeQL</p></div><div class="arrow">→</div>
       <div class="step"><h4>4 · main</h4><p>Merge solo en verde y con revisión</p></div><div class="arrow">→</div>
       <div class="step dark"><h4>5 · Vercel</h4><p>API y web; despliegue inmutable</p></div><div class="arrow">→</div>
@@ -383,15 +383,17 @@
   <div class="meta"><span class="brand"><i></i>TravelOS AI</span><span>Wiki · 28 Salida comercial</span></div>
 </section>
 
-<!-- 16 Pendientes -->
-<section class="slide" data-title="Pendientes">
-  <p class="kicker">Deudas y Sprint 4 hipotético</p>
-  <h2>Lo que <em>queda</em>, dicho claro</h2>
+<!-- 16 Sprint 4 -->
+<section class="slide" data-title="Sprint 4">
+  <p class="kicker">Sprint 4 · planeado y ejecutado</p>
+  <h2>Lo que pedía un cliente empresarial, <em>ya está</em></h2>
   <div class="body grid g2">
-    <div class="card"><p class="tag">Antes de firmar con clientes</p><ul><li>Ajustes derivados de usabilidad (HU-36 a HU-38)</li><li>UAT final con el PO (hoy)</li><li>Revisión legal de la política y los términos</li><li>Facturación electrónica y cobro recurrente</li></ul></div>
-    <div class="card"><p class="tag">Milestone Sprint 4 (8 historias)</p><ul><li>HU-37 recuperar contraseña · HU-38 invitar usuarios</li><li>HU-33 red de agencias para mayoristas</li><li>HU-34 editor de catálogo · HU-35 edición de actividades y documentos</li><li>HU-31 límites en Redis · HU-32 Zod 4 · HU-36 ajustes de usabilidad</li></ul></div>
+    <div class="card"><p class="tag">Cuentas y equipo</p><ul><li>HU-38 invitar usuarios con rol, desactivar y cerrar sesiones al instante</li><li>HU-37 recuperar contraseña con enlace de un solo uso</li><li>HU-36 Base IA visible en el menú y en el cotizador</li></ul></div>
+    <div class="card"><p class="tag">Operación</p><ul><li>HU-34 editor de catálogo con importación CSV</li><li>HU-35 editar el itinerario y subir vouchers que el viajero ve</li><li>HU-33 red mayorista: programas, cupos, comisión y reservas sin sobreventa</li></ul></div>
+    <div class="card"><p class="tag">Plataforma</p><ul><li>HU-31 límites y llaves de IA compartidos entre instancias</li><li>HU-32 Zod 4: cero vulnerabilidades en dependencias</li></ul></div>
+    <div class="card"><p class="tag">Antes del segundo cliente</p><ul><li>Revisión legal de la política y los términos</li><li>Facturación electrónica y cobro recurrente</li></ul></div>
   </div>
-  <div class="meta"><span class="brand"><i></i>TravelOS AI</span><span>GitHub · milestone #6</span></div>
+  <div class="meta"><span class="brand"><i></i>TravelOS AI</span><span>GitHub · milestone #6 · PR #79</span></div>
 </section>
 
 <!-- 17 Cierre -->

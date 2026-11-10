@@ -103,11 +103,18 @@ export function Sidebar() {
           <span className="font-body-custom text-label-md">Marca blanca</span>
         </Link>
         <Link
-          href="/settings/knowledge"
+          href="/settings/catalog"
           className="text-on-primary/85 hover:bg-primary-container/50 rounded-lg mx-2 my-1 flex items-center gap-3 px-4 py-2 transition-colors duration-200"
         >
-          <span className="material-symbols-outlined">menu_book</span>
-          <span className="font-body-custom text-label-md">Base IA</span>
+          <span className="material-symbols-outlined">inventory_2</span>
+          <span className="font-body-custom text-label-md">Catálogo</span>
+        </Link>
+        <Link
+          href="/settings/users"
+          className="text-on-primary/85 hover:bg-primary-container/50 rounded-lg mx-2 my-1 flex items-center gap-3 px-4 py-2 transition-colors duration-200"
+        >
+          <span className="material-symbols-outlined">manage_accounts</span>
+          <span className="font-body-custom text-label-md">Usuarios</span>
         </Link>
         <Link
           href="/settings/audit"

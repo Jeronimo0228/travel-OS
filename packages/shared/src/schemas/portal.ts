@@ -75,7 +75,8 @@ export const updateItineraryItemSchema = z
   );
 
 export const documentUploadLimits = {
-  maxBytes: 5 * 1024 * 1024,
+  // 4 MB: las Vercel Functions aceptan cuerpos de hasta 4,5 MB.
+  maxBytes: 4 * 1024 * 1024,
   contentTypes: ['application/pdf', 'image/jpeg', 'image/png'],
 } as const;
 

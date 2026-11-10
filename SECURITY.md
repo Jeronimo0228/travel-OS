@@ -12,7 +12,9 @@ Solo la versión en producción (`main`, desplegada en https://travel-os.pdpcomu
 
 | Área | Control |
 |---|---|
-| Autenticación | JWT en cookie `httpOnly`, `Secure` y `SameSite=Lax`; contraseñas con bcrypt; 10 intentos fallidos por IP y correo bloquean el login 15 minutos. |
+| Autenticación | JWT en cookie `httpOnly`, `Secure` y `SameSite=Lax`, validado contra la base en cada petición (usuario activo y `sessionVersion`); contraseñas con bcrypt; 10 intentos fallidos por IP y correo bloquean el login 15 minutos. |
+| Cuentas | Invitaciones (7 días) y recuperación de contraseña (30 min) con tokens de un solo uso guardados como SHA-256; desactivar un usuario o cambiar su contraseña cierra sus sesiones. |
+| Archivos | PDF, JPG y PNG de hasta 4 MB validados por su firma real, en Vercel Blob con ruta aleatoria por agencia. |
 | Autorización | Roles ADMIN, GERENTE y ASESOR (`RolesGuard`); cada consulta filtra por `agencyId` (multiempresa). |
 | Portal del viajero | Token aleatorio guardado solo como hash; vence en 24 h; generar uno nuevo invalida el anterior; 20 intentos inválidos por minuto bloquean. |
 | Entrada | Validación con Zod en todos los endpoints; `ValidationPipe` con lista blanca. |
@@ -23,6 +25,6 @@ Solo la versión en producción (`main`, desplegada en https://travel-os.pdpcomu
 | Código | CodeQL (`security-extended`) en cada PR y cada semana. |
 | Auditoría | Registro de acciones sensibles por agencia (`/settings/audit`). |
 
-## Riesgo aceptado
+## Riesgos aceptados
 
-- `GHSA-mrhx-c7xc-m3w5` (Zod 3: memoria con colecciones muy grandes). Mitigado porque el cuerpo de cada petición está limitado a 100 kB y todos los arreglos tienen `max()`. Se cierra al migrar a Zod 4.
+Ninguno abierto. El último (GHSA-mrhx-c7xc-m3w5 de Zod 3) se cerró al migrar a Zod 4 (HU-32).

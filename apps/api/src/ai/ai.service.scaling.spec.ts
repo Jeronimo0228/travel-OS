@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { ServiceUnavailableException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { z } from 'zod';
@@ -184,5 +185,55 @@ describe('AiService per-agent key pools', () => {
       ok: true,
     });
     expect(calls).toEqual(['g1', 'g2']);
+  });
+});
+
+describe('AiService cooldowns compartidos (HU-31)', () => {
+  let fetchMock: jest.SpyInstance;
+  beforeEach(() => {
+    fetchMock = jest.spyOn(global, 'fetch');
+  });
+  afterEach(() => fetchMock.mockRestore());
+
+  it('respeta un descanso registrado por otra instancia y guarda solo el hash', async () => {
+    const sha = (k: string) => createHash('sha256').update(k).digest('hex');
+    const upsert = jest.fn().mockResolvedValue({});
+    const prisma = {
+      aiKeyCooldown: {
+        findMany: jest
+          .fn()
+          .mockResolvedValue([
+            { keyHash: sha('k1'), until: new Date(Date.now() + 30_000) },
+          ]),
+        upsert,
+      },
+    };
+    fetchMock
+      .mockResolvedValueOnce(status(429))
+      .mockResolvedValueOnce(status(429));
+    const s = new AiService(
+      new ConfigService({
+        GEMINI_API_KEYS: 'k1,k2',
+        GEMINI_MODEL: 'a',
+        AI_RETRY_PAUSE_MS: '0',
+      }),
+      prisma as never,
+    );
+    await expect(s.generateJson('s', 'u', schema)).rejects.toBeInstanceOf(
+      ServiceUnavailableException,
+    );
+    // k1 estaba en descanso: solo se llamó con k2.
+    expect(
+      fetchMock.mock.calls.every(
+        (c) =>
+          ((c[1] as RequestInit).headers as Record<string, string>)[
+            'x-goog-api-key'
+          ] === 'k2',
+      ),
+    ).toBe(true);
+    expect(upsert).toHaveBeenCalledWith(
+      expect.objectContaining({ where: { keyHash: sha('k2') } }),
+    );
+    expect(JSON.stringify(upsert.mock.calls)).not.toMatch(/"k2"/);
   });
 });

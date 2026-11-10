@@ -2,11 +2,14 @@ import {
   BadGatewayException,
   Injectable,
   Logger,
+  Optional,
   ServiceUnavailableException,
 } from '@nestjs/common';
+import { createHash } from 'node:crypto';
 import { ConfigService } from '@nestjs/config';
 import Groq from 'groq-sdk';
 import { z } from 'zod';
+import { PrismaService } from '../prisma/prisma.service';
 
 const DEFAULT_MODEL = 'openai/gpt-oss-120b';
 /** Comma-separated fallback chain; the next model is tried on 429/5xx. */
@@ -39,6 +42,11 @@ const AGENT_POOL: Record<AiAgent, string | null> = {
   default: null,
 };
 
+/** Las llaves se identifican por su SHA-256: la llave nunca se guarda. */
+function keyHash(key: string): string {
+  return createHash('sha256').update(key).digest('hex');
+}
+
 function splitList(value: string | undefined): string[] {
   return (value ?? '')
     .split(',')
@@ -54,7 +62,60 @@ interface GeminiResponse {
 export class AiService {
   private readonly logger = new Logger(AiService.name);
 
-  constructor(private readonly config: ConfigService) {}
+  constructor(
+    private readonly config: ConfigService,
+    @Optional() private readonly prisma?: PrismaService,
+  ) {}
+
+  /**
+   * HU-31: trae los descansos de llaves que registraron otras instancias.
+   * Si la base no responde, sigue con lo que hay en memoria.
+   */
+  async refreshCooldowns(keys: string[] = this.allGeminiKeys()): Promise<void> {
+    if (!this.prisma || !keys.length) return;
+    try {
+      const byHash = new Map(keys.map((key) => [keyHash(key), key]));
+      const rows = await this.prisma.aiKeyCooldown.findMany({
+        where: {
+          keyHash: { in: [...byHash.keys()] },
+          until: { gt: new Date() },
+        },
+      });
+      for (const row of rows) {
+        const key = byHash.get(row.keyHash);
+        if (key) {
+          this.geminiCooldowns.set(
+            key,
+            Math.max(this.geminiCooldowns.get(key) ?? 0, row.until.getTime()),
+          );
+        }
+      }
+    } catch {
+      this.logger.warn('ai_cooldown_store_unavailable using in-memory state');
+    }
+  }
+
+  private allGeminiKeys(): string[] {
+    return [
+      ...new Set(
+        (['quote-options', 'copilot', 'assistant'] as AiAgent[]).flatMap(
+          (agent) => this.geminiKeys(agent),
+        ),
+      ),
+    ];
+  }
+
+  private persistCooldown(key: string, until: number) {
+    if (!this.prisma) return;
+    const hash = keyHash(key);
+    this.prisma.aiKeyCooldown
+      .upsert({
+        where: { keyHash: hash },
+        create: { keyHash: hash, until: new Date(until) },
+        update: { until: new Date(until) },
+      })
+      .catch(() => this.logger.warn('ai_cooldown_store_unavailable'));
+  }
 
   async generateJson<TSchema extends z.ZodTypeAny>(
     systemPrompt: string,
@@ -250,6 +311,7 @@ export class AiService {
     agent: AiAgent,
   ): Promise<string | undefined> {
     const keys = this.geminiKeys(agent);
+    await this.refreshCooldowns(keys);
     const now = Date.now();
     let indexes = keys
       .map((_, index) => index)
@@ -276,7 +338,9 @@ export class AiService {
           error instanceof ServiceUnavailableException &&
           error.message.includes('429')
         ) {
-          this.geminiCooldowns.set(keys[index], Date.now() + KEY_COOLDOWN_MS);
+          const until = Date.now() + KEY_COOLDOWN_MS;
+          this.geminiCooldowns.set(keys[index], until);
+          this.persistCooldown(keys[index], until);
           this.logger.warn(
             `ai_key_cooldown agent=${agent} slot=${index + 1} seconds=60`,
           );

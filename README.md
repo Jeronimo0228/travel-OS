@@ -23,7 +23,7 @@ Usuario demo: `gerente@demo.travelos.local` / `TravelOS!demo1`, agencia `demo-ag
 
 ## Calidad
 
-- **234 pruebas en CI:** 88 unitarias de la API, 35 e2e contra PostgreSQL y Redis reales, y 111 de la web.
+- **271 pruebas en CI:** 96 unitarias de la API, 56 e2e contra PostgreSQL y Redis reales, y 119 de la web.
 - **Seguridad en cada PR:** gitleaks, `pnpm audit` y CodeQL.
 - **Prueba en vivo de los agentes:** `node scripts/agents-smoke.mjs`.
 - **Recorrido visual en Chrome y iPhone:** `scripts/ui-walkthrough.mjs`.
