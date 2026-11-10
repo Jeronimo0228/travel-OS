@@ -1,5 +1,17 @@
 export const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
 
+const AUTH_PATH = /^\/api\/auth\//;
+const LOGIN_PATH = "/api/auth/login";
+
+let sessionExpiredListener: (() => void) | null = null;
+
+export function onSessionExpired(listener: () => void): () => void {
+  sessionExpiredListener = listener;
+  return () => {
+    if (sessionExpiredListener === listener) sessionExpiredListener = null;
+  };
+}
+
 type ZodErrorBody = {
   formErrors?: string[];
   fieldErrors?: Record<string, string[]>;
@@ -86,11 +98,13 @@ export async function apiFetch<T = unknown>(
   try {
     res = await fetch(`${API_URL}${path}`, {
       credentials: "include",
+      ...options,
       headers: {
-        "Content-Type": "application/json",
+        ...(options.body instanceof FormData
+          ? {}
+          : { "Content-Type": "application/json" }),
         ...options.headers,
       },
-      ...options,
     });
   } catch {
     throw new ApiError(
@@ -99,7 +113,18 @@ export async function apiFetch<T = unknown>(
   }
 
   if (!res.ok) {
-    throw await parseErrorBody(res);
+    if (res.status === 401 && path === LOGIN_PATH) {
+      throw new ApiError("Correo o contraseña incorrectos.", undefined, 401);
+    }
+    const error = await parseErrorBody(res);
+    if (
+      error instanceof SessionExpiredError &&
+      options.credentials !== "omit" &&
+      !AUTH_PATH.test(path)
+    ) {
+      sessionExpiredListener?.();
+    }
+    throw error;
   }
 
   if (res.status === 204) {

@@ -2,6 +2,7 @@ import type {
   CreateItineraryItemInput,
   CreateReservationDocumentInput,
   CreateReservationInput,
+  UpdateItineraryItemInput,
 } from "@travelos/shared";
 import { apiFetch } from "./api-client";
 
@@ -72,6 +73,33 @@ export const addTripDocument = (
   id: string,
   input: CreateReservationDocumentInput,
 ) => apiFetch<TripDocument>(`/api/reservations/${id}/documents`, json(input));
+
+// Endpoints below are specified in documentation/plans/sprint-4/frontend-backend-contract.md
+// and stay behind feature flags (lib/features.ts) until the API ships them.
+export const updateItineraryItem = (
+  id: string,
+  itemId: string,
+  input: UpdateItineraryItemInput,
+) =>
+  apiFetch<ItineraryItem>(`/api/reservations/${id}/itinerary/${itemId}`, {
+    method: "PATCH",
+    body: JSON.stringify(input),
+  });
+
+export const deleteItineraryItem = (id: string, itemId: string) =>
+  apiFetch<void>(`/api/reservations/${id}/itinerary/${itemId}`, {
+    method: "DELETE",
+  });
+
+export const uploadTripDocument = (id: string, file: File, name?: string) => {
+  const form = new FormData();
+  form.append("file", file);
+  if (name) form.append("name", name);
+  return apiFetch<TripDocument>(`/api/reservations/${id}/documents/upload`, {
+    method: "POST",
+    body: form,
+  });
+};
 
 export const issuePortalAccess = (id: string) =>
   apiFetch<PortalAccess>(`/api/reservations/${id}/portal-access`, json({}));

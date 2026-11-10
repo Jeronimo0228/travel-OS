@@ -50,6 +50,35 @@ export const createItineraryItemSchema = z
     },
   );
 
+export const updateItineraryItemSchema = z
+  .object({
+    title: z.string().trim().min(1).max(200),
+    details: z.string().trim().max(2000).nullable(),
+    location: z.string().trim().max(240).nullable(),
+    startsAt: dateSchema.nullable(),
+    endsAt: dateSchema.nullable(),
+    position: z.number().int().min(0).max(10_000),
+  })
+  .partial()
+  .refine((item) => Object.keys(item).length > 0, {
+    message: 'At least one field is required',
+  })
+  .refine(
+    (item) =>
+      !item.startsAt ||
+      !item.endsAt ||
+      Date.parse(item.endsAt) > Date.parse(item.startsAt),
+    {
+      path: ['endsAt'],
+      message: 'End date must be after start date',
+    },
+  );
+
+export const documentUploadLimits = {
+  maxBytes: 5 * 1024 * 1024,
+  contentTypes: ['application/pdf', 'image/jpeg', 'image/png'],
+} as const;
+
 export const createReservationDocumentSchema = z.object({
   name: z.string().trim().min(1).max(200),
   url: documentUrlSchema,
@@ -63,6 +92,9 @@ export const createPortalMessageSchema = z.object({
 export type CreateReservationInput = z.infer<typeof createReservationSchema>;
 export type CreateItineraryItemInput = z.infer<
   typeof createItineraryItemSchema
+>;
+export type UpdateItineraryItemInput = z.infer<
+  typeof updateItineraryItemSchema
 >;
 export type CreateReservationDocumentInput = z.infer<
   typeof createReservationDocumentSchema
