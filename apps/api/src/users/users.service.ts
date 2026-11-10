@@ -19,6 +19,8 @@ export class UsersService {
         email: true,
         name: true,
         role: true,
+        disabledAt: true,
+        createdAt: true,
       },
       orderBy: [{ role: 'asc' }, { name: 'asc' }],
     });

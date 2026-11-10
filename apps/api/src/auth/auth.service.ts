@@ -80,7 +80,7 @@ export class AuthService {
       where: { email: input.email },
     });
 
-    if (!user) {
+    if (!user || user.disabledAt) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
@@ -106,6 +106,7 @@ export class AuthService {
       sub: user.id,
       agencyId: user.agencyId,
       role: user.role,
+      ver: user.sessionVersion,
     });
 
     return {

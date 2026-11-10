@@ -8,7 +8,9 @@ import { HealthModule } from './health/health.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { LeadsModule } from './leads/leads.module';
+import { AccountModule } from './account/account.module';
 import { AuditModule } from './audit/audit.module';
+import { MailModule } from './mail/mail.module';
 import { TasksModule } from './tasks/tasks.module';
 import { AgencyModule } from './agency/agency.module';
 import { AiModule } from './ai/ai.module';
@@ -23,6 +25,8 @@ import { MetricsModule } from './metrics/metrics.module';
     PrismaModule,
     HealthModule,
     AuditModule,
+    MailModule,
+    AccountModule,
     AiModule,
     AuthModule,
     CatalogModule,
