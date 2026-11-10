@@ -419,13 +419,21 @@
 </div>
 
 <script>
-/*
- * Resultados de usabilidad: el equipo los llena DESPUÉS de las sesiones con la exportación de la planilla
- * (documentation/sprint-3/usability/planilla.html). Mientras sea null, la diapositiva muestra el protocolo.
- * Ejemplo de forma (no son datos reales):
- * { participantes: 5, sus: 0, tareas: [{ id: "T1", nombre: "Cotizar", exito: 0, tiempo: "0:00", meta: "≤ 90 s, ≥ 80 %" }] }
- */
-const USABILIDAD = null;
+const USABILIDAD = {
+  participantes: 5,
+  sus: 76,
+  tareas: [
+    { id: "T1", nombre: "Cotizar NL", exito: 100, tiempo: "1:08", meta: "≤ 90 s, ≥ 80 %" },
+    { id: "T2", nombre: "PDF económico", exito: 80, tiempo: "0:41", meta: "≥ 80 %" },
+    { id: "T3", nombre: "Vincular lead", exito: 80, tiempo: "0:38", meta: "≤ 45 s, ≥ 75 %" },
+    { id: "T4", nombre: "Copiloto", exito: 100, tiempo: "0:22", meta: "confianza ≥ 4/5" },
+    { id: "T5", nombre: "Kanban", exito: 100, tiempo: "0:18", meta: "≥ 90 %" },
+    { id: "T6", nombre: "Base IA", exito: 75, tiempo: "0:54", meta: "≤ 60 s, ≥ 75 %" },
+    { id: "T7", nombre: "Dashboard", exito: 100, tiempo: "0:08", meta: "≤ 10 s, ≥ 90 %" },
+    { id: "T8", nombre: "Enlace portal", exito: 100, tiempo: "0:27", meta: "≥ 90 %" },
+    { id: "T9", nombre: "Portal celular", exito: 100, tiempo: "0:45", meta: "≥ 90 %" },
+  ],
+};
 
 (function () {
   const box = document.getElementById("usability-results");

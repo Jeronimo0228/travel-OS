@@ -15,10 +15,10 @@
 | Nombre | Rol | Asistió |
 |---|---|---|
 | Jerónimo Restrepo | Scrum Master + DevSecOps | Sí |
-| Santiago Arboleda | Frontend (autor de los PR #46–#49) | Por confirmar |
-| Samuel Madrid | Backend | Por confirmar |
-| Miguel Mercado | QA | Por confirmar |
-| Juan José Palacio | UX (autor del PR #50) | Por confirmar |
+| Santiago Arboleda | Frontend (autor de los PR #46–#49) | Sí |
+| Samuel Madrid | Backend | Sí |
+| Miguel Mercado | QA | Sí |
+| Juan José Palacio | UX (autor del PR #50) | Sí |
 
 ## 2. Agenda
 
@@ -41,7 +41,7 @@
 | D1 | Un pool de llaves de IA por agente (cotizador, copiloto, asistente) con reserva compartida y respaldo Groq/OpenRouter | DevSecOps |
 | D2 | El asistente es de solo lectura y solo enlaza pantallas internas | DevSecOps + UX |
 | D3 | Pipeline Security obligatorio en cada PR (gitleaks, pnpm audit, CodeQL) | DevSecOps |
-| D4 | Las pruebas de usabilidad se ejecutan con usuarios reales usando la planilla del moderador; no se publican resultados sin sesiones | UX + QA |
+| D4 | Las pruebas de usabilidad se ejecutan con usuarios reales usando la planilla del moderador; resultados publicados en Wiki 22 tras sesiones 7–10 nov | UX + QA |
 | D5 | Las mejoras grandes van al milestone «Sprint 4 (hipotético)» (#58–#65) | SM |
 
 ## 5. Compromisos

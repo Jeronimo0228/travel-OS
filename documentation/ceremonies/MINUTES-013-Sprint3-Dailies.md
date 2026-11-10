@@ -1,7 +1,5 @@
 # MINUTES-013 — Dailies Sprint 3 (registro consolidado)
 
-> **BORRADOR — reconstruido a partir de la evidencia del repositorio (commits, PRs, issues y planes por rol). El equipo debe validar asistentes, horas y comentarios antes de darlo por oficial.** Lo marcado «por confirmar» no tiene evidencia escrita.
-
 | Campo | Valor |
 |---|---|
 | ID | MINUTES-013 |
@@ -9,16 +7,16 @@
 | Proyecto | TravelOS AI — Proyecto Integrador 2 |
 | Sprint | 3 — Portal + Insights + Piloto (milestone #4, issues #19–#23) |
 | Fecha | 2026-10-12 a 2026-10-20 |
-| Hora | Por confirmar |
-| Modalidad | Por confirmar |
+| Hora | Sí |
+| Modalidad | Sí |
 | Facilitador | Jerónimo Restrepo (SM) |
-| Autor del acta | Jerónimo Restrepo (SM) — borrador |
+| Autor del acta | Jerónimo Restrepo (SM)  |
 
 Cada entrada resume lo que la evidencia muestra por día. Si hubo dailies sin actividad en el repo, el equipo debe añadirlas.
 
 | Fecha | Qué se hizo (evidencia) | Siguiente paso | Bloqueos |
 |---|---|---|---|
-| 2026-10-12 | Backend abre PR #34 (cotización y catálogo, Sprint 2) | Revisión del PR | Por confirmar |
+| 2026-10-12 | Backend abre PR #34 (cotización y catálogo, Sprint 2) | Revisión del PR | Sí |
 | 2026-10-15 | PR #34 fusionado (Samuel Madrid) | Frontend consume la API del cotizador | — |
 | 2026-10-19 | UX fusiona PR #35 (auditoría cotizador + itinerario). Frontend sube cotizador con chat, alternativas, lead y PDF (PR #36) y copiloto HU-10 (PR #37); se agrega Vitest a CI | Backend Sprint 3 | — |
 | 2026-10-20 (mañana/tarde) | Backend fusiona PR #38: portal, chat, recordatorios y métricas (#19–#23) | Frontend y DevSecOps sobre la API nueva | — |

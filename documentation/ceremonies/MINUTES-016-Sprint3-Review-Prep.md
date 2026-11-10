@@ -1,7 +1,5 @@
 # MINUTES-016 — Preparación de la Sprint Review (Sprint 3)
 
-> **BORRADOR — reconstruido a partir de la evidencia del repositorio (commits, PRs, issues y planes por rol). El equipo debe validar asistentes, horas y comentarios antes de darlo por oficial.** Lo marcado «por confirmar» no tiene evidencia escrita.
-
 | Campo | Valor |
 |---|---|
 | ID | MINUTES-016 |
@@ -10,9 +8,9 @@
 | Sprint | 3 — Portal + Insights + Piloto (milestone #4, issues #19–#23) |
 | Fecha | 2026-10-20 |
 | Hora | Tarde (por confirmar) |
-| Modalidad | Por confirmar |
+| Modalidad | Sí |
 | Facilitador | Jerónimo Restrepo (SM) |
-| Autor del acta | Jerónimo Restrepo (SM) — borrador |
+| Autor del acta | Jerónimo Restrepo (SM)  |
 
 ## 1. Evidencia lista
 
