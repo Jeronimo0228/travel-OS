@@ -38,7 +38,7 @@ flowchart LR
 |---|---|
 | LLM01 Inyección de prompt | El texto del usuario viaja como JSON (`{"solicitud": ...}`, `{"mensaje": ...}`) y el prompt de sistema ordena tratarlo como datos. Aunque el modelo obedezca una inyección, no tiene herramientas y su salida pasa por esquema y reglas. |
 | LLM02 Salida insegura | Zod estricto, longitudes máximas, enlaces solo de una lista blanca, IDs verificados contra la base de datos; React escapa todo el texto. |
-| LLM04 Denegación de servicio | `AiRateLimitGuard`: 20 llamadas por usuario y minuto (`AI_RATE_LIMIT_PER_MIN`); tiempo máximo de 45 s por llamada. |
+| LLM04 Denegación de servicio | `AiRateLimitGuard`: 20 llamadas por usuario y minuto (`AI_RATE_LIMIT_PER_MIN`), contadas en PostgreSQL para todas las instancias; tiempo máximo de 45 s por llamada. |
 | LLM06 Fuga de información | Cada consulta filtra por `agencyId` y, para el asesor, por `assigneeId`. El copiloto y el asistente no reciben datos de contacto. Las llaves nunca salen del servidor; `/api/ai/status` (solo ADMIN) devuelve conteos. |
 | LLM08 Exceso de agencia | Ningún agente tiene herramientas ni puede escribir; el cotizador crea registros solo a través del servicio, con datos ya validados. |
 | LLM09 Exceso de confianza | La interfaz avisa que la IA puede equivocarse; precios y totales nunca vienen del modelo. |
@@ -56,4 +56,4 @@ flowchart LR
 
 - Cargar llaves: `scripts/set-ai-keys.sh` (las pide sin mostrarlas y las guarda cifradas en Vercel).
 - Ver estado: Centro de Agentes → «Estado de la IA» (administrador) o `GET /api/ai/status`.
-- Limitación conocida: el enfriamiento y el límite por usuario viven en memoria de cada instancia serverless. Para tráfico alto se mueven a Redis (ya está en `docker-compose`).
+- El enfriamiento de llaves y el límite por usuario son compartidos entre instancias en PostgreSQL (HU-31: tablas `RateCounter` y `AiKeyCooldown`, esta última con la llave guardada solo como SHA-256). Si la base no responde, cada instancia sigue con su estado en memoria.
