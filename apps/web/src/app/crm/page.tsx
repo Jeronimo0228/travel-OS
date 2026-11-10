@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { AppShell } from "@/components/layout/AppShell";
+import { CRM_SEARCH_EVENT } from "@/components/layout/Topbar";
 import { CoPilotPanel } from "@/components/crm/CoPilotPanel";
 import { PipelineBoard } from "@/components/crm/PipelineBoard";
 import { ClientsTable } from "@/components/crm/ClientsTable";
@@ -23,6 +24,16 @@ function CrmContent() {
     setAssigneeFilter,
   } = useCrmStore();
   const [search, setSearch] = useState("");
+
+  // El buscador superior llega con /crm?q=...
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search).get("q");
+    if (q) setSearch(q.slice(0, 100));
+    const onSearch = (event: Event) =>
+      setSearch(String((event as CustomEvent<string>).detail ?? "").slice(0, 100));
+    window.addEventListener(CRM_SEARCH_EVENT, onSearch);
+    return () => window.removeEventListener(CRM_SEARCH_EVENT, onSearch);
+  }, []);
   const [stageFilter, setStageFilter] = useState<StageFilter>("ALL");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingLead, setEditingLead] = useState<Lead | null>(null);
@@ -130,7 +141,7 @@ function CrmContent() {
 
 export default function CrmPage() {
   return (
-    <AppShell searchPlaceholder="Buscar prospectos, reservas o análisis de IA...">
+    <AppShell>
       <CrmStoreProvider>
         <CrmContent />
       </CrmStoreProvider>

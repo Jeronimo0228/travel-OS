@@ -21,6 +21,38 @@ export function buildPortalLink(origin: string, token: string): string {
   return `${origin}/portal#t=${token}`;
 }
 
+function shareMessage(portalUrl: string, travelerName: string, destination: string) {
+  return (
+    `Hola ${travelerName}, este es tu enlace seguro para ver tu viaje a ${destination}, ` +
+    `tus documentos y escribirnos desde tu celular: ${portalUrl}\n\n` +
+    "El enlace vence en 24 horas."
+  );
+}
+
+export function buildWhatsAppLink(
+  portalUrl: string,
+  travelerName: string,
+  destination: string,
+): string {
+  const text = shareMessage(portalUrl, travelerName, destination);
+  return `https://wa.me/?text=${encodeURIComponent(text)}`;
+}
+
+export function buildMailtoLink(
+  email: string,
+  portalUrl: string,
+  travelerName: string,
+  destination: string,
+): string {
+  const params = new URLSearchParams({
+    subject: `Tu viaje a ${destination} en TravelOS`,
+    body: shareMessage(portalUrl, travelerName, destination),
+  });
+  return `mailto:${encodeURIComponent(email).replace(/%40/g, "@")}?${params
+    .toString()
+    .replace(/\+/g, "%20")}`;
+}
+
 function portalFetch<T>(token: string, path: string, init: RequestInit = {}) {
   return apiFetch<T>(`/api/portal${path}`, {
     ...init,

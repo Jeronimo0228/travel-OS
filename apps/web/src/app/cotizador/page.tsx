@@ -5,7 +5,7 @@ import { QuoterStoreProvider } from "@/components/quotes/QuoterStoreProvider";
 
 export default function CotizadorPage() {
   return (
-    <AppShell searchPlaceholder="Buscar cotizaciones, clientes...">
+    <AppShell>
       <QuoterStoreProvider>
         <div className="grid grid-cols-1 gap-6 lg:h-[calc(100vh-112px)] lg:grid-cols-5">
           <div className="h-[70vh] min-h-0 lg:col-span-2 lg:h-full">

@@ -67,6 +67,7 @@ export class LeadPrioritizationService {
         knowledge,
       JSON.stringify(leadsForScoring),
       leadScoresSchema,
+      'copilot',
     );
 
     const leadsById = new Map(leads.map((lead) => [lead.id, lead]));

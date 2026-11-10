@@ -6,7 +6,7 @@ export const metadata = { title: "Manual de uso · TravelOS" };
 
 export default function HelpPage() {
   return (
-    <AppShell searchPlaceholder="Buscar en el manual...">
+    <AppShell>
       <div>
         <h2 className="font-headline text-headline-xl text-primary mb-1">Manual de uso</h2>
         <p className="font-body-custom text-body-md text-on-surface-variant">

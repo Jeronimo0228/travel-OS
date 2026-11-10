@@ -8,6 +8,7 @@ import {
   type ReactNode,
 } from "react";
 import { useRouter } from "next/navigation";
+import { onSessionExpired } from "@/lib/api-client";
 import { logout as apiLogout, type SessionUser } from "@/lib/auth";
 
 const STORAGE_KEY = "travelos.session.user";
@@ -42,6 +43,17 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     setUserState(readStoredUser());
     setHydrated(true);
   }, []);
+
+  // An expired cookie leaves a stale user in localStorage; clearing it lets
+  // RequireSession send the visitor back to /login instead of a broken page.
+  useEffect(
+    () =>
+      onSessionExpired(() => {
+        setUserState(null);
+        window.localStorage.removeItem(STORAGE_KEY);
+      }),
+    [],
+  );
 
   function setUser(next: SessionUser) {
     setUserState(next);

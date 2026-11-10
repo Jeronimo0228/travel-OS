@@ -40,7 +40,8 @@ export const MANUAL_SECTIONS: ManualSection[] = [
     steps: [
       "Entra a «Cotizador» y escribe el pedido tal como lo dice el cliente, por ejemplo: «Pareja a Cartagena 5 días, hotel frente al mar».",
       "La IA arma 2 o 3 alternativas usando solo el catálogo y precios de tu agencia, en COP.",
-      "Vincula la cotización a un prospecto con el selector del encabezado y genera el PDF para enviarlo.",
+      "Vincula la cotización a un prospecto con el selector del encabezado y genera el PDF.",
+      "Pulsa «Enviar por WhatsApp»: se abre WhatsApp con las alternativas y sus precios; eliges el contacto del cliente y adjuntas el PDF.",
       "Si el destino no está en tu catálogo, el sistema lo avisa en lugar de inventar precios.",
     ],
   },
@@ -62,8 +63,8 @@ export const MANUAL_SECTIONS: ManualSection[] = [
     image: "/manual/04-viaje-detalle.png",
     steps: [
       "Entra a «Viajes y Portal» y abre una reserva.",
-      "Agrega actividades por día al itinerario y adjunta documentos (vouchers, tiquetes, seguro).",
-      "Pulsa «Generar enlace del portal» y envíalo al viajero. El enlace dura 24 horas y generar uno nuevo invalida el anterior.",
+      "Agrega actividades por día al itinerario. Con la «Biblioteca del catálogo» añades hoteles y actividades de tu catálogo eligiendo el día y la hora.",
+      "Pulsa «Generar enlace del portal» y envíalo con los botones de WhatsApp o correo. El enlace dura 24 horas y generar uno nuevo invalida el anterior.",
       "Responde los mensajes del viajero desde el chat de la reserva.",
     ],
   },
@@ -78,8 +79,30 @@ export const MANUAL_SECTIONS: ManualSection[] = [
     ],
   },
   {
+    id: "asistente",
+    title: "7. Preguntarle al asistente IA",
+    roles: ["Admin", "Gerente", "Asesor"],
+    image: "/manual/12-asistente-ia.png",
+    steps: [
+      "Toca el botón redondo de la esquina inferior derecha o «Análisis IA» en la barra superior.",
+      "Pregunta en tus palabras, por ejemplo: «¿Tengo seguimientos vencidos?» o «¿Cómo creo una cotización?». También puedes tocar una de las preguntas sugeridas.",
+      "El asistente responde con las cifras de tu agencia (un asesor solo ve las suyas) y te deja enlaces a la pantalla indicada.",
+      "Es de solo lectura: no cambia ni envía datos. Si hace muchas preguntas seguidas, espera un minuto.",
+    ],
+  },
+  {
+    id: "agentes",
+    title: "8. Centro de Agentes",
+    roles: ["Admin", "Gerente", "Asesor"],
+    image: "/manual/13-centro-agentes.png",
+    steps: [
+      "En la barra lateral entra a «Centro de Agentes» para ver los tres agentes de IA, qué reciben, qué entregan y sus reglas de seguridad.",
+      "El administrador ve además el estado de la IA: proveedor principal, llaves disponibles por agente y proveedores de respaldo (nunca las llaves).",
+    ],
+  },
+  {
     id: "admin",
-    title: "7. Configuración de la agencia",
+    title: "9. Configuración de la agencia",
     roles: ["Admin", "Gerente"],
     steps: [
       "«Marca blanca»: sube el logo y elige el color principal de tu agencia.",

@@ -1,13 +1,33 @@
-import { Body, Controller, HttpCode, Post, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpException,
+  HttpStatus,
+  Post,
+  Req,
+  Res,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { loginSchema, registerAgencySchema } from '@travelos/shared';
 import type { LoginInput, RegisterAgencyInput } from '@travelos/shared';
-import type { Response } from 'express';
+import type { Request, Response } from 'express';
 import { ZodValidationPipe } from '../common/zod-validation.pipe';
+import { PortalAttemptLimiter } from '../portal/portal-attempts';
 import { AUTH_COOKIE_NAME, JWT_EXPIRATION_SECONDS } from './auth.constants';
 import { AuthService } from './auth.service';
 
+/** 10 contraseñas fallidas por IP y correo en 15 minutos bloquean el login. */
+const LOGIN_MAX_FAILURES = 10;
+const LOGIN_WINDOW_MS = 15 * 60_000;
+
 @Controller('auth')
 export class AuthController {
+  private readonly loginFailures = new PortalAttemptLimiter(
+    LOGIN_MAX_FAILURES,
+    LOGIN_WINDOW_MS,
+  );
+
   constructor(private readonly authService: AuthService) {}
 
   @Post('register')
@@ -26,8 +46,24 @@ export class AuthController {
   async login(
     @Body(new ZodValidationPipe(loginSchema)) input: LoginInput,
     @Res({ passthrough: true }) response: Response,
+    @Req() request?: Request,
   ) {
-    const result = await this.authService.login(input);
+    const key = `${request?.ip ?? 'unknown'}|${input.email.toLowerCase()}`;
+    if (this.loginFailures.isBlocked(key)) {
+      throw new HttpException(
+        'Demasiados intentos fallidos. Espera 15 minutos e inténtalo de nuevo.',
+        HttpStatus.TOO_MANY_REQUESTS,
+      );
+    }
+    let result: Awaited<ReturnType<AuthService['login']>>;
+    try {
+      result = await this.authService.login(input);
+    } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        this.loginFailures.recordFailure(key);
+      }
+      throw error;
+    }
     this.setAccessCookie(response, result.accessToken);
     return { user: result.user };
   }

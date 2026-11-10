@@ -78,6 +78,7 @@ describe('LeadPrioritizationService', () => {
       expect.any(String),
       expect.stringContaining('"overdueTaskCount":1'),
       expect.anything(),
+      'copilot',
     );
   });
 

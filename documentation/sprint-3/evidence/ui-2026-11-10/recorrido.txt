@@ -1,0 +1,23 @@
+[desktop] login demo por la landing OK
+[desktop] / → / | TravelOS AI | overflowX=false
+[desktop] /crm → /crm | TravelOS AI | overflowX=false
+[desktop] /cotizador → /cotizador | TravelOS AI | overflowX=false
+[desktop] /viajes → /viajes | TravelOS AI | overflowX=false
+[desktop] /agentes → /agentes | TravelOS AI | overflowX=false
+[desktop] /ayuda → /ayuda | TravelOS AI | overflowX=false
+[desktop] /privacidad → /privacidad | Política de tratamiento de datos personales | overflowX=false
+[desktop] asistente: auto_awesome Asistente IA Solo lectura · datos de tu agencia close Hola, soy el asistente de Travel OS. Te ayudo con las cifras de tu embudo, tus seguimientos y cómo usar cada pantalla. Solo leo información: no cambio datos. ¿Tengo seguimientos vencidos? ¡Hola
+[desktop] cotizador WhatsApp visible=true href=https://wa.me/?text=Hola%2C%20te%20compa
+[desktop] búsqueda superior → /crm?q=Ana valor CRM="Ana"
+[desktop] errores: ninguno
+[iphone] login demo por la landing OK
+[iphone] / → / | TravelOS AI | overflowX=false
+[iphone] /crm → /crm | TravelOS AI | overflowX=false
+[iphone] /cotizador → /cotizador | TravelOS AI | overflowX=false
+[iphone] /viajes → /viajes | TravelOS AI | overflowX=false
+[iphone] /agentes → /agentes | TravelOS AI | overflowX=false
+[iphone] /ayuda → /ayuda | TravelOS AI | overflowX=false
+[iphone] /privacidad → /privacidad | Política de tratamiento de datos personales | overflowX=false
+[iphone] asistente: auto_awesome Asistente IA Solo lectura · datos de tu agencia close Hola, soy el asistente de Travel OS. Te ayudo con las cifras de tu embudo, tus seguimientos y cómo usar cada pantalla. Solo leo información: no cambio datos. ¿Tengo seguimientos vencidos? ¡Hola
+[iphone] cotizador WhatsApp visible=true href=https://wa.me/?text=Hola%2C%20te%20compa
+[iphone] errores: ninguno

@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import {
+  buildMailtoLink,
   buildPortalLink,
+  buildWhatsAppLink,
   documentIcon,
   groupItineraryByDay,
   readTokenFromHash,
@@ -95,5 +97,46 @@ describe("documentIcon", () => {
     expect(documentIcon(null, "Pasaporte Ana")).toBe("badge");
     expect(documentIcon("application/pdf", "Voucher hotel")).toBe("hotel");
     expect(documentIcon("application/pdf", "Factura")).toBe("picture_as_pdf");
+  });
+});
+
+describe('sharing the portal link', () => {
+  const url = `https://app.example/portal#t=${token}`;
+
+  it('builds a WhatsApp link whose text carries the full portal link', () => {
+    const link = buildWhatsAppLink(url, 'Ana Martínez', 'Cartagena');
+
+    expect(link.startsWith('https://wa.me/?text=')).toBe(true);
+    const text = decodeURIComponent(link.slice('https://wa.me/?text='.length));
+    expect(text).toContain(url);
+    expect(text).toContain('Ana Martínez');
+    expect(text).toContain('Cartagena');
+    expect(text).toContain('24 horas');
+  });
+
+  it('keeps the # fragment of the token inside the encoded message', () => {
+    const link = buildWhatsAppLink(url, 'Ana', 'Cartagena');
+
+    expect(link).not.toContain('#');
+    expect(link).toContain(encodeURIComponent('#t=' + token));
+  });
+
+  it('builds a mailto link to the traveler with subject and body', () => {
+    const link = buildMailtoLink('ana@correo.com', url, 'Ana Martínez', 'Cartagena');
+
+    expect(link.startsWith('mailto:ana@correo.com?')).toBe(true);
+    const params = new URLSearchParams(link.slice(link.indexOf('?') + 1));
+    expect(params.get('subject')).toBe('Tu viaje a Cartagena en TravelOS');
+    expect(params.get('body')).toContain(url);
+    expect(params.get('body')).toContain('Ana Martínez');
+    expect(params.get('body')).toContain('24 horas');
+  });
+
+  it('does not let special characters in names break the message', () => {
+    const link = buildMailtoLink('ana@correo.com', url, 'Ana & Co. ?x=1', 'San Andrés');
+    const params = new URLSearchParams(link.slice(link.indexOf('?') + 1));
+
+    expect(params.get('body')).toContain('Ana & Co. ?x=1');
+    expect([...params.keys()].sort()).toEqual(['body', 'subject']);
   });
 });

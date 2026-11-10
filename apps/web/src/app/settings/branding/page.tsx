@@ -3,7 +3,7 @@ import { BrandingForm } from "@/components/branding/BrandingForm";
 
 export default function BrandingSettingsPage() {
   return (
-    <AppShell searchPlaceholder="Buscar en configuración...">
+    <AppShell>
       <div>
         <h2 className="font-headline text-headline-xl text-primary mb-1">
           Marca de la Agencia

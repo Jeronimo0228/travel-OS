@@ -23,6 +23,7 @@ import type {
 } from '@travelos/shared';
 import type { AuthenticatedUser } from '../common/authenticated-user.interface';
 import { CurrentUser } from '../common/current-user.decorator';
+import { AiRateLimitGuard } from '../common/ai-rate-limit.guard';
 import { JwtAuthGuard } from '../common/jwt-auth.guard';
 import { ZodValidationPipe } from '../common/zod-validation.pipe';
 import { QuotesService } from './quotes.service';
@@ -33,6 +34,7 @@ export class QuotesController {
   constructor(private readonly quotesService: QuotesService) {}
 
   @Post()
+  @UseGuards(AiRateLimitGuard)
   create(
     @CurrentUser() user: AuthenticatedUser,
     @Body(new ZodValidationPipe(createQuoteSchema)) input: CreateQuoteInput,

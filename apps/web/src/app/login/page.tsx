@@ -1,6 +1,14 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { AuthCard } from "@/components/auth/AuthCard";
 import { LoginForm } from "@/components/auth/LoginForm";
+
+export const metadata: Metadata = {
+  title: "Iniciar sesión",
+  description: "Entra a Travel OS, el sistema operativo para agencias de viajes y mayoristas.",
+  alternates: { canonical: "/login" },
+  robots: { index: true, follow: true },
+};
 
 export default function LoginPage() {
   return (
@@ -12,6 +20,11 @@ export default function LoginPage() {
           ¿Aún no tienes una agencia?{" "}
           <Link href="/register" className="text-secondary hover:underline">
             Regístrala aquí
+          </Link>
+          <br />
+          ¿Solo quieres mirar?{" "}
+          <Link href="/#entrar" className="inline-block py-3 text-secondary hover:underline">
+            Entrar a la demo
           </Link>
         </>
       }

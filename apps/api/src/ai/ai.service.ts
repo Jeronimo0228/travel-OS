@@ -16,7 +16,35 @@ const DEFAULT_RETRY_PAUSE_MS = 3000;
 const GEMINI_ENDPOINT =
   'https://generativelanguage.googleapis.com/v1beta/models';
 
-export type AiProvider = 'gemini' | 'groq';
+export type AiProvider = 'gemini' | 'groq' | 'openrouter';
+
+const KEY_COOLDOWN_MS = 60_000;
+const OPENROUTER_ENDPOINT = 'https://openrouter.ai/api/v1/chat/completions';
+const DEFAULT_OPENROUTER_MODELS =
+  'meta-llama/llama-3.3-70b-instruct:free,deepseek/deepseek-chat-v3-0324:free';
+
+/**
+ * Each AI agent can have its own key pool (GEMINI_API_KEYS_<POOL>) so one
+ * agent exhausting its quota does not starve the others. The shared pool
+ * (GEMINI_API_KEYS + GEMINI_API_KEY) is appended as the agent's reserve.
+ */
+export type AiAgent =
+  'quote-extract' | 'quote-options' | 'copilot' | 'assistant' | 'default';
+
+const AGENT_POOL: Record<AiAgent, string | null> = {
+  'quote-extract': 'QUOTE',
+  'quote-options': 'QUOTE',
+  copilot: 'COPILOT',
+  assistant: 'ASSISTANT',
+  default: null,
+};
+
+function splitList(value: string | undefined): string[] {
+  return (value ?? '')
+    .split(',')
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
 
 interface GeminiResponse {
   candidates?: { content?: { parts?: { text?: string }[] } }[];
@@ -32,16 +60,31 @@ export class AiService {
     systemPrompt: string,
     userPrompt: string,
     schema: TSchema,
+    agent: AiAgent = 'default',
   ): Promise<z.output<TSchema>> {
-    const provider = this.resolveProvider();
+    const provider = this.resolveProvider(agent);
     if (!provider) {
       throw new ServiceUnavailableException('AI service is not configured');
     }
 
-    const content =
-      provider === 'gemini'
-        ? await this.completeWithGemini(systemPrompt, userPrompt)
-        : await this.completeWithGroq(systemPrompt, userPrompt);
+    const startedAt = Date.now();
+    let content: string | null | undefined;
+    try {
+      content = await this.completeWithFallback(
+        provider,
+        systemPrompt,
+        userPrompt,
+        agent,
+      );
+    } catch (error) {
+      this.logger.warn(
+        `ai_call agent=${agent} outcome=unavailable ms=${Date.now() - startedAt}`,
+      );
+      throw error;
+    }
+    this.logger.log(
+      `ai_call agent=${agent} outcome=ok ms=${Date.now() - startedAt}`,
+    );
 
     if (!content) {
       throw new BadGatewayException('AI provider returned an empty response');
@@ -77,22 +120,243 @@ export class AiService {
    * Picks the AI provider. AI_PROVIDER forces one; otherwise Gemini wins when
    * its key is present and Groq is the fallback.
    */
-  resolveProvider(): AiProvider | null {
+  resolveProvider(agent: AiAgent = 'default'): AiProvider | null {
     const forced = this.config.get<string>('AI_PROVIDER')?.toLowerCase();
-    const hasGemini = Boolean(this.config.get<string>('GEMINI_API_KEY'));
-    const hasGroq = Boolean(this.config.get<string>('GROQ_API_KEY'));
+    const hasGemini = this.geminiKeys(agent).length > 0;
+    const hasGroq = this.providerKeys('GROQ').length > 0;
+    const hasOpenRouter = this.providerKeys('OPENROUTER').length > 0;
     if (forced === 'gemini') return hasGemini ? 'gemini' : null;
     if (forced === 'groq') return hasGroq ? 'groq' : null;
+    if (forced === 'openrouter') return hasOpenRouter ? 'openrouter' : null;
     if (hasGemini) return 'gemini';
     if (hasGroq) return 'groq';
+    if (hasOpenRouter) return 'openrouter';
     return null;
+  }
+
+  /**
+   * Keys for an agent: its dedicated pool first, then the shared pool
+   * (GEMINI_API_KEYS comma list plus legacy GEMINI_API_KEY), de-duplicated.
+   */
+  geminiKeys(agent: AiAgent = 'default'): string[] {
+    const pool = AGENT_POOL[agent];
+    const dedicated = pool
+      ? splitList(this.config.get<string>(`GEMINI_API_KEYS_${pool}`))
+      : [];
+    return [...new Set([...dedicated, ...this.providerKeys('GEMINI')])];
+  }
+
+  /** <NAME>_API_KEYS (comma list) plus <NAME>_API_KEY, de-duplicated. */
+  private providerKeys(name: 'GEMINI' | 'GROQ' | 'OPENROUTER'): string[] {
+    return [
+      ...new Set([
+        ...splitList(this.config.get<string>(`${name}_API_KEYS`)),
+        ...splitList(this.config.get<string>(`${name}_API_KEY`)),
+      ]),
+    ];
+  }
+
+  /** Provider chain after the primary one, unless AI_PROVIDER pins a provider. */
+  providerChain(primary: AiProvider, agent: AiAgent = 'default'): AiProvider[] {
+    if (this.config.get<string>('AI_PROVIDER')) return [primary];
+    const chain: AiProvider[] = [];
+    if (this.geminiKeys(agent).length) chain.push('gemini');
+    if (this.providerKeys('GROQ').length) chain.push('groq');
+    if (this.providerKeys('OPENROUTER').length) chain.push('openrouter');
+    return chain.slice(chain.indexOf(primary));
+  }
+
+  /** Safe status: counts and cooldowns only, never key values. */
+  status() {
+    const now = Date.now();
+    const keys = this.geminiKeys();
+    const cooling = keys
+      .map((key) => this.geminiCooldowns.get(key) ?? 0)
+      .filter((until) => until > now);
+    const pool = (agent: AiAgent) => {
+      const agentKeys = this.geminiKeys(agent);
+      const name = AGENT_POOL[agent];
+      return {
+        dedicated: name
+          ? splitList(this.config.get<string>(`GEMINI_API_KEYS_${name}`)).length
+          : 0,
+        total: agentKeys.length,
+        available: agentKeys.filter(
+          (key) => (this.geminiCooldowns.get(key) ?? 0) <= now,
+        ).length,
+      };
+    };
+    return {
+      agents: {
+        cotizador: pool('quote-options'),
+        copiloto: pool('copilot'),
+        asistente: pool('assistant'),
+      },
+      provider: this.resolveProvider(),
+      forced: Boolean(this.config.get<string>('AI_PROVIDER')),
+      gemini: {
+        keys: keys.length,
+        available: keys.length - cooling.length,
+        coolingDown: cooling.length,
+        cooldownSecondsRemaining: cooling.map((until) =>
+          Math.ceil((until - now) / 1000),
+        ),
+      },
+      groq: { keys: this.providerKeys('GROQ').length },
+      openrouter: { keys: this.providerKeys('OPENROUTER').length },
+    };
+  }
+
+  resetCooldowns(): void {
+    this.geminiCooldowns.clear();
+  }
+
+  private async completeWithFallback(
+    primary: AiProvider,
+    systemPrompt: string,
+    userPrompt: string,
+    agent: AiAgent,
+  ): Promise<string | null | undefined> {
+    const chain = this.providerChain(primary, agent);
+    let lastError: unknown;
+    for (const provider of chain) {
+      try {
+        if (provider === 'gemini')
+          return await this.completeWithGeminiKeys(
+            systemPrompt,
+            userPrompt,
+            agent,
+          );
+        if (provider === 'groq')
+          return await this.completeWithGroq(systemPrompt, userPrompt);
+        return await this.completeWithOpenRouter(systemPrompt, userPrompt);
+      } catch (error) {
+        lastError = error;
+        if (!(error instanceof ServiceUnavailableException)) throw error;
+        this.logger.warn(
+          `ai_fallback agent=${agent} provider=${provider} unavailable, trying next`,
+        );
+      }
+    }
+    throw lastError instanceof Error
+      ? lastError
+      : new ServiceUnavailableException('AI provider is unavailable');
+  }
+
+  /** Rotates keys; a key that ends rate limited (429) cools down for 60 s. */
+  private async completeWithGeminiKeys(
+    systemPrompt: string,
+    userPrompt: string,
+    agent: AiAgent,
+  ): Promise<string | undefined> {
+    const keys = this.geminiKeys(agent);
+    const now = Date.now();
+    let indexes = keys
+      .map((_, index) => index)
+      .filter((index) => (this.geminiCooldowns.get(keys[index]) ?? 0) <= now);
+    if (!indexes.length) {
+      throw new ServiceUnavailableException(
+        'AI provider request failed with status 429 (all Gemini keys cooling down)',
+      );
+    }
+    // Start at a rotating offset so load spreads across keys.
+    const offset = this.rotation++ % indexes.length;
+    indexes = [...indexes.slice(offset), ...indexes.slice(0, offset)];
+    let lastError: unknown;
+    for (const index of indexes) {
+      try {
+        return await this.completeWithGemini(
+          systemPrompt,
+          userPrompt,
+          keys[index],
+        );
+      } catch (error) {
+        lastError = error;
+        if (
+          error instanceof ServiceUnavailableException &&
+          error.message.includes('429')
+        ) {
+          this.geminiCooldowns.set(keys[index], Date.now() + KEY_COOLDOWN_MS);
+          this.logger.warn(
+            `ai_key_cooldown agent=${agent} slot=${index + 1} seconds=60`,
+          );
+          continue;
+        }
+        throw error;
+      }
+    }
+    throw lastError instanceof Error
+      ? lastError
+      : new ServiceUnavailableException('AI provider is unavailable');
+  }
+
+  private rotation = 0;
+  /** In-memory only and never serialized; status() reports counts. */
+  private readonly geminiCooldowns = new Map<string, number>();
+
+  private async completeWithOpenRouter(
+    systemPrompt: string,
+    userPrompt: string,
+  ): Promise<string | undefined> {
+    const apiKeys = this.providerKeys('OPENROUTER');
+    const models = (
+      this.config.get<string>('OPENROUTER_MODEL') || DEFAULT_OPENROUTER_MODELS
+    )
+      .split(',')
+      .map((m) => m.trim())
+      .filter(Boolean);
+    let lastStatus = 0;
+    const attempts = apiKeys.flatMap((apiKey) =>
+      models.map((model) => ({ apiKey, model })),
+    );
+    for (const { apiKey, model } of attempts) {
+      let response: Response;
+      try {
+        response = await fetch(OPENROUTER_ENDPOINT, {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+            authorization: `Bearer ${apiKey}`,
+          },
+          body: JSON.stringify({
+            model,
+            response_format: { type: 'json_object' },
+            messages: [
+              { role: 'system', content: systemPrompt },
+              { role: 'user', content: userPrompt },
+            ],
+          }),
+          signal: AbortSignal.timeout(45_000),
+        });
+      } catch {
+        continue;
+      }
+      if (response.ok) {
+        const body = (await response.json()) as {
+          choices?: { message?: { content?: string } }[];
+        };
+        return body.choices?.[0]?.message?.content?.trim();
+      }
+      lastStatus = response.status;
+      // 401/403 means this key is bad: try the next key, not the next model.
+      if (
+        response.status !== 429 &&
+        response.status < 500 &&
+        response.status !== 401 &&
+        response.status !== 403
+      )
+        break;
+    }
+    throw new ServiceUnavailableException(
+      `AI provider request failed with status ${lastStatus || 'n/a'} (openrouter)`,
+    );
   }
 
   private async completeWithGemini(
     systemPrompt: string,
     userPrompt: string,
+    apiKey: string,
   ): Promise<string | undefined> {
-    const apiKey = this.config.getOrThrow<string>('GEMINI_API_KEY');
     const models = (
       this.config.get<string>('GEMINI_MODEL') || DEFAULT_GEMINI_MODELS
     )
@@ -170,11 +434,30 @@ export class AiService {
     );
   }
 
+  /** Tries each Groq key in order; a quota or outage error moves to the next. */
   private async completeWithGroq(
     systemPrompt: string,
     userPrompt: string,
   ): Promise<string | null | undefined> {
-    const apiKey = this.config.getOrThrow<string>('GROQ_API_KEY');
+    const keys = this.providerKeys('GROQ');
+    let lastError: unknown;
+    for (const apiKey of keys) {
+      try {
+        return await this.completeWithGroqKey(systemPrompt, userPrompt, apiKey);
+      } catch (error) {
+        lastError = error;
+      }
+    }
+    throw lastError instanceof Error
+      ? lastError
+      : new ServiceUnavailableException('AI provider is unavailable');
+  }
+
+  private async completeWithGroqKey(
+    systemPrompt: string,
+    userPrompt: string,
+    apiKey: string,
+  ): Promise<string | null | undefined> {
     const model = this.config.get<string>('GROQ_MODEL') || DEFAULT_MODEL;
     const groq = new Groq({ apiKey, timeout: 30_000, maxRetries: 1 });
 
