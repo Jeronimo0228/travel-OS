@@ -9,6 +9,9 @@
 set -euo pipefail
 
 TARGET=production
+if [[ ! -t 0 ]]; then
+  echo "Este script pide las llaves de forma interactiva. Ejecútalo en tu propia terminal, no con el prefijo ! de Claude Code."; exit 1
+fi
 command -v vercel >/dev/null || { echo "Falta la CLI de Vercel (npm i -g vercel)"; exit 1; }
 if [[ ! -f .vercel/project.json ]] || ! grep -q '"projectName":"travelos-api"\|travelos-api' .vercel/project.json; then
   echo "Ejecuta este script en la carpeta enlazada al proyecto travelos-api (vercel link)."; exit 1
