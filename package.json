@@ -29,12 +29,8 @@
       "postcss": "^8.5.23",
       "nanoid@<4": "^3.3.18",
       "source-map-js": "^1.2.2",
-      "brace-expansion@<2": "^1.1.21"
-    },
-    "auditConfig": {
-      "ignoreGhsas": [
-        "GHSA-mrhx-c7xc-m3w5"
-      ]
+      "brace-expansion@<2": "^1.1.21",
+      "zod@>=4 <4.6.6": "^4.6.7"
     }
   }
 }

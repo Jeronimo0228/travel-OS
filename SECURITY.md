@@ -23,6 +23,6 @@ Solo la versión en producción (`main`, desplegada en https://travel-os.pdpcomu
 | Código | CodeQL (`security-extended`) en cada PR y cada semana. |
 | Auditoría | Registro de acciones sensibles por agencia (`/settings/audit`). |
 
-## Riesgo aceptado
+## Riesgos aceptados
 
-- `GHSA-mrhx-c7xc-m3w5` (Zod 3: memoria con colecciones muy grandes). Mitigado porque el cuerpo de cada petición está limitado a 100 kB y todos los arreglos tienen `max()`. Se cierra al migrar a Zod 4.
+Ninguno abierto. El último (GHSA-mrhx-c7xc-m3w5 de Zod 3) se cerró al migrar a Zod 4 (HU-32).
