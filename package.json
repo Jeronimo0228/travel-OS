@@ -18,5 +18,23 @@
   "devDependencies": {
     "prettier": "^3.5.3",
     "typescript": "^5.8.2"
+  },
+  "pnpm": {
+    "overrides": {
+      "proxy-addr": "^2.0.8",
+      "multer": "^2.5.0",
+      "body-parser": "^2.4.0",
+      "qs": "^6.16.1",
+      "deepmerge-ts": "^8.0.0",
+      "postcss": "^8.5.23",
+      "nanoid@<4": "^3.3.18",
+      "source-map-js": "^1.2.2",
+      "brace-expansion@<2": "^1.1.21"
+    },
+    "auditConfig": {
+      "ignoreGhsas": [
+        "GHSA-mrhx-c7xc-m3w5"
+      ]
+    }
   }
 }
