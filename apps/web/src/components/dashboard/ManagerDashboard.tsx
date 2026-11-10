@@ -123,7 +123,7 @@ export function ManagerDashboard() {
 
   if (state.status === "loading") {
     return (
-      <div className="grid grid-cols-4 gap-gutter" aria-busy="true">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-gutter" aria-busy="true">
         {Array.from({ length: 4 }).map((_, index) => (
           <div key={index} className={`${card} h-40 animate-pulse`} />
         ))}
@@ -289,7 +289,7 @@ export function ManagerDashboard() {
           >
             Desempeño por asesor
           </h3>
-          <table className="w-full text-left">
+          <div className="relative overflow-x-auto"><table className="w-full text-left min-w-[420px]">
             <thead>
               <tr className="text-label-sm text-on-surface-variant uppercase">
                 <th className="py-2">Asesor</th>
@@ -323,7 +323,7 @@ export function ManagerDashboard() {
                 );
               })}
             </tbody>
-          </table>
+          </table></div>
         </section>
 
         <section

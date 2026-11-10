@@ -13,6 +13,11 @@ export default function LoginPage() {
           <Link href="/register" className="text-secondary hover:underline">
             Regístrala aquí
           </Link>
+          <br />
+          ¿Solo quieres mirar?{" "}
+          <Link href="/#entrar" className="inline-block py-3 text-secondary hover:underline">
+            Entrar a la demo
+          </Link>
         </>
       }
     >
