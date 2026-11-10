@@ -82,6 +82,7 @@ export const MANUAL_SECTIONS: ManualSection[] = [
     id: "asistente",
     title: "7. Preguntarle al asistente IA",
     roles: ["Admin", "Gerente", "Asesor"],
+    image: "/manual/12-asistente-ia.png",
     steps: [
       "Toca el botón redondo de la esquina inferior derecha o «Análisis IA» en la barra superior.",
       "Pregunta en tus palabras, por ejemplo: «¿Tengo seguimientos vencidos?» o «¿Cómo creo una cotización?». También puedes tocar una de las preguntas sugeridas.",
@@ -93,6 +94,7 @@ export const MANUAL_SECTIONS: ManualSection[] = [
     id: "agentes",
     title: "8. Centro de Agentes",
     roles: ["Admin", "Gerente", "Asesor"],
+    image: "/manual/13-centro-agentes.png",
     steps: [
       "En la barra lateral entra a «Centro de Agentes» para ver los tres agentes de IA, qué reciben, qué entregan y sus reglas de seguridad.",
       "El administrador ve además el estado de la IA: proveedor principal, llaves disponibles por agente y proveedores de respaldo (nunca las llaves).",

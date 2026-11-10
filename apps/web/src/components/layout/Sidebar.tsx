@@ -88,13 +88,13 @@ export function Sidebar() {
       </div>
 
       <div className="mt-auto pt-6 px-2 border-t border-on-primary/10">
-        <button
-          type="button"
+        <Link
+          href="/cotizador"
           className="w-full bg-gradient-to-r from-secondary to-tertiary-fixed-dim text-white font-body-custom text-label-md py-3 px-4 mb-4 rounded-lg shadow-lg flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
         >
-          <span className="material-symbols-outlined">add</span>
-          Nuevo Itinerario
-        </button>
+          <span className="material-symbols-outlined" aria-hidden="true">add</span>
+          Nueva cotización
+        </Link>
         <Link
           href="/settings/branding"
           className="text-on-primary/85 hover:bg-primary-container/50 rounded-lg mx-2 my-1 flex items-center gap-3 px-4 py-2 transition-colors duration-200"
