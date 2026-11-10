@@ -115,7 +115,7 @@ const FOLLOW = [
   "¿Qué te faltó para usar esto en tu día a día en vez de WhatsApp/Excel?",
   "(Viajero) ¿Preferirías recibir esto por WhatsApp o en el portal?",
 ];
-const KEY = "travelos.usability.v1";
+const STORE_NAME = "travelos.usability.v1";
 const $ = (id) => document.getElementById(id);
 let state = fresh();
 let timers = {};
@@ -123,8 +123,8 @@ let timers = {};
 function fresh() {
   return { tasks: Object.fromEntries(TASKS.map((t) => [t.id, { ms: 0, result: "", errors: 0, seq: "", notes: "" }])), sus: Array(10).fill(""), follow: Array(4).fill("") };
 }
-function load() { try { return JSON.parse(localStorage.getItem(KEY)) ?? []; } catch { return []; } }
-function store(list) { try { localStorage.setItem(KEY, JSON.stringify(list)); } catch {} }
+function load() { try { return JSON.parse(localStorage.getItem(STORE_NAME)) ?? []; } catch { return []; } }
+function store(list) { try { localStorage.setItem(STORE_NAME, JSON.stringify(list)); } catch {} }
 function fmt(ms) { const s = Math.round(ms / 1000); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; }
 function susScore(answers) {
   if (answers.some((a) => a === "")) return null;
