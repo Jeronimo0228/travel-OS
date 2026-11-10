@@ -14,7 +14,11 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       originalUrl?: string;
       url: string;
     }>();
-    assertDemoCanWrite(req.user?.agencyId, req.method, req.originalUrl ?? req.url);
+    assertDemoCanWrite(
+      req.user?.agencyId,
+      req.method,
+      req.originalUrl ?? req.url,
+    );
     return true;
   }
 }

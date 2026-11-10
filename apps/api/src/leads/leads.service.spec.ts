@@ -25,9 +25,9 @@ describe('LeadsService', () => {
   it('restricts advisor lead access to their agency assignment', async () => {
     findFirst.mockResolvedValue(null);
 
-    await expect(service.findOne(advisor, 'lead-from-another-scope')).rejects.toBeInstanceOf(
-      ForbiddenException,
-    );
+    await expect(
+      service.findOne(advisor, 'lead-from-another-scope'),
+    ).rejects.toBeInstanceOf(ForbiddenException);
     expect(findFirst).toHaveBeenCalledWith({
       where: {
         id: 'lead-from-another-scope',

@@ -29,7 +29,10 @@ describe('Leads (e2e) — HU-07/08/11/12 + DELETE AC-06', () => {
     return extractAccessToken(registered);
   }
 
-  function createLeadAs(token: string, overrides: Record<string, unknown> = {}) {
+  function createLeadAs(
+    token: string,
+    overrides: Record<string, unknown> = {},
+  ) {
     return request(app.getHttpServer())
       .post('/api/leads')
       .set('Authorization', `Bearer ${token}`)

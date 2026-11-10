@@ -22,10 +22,11 @@ export function registerPayload(
 ) {
   const slug = uniqueSlug(prefix);
   // Agency.nit max length is 30 in shared Zod schema.
-  const nit = `n${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`.slice(
-    0,
-    30,
-  );
+  const nit =
+    `n${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`.slice(
+      0,
+      30,
+    );
   return {
     agencyName: `QA Agency ${slug}`,
     nit,
