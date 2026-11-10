@@ -11,6 +11,8 @@ import { LeadsModule } from './leads/leads.module';
 import { AccountModule } from './account/account.module';
 import { AuditModule } from './audit/audit.module';
 import { MailModule } from './mail/mail.module';
+import { StorageModule } from './storage/storage.module';
+import { WholesaleModule } from './wholesale/wholesale.module';
 import { TasksModule } from './tasks/tasks.module';
 import { AgencyModule } from './agency/agency.module';
 import { AiModule } from './ai/ai.module';
@@ -26,6 +28,7 @@ import { MetricsModule } from './metrics/metrics.module';
     HealthModule,
     AuditModule,
     MailModule,
+    StorageModule,
     AccountModule,
     AiModule,
     AuthModule,
@@ -37,6 +40,7 @@ import { MetricsModule } from './metrics/metrics.module';
     MetricsModule,
     TasksModule,
     AgencyModule,
+    WholesaleModule,
   ],
   controllers: [AppController],
   providers: [AppService],

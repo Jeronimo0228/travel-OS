@@ -151,7 +151,9 @@ describe('QuotesService', () => {
     });
 
     expect(findCatalogItems).toHaveBeenCalledWith(
-      expect.objectContaining({ where: { agencyId: 'agency-a' } }),
+      expect.objectContaining({
+        where: { agencyId: 'agency-a', archivedAt: null },
+      }),
     );
     // HU-24: the agency knowledge base reaches the alternatives prompt.
     expect(knowledgeService.promptFor).toHaveBeenCalledWith('agency-a');

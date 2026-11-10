@@ -85,7 +85,7 @@ describe('portal input schemas', () => {
   });
 
   it('exposes the document upload limits the frontend also enforces', () => {
-    expect(documentUploadLimits.maxBytes).toBe(5 * 1024 * 1024);
+    expect(documentUploadLimits.maxBytes).toBe(4 * 1024 * 1024);
     expect(documentUploadLimits.contentTypes).toEqual([
       'application/pdf',
       'image/jpeg',

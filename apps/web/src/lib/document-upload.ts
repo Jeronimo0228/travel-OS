@@ -10,7 +10,7 @@ export function validateDocumentFile(file: FileLike): string | null {
   }
   if (file.size === 0) return "El archivo está vacío.";
   if (file.size > documentUploadLimits.maxBytes) {
-    return "El archivo supera los 5 MB.";
+    return "El archivo supera los 4 MB.";
   }
   return null;
 }

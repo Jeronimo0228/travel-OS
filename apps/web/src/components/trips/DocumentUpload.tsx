@@ -47,7 +47,7 @@ export function DocumentUpload({
     <form onSubmit={submit} noValidate className="grid gap-3 mt-4">
       <div>
         <label htmlFor={`${id}-file`} className="text-label-sm text-on-surface-variant">
-          Archivo (PDF, JPG o PNG, hasta 5 MB)
+          Archivo (PDF, JPG o PNG, hasta 4 MB)
         </label>
         <input
           id={`${id}-file`}

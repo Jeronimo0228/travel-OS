@@ -49,7 +49,8 @@ export class AiController {
   @Get('status')
   @UseGuards(RolesGuard)
   @Roles(Role.ADMIN)
-  status() {
+  async status() {
+    await this.ai.refreshCooldowns();
     return this.ai.status();
   }
 
