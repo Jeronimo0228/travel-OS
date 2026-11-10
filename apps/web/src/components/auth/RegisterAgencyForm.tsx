@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { registerAgencySchema, type RegisterAgencyInput } from "@travelos/shared";
 import { registerAgency, AuthError } from "@/lib/auth";
@@ -227,6 +228,17 @@ export function RegisterAgencyForm() {
         )}
         {loading ? "Creando agencia..." : "Crear agencia"}
       </button>
+      <p className="text-center text-[12px] text-on-surface-variant">
+        Al crear la agencia aceptas los{" "}
+        <Link href="/terminos" className="underline">
+          términos de uso
+        </Link>{" "}
+        y la{" "}
+        <Link href="/privacidad" className="underline">
+          política de tratamiento de datos
+        </Link>
+        .
+      </p>
     </form>
   );
 }
