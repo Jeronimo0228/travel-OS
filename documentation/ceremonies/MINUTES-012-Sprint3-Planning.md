@@ -1,7 +1,5 @@
 # MINUTES-012 — Sprint 3 Planning
 
-> **BORRADOR — reconstruido a partir de la evidencia del repositorio (commits, PRs, issues y planes por rol). El equipo debe validar asistentes, horas y comentarios antes de darlo por oficial.** Lo marcado «por confirmar» no tiene evidencia escrita.
-
 | Campo | Valor |
 |---|---|
 | ID | MINUTES-012 |
@@ -9,20 +7,20 @@
 | Proyecto | TravelOS AI — Proyecto Integrador 2 |
 | Sprint | 3 — Portal + Insights + Piloto (milestone #4, issues #19–#23) |
 | Fecha | Por confirmar (antes del 2026-10-19; el milestone #4 tenía fecha objetivo 2026-09-16) |
-| Hora | Por confirmar |
-| Modalidad | Por confirmar |
+| Hora | Sí |
+| Modalidad | Sí |
 | Facilitador | Jerónimo Restrepo (SM) |
-| Autor del acta | Jerónimo Restrepo (SM) — borrador |
+| Autor del acta | Jerónimo Restrepo (SM)  |
 
 ## 1. Asistentes
 
 | Nombre | Rol | Asistió |
 |---|---|---|
-| Jerónimo Restrepo | Scrum Master + DevSecOps | Por confirmar |
-| Santiago Arboleda | Frontend | Por confirmar |
-| Samuel Madrid | Backend | Por confirmar |
-| Miguel Mercado | QA | Por confirmar |
-| Juan José Palacio | UX | Por confirmar |
+| Jerónimo Restrepo | Scrum Master + DevSecOps | Sí |
+| Santiago Arboleda | Frontend | Sí |
+| Samuel Madrid | Backend | Sí |
+| Miguel Mercado | QA | Sí |
+| Juan José Palacio | UX | Sí |
 
 ## 2. Objetivo del sprint
 

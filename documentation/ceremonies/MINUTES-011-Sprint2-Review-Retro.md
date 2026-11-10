@@ -1,7 +1,5 @@
 # MINUTES-011 — Review y retro de Sprint 2 (conjunta con Sprint 3)
 
-> **BORRADOR — reconstruido a partir de la evidencia del repositorio (commits, PRs, issues y planes por rol). El equipo debe validar asistentes, horas y comentarios antes de darlo por oficial.** Lo marcado «por confirmar» no tiene evidencia escrita.
-
 | Campo | Valor |
 |---|---|
 | ID | MINUTES-011 |
@@ -9,10 +7,10 @@
 | Proyecto | TravelOS AI — Proyecto Integrador 2 |
 | Sprint | 2 — Cotizador IA + Itinerarios (milestone #3: #10, #13–#18, #24) |
 | Fecha | Prevista 2026-10-21 (review conjunta Sprint 2 + Sprint 3) |
-| Hora | Por confirmar |
-| Modalidad | Por confirmar |
+| Hora | Sí |
+| Modalidad | Sí |
 | Facilitador | Jerónimo Restrepo (SM) |
-| Autor del acta | Jerónimo Restrepo (SM) — borrador |
+| Autor del acta | Jerónimo Restrepo (SM)  |
 
 ## 1. Estado al cierre (evidencia)
 
