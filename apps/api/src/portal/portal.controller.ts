@@ -13,7 +13,6 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { memoryStorage } from 'multer';
 import {
   createItineraryItemSchema,
   createPortalMessageSchema,
@@ -110,7 +109,7 @@ export class ReservationsController {
   @Post('reservations/:id/documents/upload')
   @UseInterceptors(
     FileInterceptor('file', {
-      storage: memoryStorage(),
+      // Sin `storage`, multer deja el archivo en memoria (buffer) y nunca en disco.
       // +1 byte: multer corta en el límite y el servicio responde 413 con mensaje claro.
       limits: {
         fileSize: documentUploadLimits.maxBytes + 1,

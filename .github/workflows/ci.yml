@@ -62,6 +62,8 @@ jobs:
         run: pnpm --filter @travelos/api test:e2e
       - name: Build API
         run: pnpm --filter @travelos/api build
+      - name: Smoke API build (carga todos los módulos compilados)
+        run: node -e "require('./apps/api/dist/src/app.module'); console.log('API modules load OK')"
       - name: Lint Web
         run: pnpm --filter @travelos/web lint
       - name: Test Web

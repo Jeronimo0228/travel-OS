@@ -236,9 +236,10 @@ export function NetworkHub() {
     }
   }, [canManage]);
 
+  // Cada pestaña trae datos frescos al abrirla (las reservas llegan de otras agencias).
   useEffect(() => {
     if (user) void reload();
-  }, [user, reload]);
+  }, [user, reload, tab]);
 
   async function act(fn: () => Promise<unknown>, done: string) {
     setError(null);
