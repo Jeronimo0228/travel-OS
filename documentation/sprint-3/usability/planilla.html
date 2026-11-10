@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Planilla de usabilidad · Travel OS</title>
+<style>
+  :root { --ink:#0b1530; --mut:#5b6478; --line:#e3e7f1; --bg:#f7f8fc; --acc:#ff6a5f; --ok:#0f9d76; --warn:#d48a12; --bad:#d64545; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 15px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--ink); background: var(--bg); padding: 16px; }
+  .wrap { max-width: 1100px; margin: 0 auto; display: grid; gap: 16px; }
+  h1 { font-size: 22px; margin: 0; }
+  h2 { font-size: 16px; margin: 0 0 8px; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+  .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; }
+  label { display: grid; gap: 4px; font-size: 13px; color: var(--mut); }
+  input, select, textarea { font: inherit; padding: 7px 9px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--ink); }
+  textarea { width: 100%; min-height: 60px; }
+  button { font: inherit; border: 0; border-radius: 8px; padding: 8px 12px; cursor: pointer; background: var(--ink); color: #fff; }
+  button.ghost { background: #fff; color: var(--ink); border: 1px solid var(--line); }
+  button.acc { background: var(--acc); }
+  .tasks { display: grid; gap: 10px; }
+  .task { display: grid; grid-template-columns: 1fr auto; gap: 8px; border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
+  .task p { margin: 2px 0; color: var(--mut); font-size: 13px; }
+  .timer { font: 600 22px/1 ui-monospace, monospace; font-variant-numeric: tabular-nums; min-width: 70px; text-align: right; }
+  .controls { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .pill { padding: 3px 8px; border-radius: 999px; font-size: 12px; font-weight: 700; }
+  .ok { background: #e3f6ef; color: var(--ok); } .help { background: #fdf1dc; color: var(--warn); } .fail { background: #fbe3e3; color: var(--bad); }
+  .sus { display: grid; gap: 6px; }
+  .sus div { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; border-bottom: 1px solid var(--line); padding: 4px 0; }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 6px; text-align: left; }
+  .scroll { overflow-x: auto; }
+  pre { white-space: pre-wrap; background: #0b1530; color: #e8ecf7; padding: 12px; border-radius: 10px; font-size: 12px; max-height: 320px; overflow: auto; }
+  .muted { color: var(--mut); font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Planilla de usabilidad — Travel OS</h1>
+    <p class="muted">Para el moderador y el observador. Sigue el protocolo de la Wiki (página 18). Los datos se guardan solo en este navegador. Al terminar, exporta en Markdown y pégalo en la página 22 de la Wiki.</p>
+  </header>
+
+  <section class="card">
+    <h2>1. Participante</h2>
+    <div class="row">
+      <label>ID <input id="pid" value="P1" size="4"></label>
+      <label>Perfil <select id="profile"><option>Asesor</option><option>Gerente</option><option>Viajero</option></select></label>
+      <label>Dispositivo <select id="device"><option>Portátil</option><option>Celular</option></select></label>
+      <label>Moderador <input id="mod" placeholder="Nombre"></label>
+      <label>Observador <input id="obs" placeholder="Nombre"></label>
+      <label>Fecha <input id="date" type="date"></label>
+      <label><span><input id="consent" type="checkbox"> Consentimiento firmado</span></label>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>2. Tareas</h2>
+    <p class="muted">Lee la tarea en voz alta, pulsa «Iniciar» cuando el participante empieza y marca el resultado. Cuenta un error por cada ruta equivocada o mensaje de error. Al final de cada tarea pregunta: «De 1 (muy difícil) a 7 (muy fácil), ¿qué tan fácil fue?».</p>
+    <div class="tasks" id="tasks"></div>
+  </section>
+
+  <section class="card">
+    <h2>3. Cuestionario SUS</h2>
+    <p class="muted">1 = totalmente en desacuerdo · 5 = totalmente de acuerdo.</p>
+    <div class="sus" id="sus"></div>
+    <p><b>SUS: <span id="susScore">—</span></b></p>
+  </section>
+
+  <section class="card">
+    <h2>4. Preguntas de seguimiento</h2>
+    <div id="follow" class="tasks"></div>
+  </section>
+
+  <section class="card">
+    <div class="row">
+      <button class="acc" id="save">Guardar participante</button>
+      <button class="ghost" id="reset">Nuevo participante</button>
+      <button class="ghost" id="export">Exportar resultados (Markdown)</button>
+      <button class="ghost" id="clear">Borrar todo</button>
+    </div>
+    <div class="scroll"><table id="summary"></table></div>
+    <pre id="out" hidden></pre>
+  </section>
+</div>
+
+<script>
+const TASKS = [
+  { id: "T1", role: "Asesor", text: "Un cliente quiere ir con su pareja a Cartagena 5 días, hotel frente al mar. Prepárale una cotización.", goal: "≤ 90 s, éxito ≥ 80 %" },
+  { id: "T2", role: "Asesor", text: "Envíale al cliente la opción más económica en PDF.", goal: "éxito ≥ 80 %, ≤ 1 error" },
+  { id: "T3", role: "Asesor", text: "Esa cotización es de Ana Martínez. Déjala asociada a ella.", goal: "≤ 45 s, éxito ≥ 75 %" },
+  { id: "T4", role: "Asesor", text: "¿A qué cliente deberías llamar primero hoy y por qué?", goal: "confianza ≥ 4/5" },
+  { id: "T5", role: "Asesor", text: "Pasa a Carlos Ruiz a la etapa En cierre.", goal: "éxito ≥ 90 %" },
+  { id: "T6", role: "Gerente", text: "Dile a la IA que en tu agencia siempre se pide 30 % de anticipo.", goal: "≤ 60 s, éxito ≥ 75 %" },
+  { id: "T7", role: "Gerente", text: "¿Cuánto se vendió este mes y qué asesor va mejor?", goal: "≤ 10 s, éxito ≥ 90 %" },
+  { id: "T8", role: "Asesor", text: "Comparte con el viajero de Cartagena su itinerario.", goal: "éxito ≥ 90 %" },
+  { id: "T9", role: "Viajero", text: "Desde tu celular, revisa el voucher del hotel y pregunta a qué hora te recogen.", goal: "éxito ≥ 90 %, SUS ≥ 70" },
+];
+const SUS = [
+  "Creo que me gustaría usar este sistema con frecuencia.",
+  "Encontré el sistema innecesariamente complejo.",
+  "Pensé que el sistema era fácil de usar.",
+  "Creo que necesitaría el apoyo de un técnico para poder usarlo.",
+  "Las funciones del sistema estaban bien integradas.",
+  "Pensé que había demasiada inconsistencia en el sistema.",
+  "Imagino que la mayoría de la gente aprendería a usarlo muy rápido.",
+  "Encontré el sistema muy engorroso de usar.",
+  "Me sentí muy seguro usando el sistema.",
+  "Necesité aprender muchas cosas antes de poder usarlo.",
+];
+const FOLLOW = [
+  "¿Qué fue lo más fácil y lo más difícil?",
+  "¿Confiarías en los precios que armó la IA para enviárselos a un cliente? ¿Por qué?",
+  "¿Qué te faltó para usar esto en tu día a día en vez de WhatsApp/Excel?",
+  "(Viajero) ¿Preferirías recibir esto por WhatsApp o en el portal?",
+];
+const KEY = "travelos.usability.v1";
+const $ = (id) => document.getElementById(id);
+let state = fresh();
+let timers = {};
+
+function fresh() {
+  return { tasks: Object.fromEntries(TASKS.map((t) => [t.id, { ms: 0, result: "", errors: 0, seq: "", notes: "" }])), sus: Array(10).fill(""), follow: Array(4).fill("") };
+}
+function load() { try { return JSON.parse(localStorage.getItem(KEY)) ?? []; } catch { return []; } }
+function store(list) { try { localStorage.setItem(KEY, JSON.stringify(list)); } catch {} }
+function fmt(ms) { const s = Math.round(ms / 1000); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; }
+function susScore(answers) {
+  if (answers.some((a) => a === "")) return null;
+  return answers.reduce((sum, a, i) => sum + (i % 2 === 0 ? Number(a) - 1 : 5 - Number(a)), 0) * 2.5;
+}
+
+function renderTasks() {
+  $("tasks").innerHTML = "";
+  for (const t of TASKS) {
+    const s = state.tasks[t.id];
+    const el = document.createElement("div");
+    el.className = "task";
+    el.innerHTML = `<div><b>${t.id} · ${t.role}</b><p>«${t.text}»</p><p>Meta: ${t.goal}</p></div>
+      <div class="timer" id="tm-${t.id}">${fmt(s.ms)}</div>
+      <div class="controls">
+        <button data-a="start">Iniciar</button><button class="ghost" data-a="stop">Detener</button><button class="ghost" data-a="zero">Reiniciar</button>
+        <select data-f="result"><option value="">Resultado…</option><option value="ok">Completa</option><option value="help">Con ayuda</option><option value="fail">Fallida</option></select>
+        <label>Errores <input data-f="errors" type="number" min="0" value="${s.errors}" style="width:64px"></label>
+        <label>SEQ 1–7 <input data-f="seq" type="number" min="1" max="7" value="${s.seq}" style="width:64px"></label>
+        <input data-f="notes" placeholder="Observaciones (lo que dijo o hizo)" value="${s.notes.replace(/"/g, "&quot;")}" style="flex:1;min-width:200px">
+      </div>`;
+    el.querySelector('[data-f="result"]').value = s.result;
+    el.addEventListener("click", (e) => {
+      const a = e.target.dataset.a; if (!a) return;
+      if (a === "start" && !timers[t.id]) { const base = Date.now() - s.ms; timers[t.id] = setInterval(() => { s.ms = Date.now() - base; $("tm-" + t.id).textContent = fmt(s.ms); }, 250); }
+      if (a === "stop") { clearInterval(timers[t.id]); delete timers[t.id]; }
+      if (a === "zero") { clearInterval(timers[t.id]); delete timers[t.id]; s.ms = 0; $("tm-" + t.id).textContent = fmt(0); }
+    });
+    el.addEventListener("input", (e) => { const f = e.target.dataset.f; if (!f) return; s[f] = f === "errors" ? Number(e.target.value || 0) : e.target.value; });
+    $("tasks").appendChild(el);
+  }
+}
+function renderSus() {
+  $("sus").innerHTML = "";
+  SUS.forEach((q, i) => {
+    const row = document.createElement("div");
+    row.innerHTML = `<span>${i + 1}. ${q}</span><select>${["", 1, 2, 3, 4, 5].map((v) => `<option ${String(state.sus[i]) === String(v) ? "selected" : ""}>${v}</option>`).join("")}</select>`;
+    row.querySelector("select").addEventListener("change", (e) => { state.sus[i] = e.target.value; const sc = susScore(state.sus); $("susScore").textContent = sc ?? "—"; });
+    $("sus").appendChild(row);
+  });
+  $("susScore").textContent = susScore(state.sus) ?? "—";
+}
+function renderFollow() {
+  $("follow").innerHTML = "";
+  FOLLOW.forEach((q, i) => {
+    const l = document.createElement("label");
+    l.innerHTML = `${q}<textarea>${state.follow[i]}</textarea>`;
+    l.querySelector("textarea").addEventListener("input", (e) => (state.follow[i] = e.target.value));
+    $("follow").appendChild(l);
+  });
+}
+function meta() { return { pid: $("pid").value.trim(), profile: $("profile").value, device: $("device").value, mod: $("mod").value.trim(), obs: $("obs").value.trim(), date: $("date").value, consent: $("consent").checked }; }
+function renderSummary() {
+  const list = load();
+  if (!list.length) { $("summary").innerHTML = "<tr><td class='muted'>Aún no hay participantes guardados.</td></tr>"; return; }
+  $("summary").innerHTML = `<tr><th>ID</th><th>Perfil</th>${TASKS.map((t) => `<th>${t.id}</th>`).join("")}<th>SUS</th></tr>` +
+    list.map((p) => `<tr><td>${p.meta.pid}</td><td>${p.meta.profile}</td>${TASKS.map((t) => { const s = p.tasks[t.id]; return `<td>${s.result ? `<span class="pill ${s.result}">${{ ok: "✓", help: "~", fail: "✗" }[s.result]}</span> ${fmt(s.ms)}` : "—"}</td>`; }).join("")}<td>${susScore(p.sus) ?? "—"}</td></tr>`).join("");
+}
+function exportMd() {
+  const list = load();
+  if (!list.length) return "Sin participantes guardados.";
+  const lines = ["## Sesiones", "", "| ID | Fecha | Perfil | Dispositivo | Moderador | Observador | Consentimiento |", "|---|---|---|---|---|---|---|"];
+  for (const p of list) lines.push(`| ${p.meta.pid} | ${p.meta.date} | ${p.meta.profile} | ${p.meta.device} | ${p.meta.mod} | ${p.meta.obs} | ${p.meta.consent ? "Sí" : "No"} |`);
+  lines.push("", "## Resultados por tarea", "", "| Tarea | Participantes | Éxito sin ayuda | Con ayuda | Fallida | Tiempo medio | Errores medios | SEQ medio | Meta |", "|---|---|---|---|---|---|---|---|---|");
+  for (const t of TASKS) {
+    const rows = list.map((p) => p.tasks[t.id]).filter((s) => s.result);
+    if (!rows.length) { lines.push(`| ${t.id} | 0 | — | — | — | — | — | — | ${t.goal} |`); continue; }
+    const n = rows.length, c = (r) => rows.filter((s) => s.result === r).length, avg = (f) => rows.reduce((a, s) => a + Number(s[f] || 0), 0) / n;
+    const seqs = rows.filter((s) => s.seq !== ""), seq = seqs.length ? (seqs.reduce((a, s) => a + Number(s.seq), 0) / seqs.length).toFixed(1) : "—";
+    lines.push(`| ${t.id} | ${n} | ${Math.round((c("ok") / n) * 100)} % | ${c("help")} | ${c("fail")} | ${fmt(avg("ms"))} | ${avg("errors").toFixed(1)} | ${seq} | ${t.goal} |`);
+  }
+  const sus = list.map((p) => susScore(p.sus)).filter((s) => s !== null);
+  lines.push("", `**SUS promedio:** ${sus.length ? (sus.reduce((a, b) => a + b, 0) / sus.length).toFixed(1) : "—"} (n = ${sus.length}; objetivo ≥ 70)`, "", "## Observaciones por tarea", "");
+  for (const t of TASKS) { const obs = list.map((p) => p.tasks[t.id].notes && `- ${p.meta.pid}: ${p.tasks[t.id].notes}`).filter(Boolean); if (obs.length) lines.push(`**${t.id}**`, ...obs, ""); }
+  lines.push("## Respuestas a las preguntas de seguimiento", "");
+  FOLLOW.forEach((q, i) => { const a = list.map((p) => p.follow[i] && `- ${p.meta.pid}: ${p.follow[i].replace(/\n/g, " ")}`).filter(Boolean); if (a.length) lines.push(`**${q}**`, ...a, ""); });
+  return lines.join("\n");
+}
+$("save").onclick = () => { const list = load().filter((p) => p.meta.pid !== meta().pid); list.push({ meta: meta(), ...JSON.parse(JSON.stringify(state)) }); store(list); renderSummary(); };
+$("reset").onclick = () => { Object.values(timers).forEach(clearInterval); timers = {}; state = fresh(); const n = load().length + 1; $("pid").value = "P" + n; $("consent").checked = false; renderTasks(); renderSus(); renderFollow(); };
+$("export").onclick = async () => { const md = exportMd(); $("out").hidden = false; $("out").textContent = md; try { await navigator.clipboard.writeText(md); $("export").textContent = "Copiado al portapapeles ✓"; } catch { $("export").textContent = "Selecciona el texto de abajo y cópialo"; } };
+$("clear").onclick = () => { if ($("clear").dataset.sure) { store([]); renderSummary(); $("clear").textContent = "Borrar todo"; delete $("clear").dataset.sure; } else { $("clear").dataset.sure = "1"; $("clear").textContent = "¿Seguro? Pulsa otra vez"; } };
+$("date").valueAsDate = new Date();
+renderTasks(); renderSus(); renderFollow(); renderSummary();
+</script>
+</body>
+</html>
