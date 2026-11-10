@@ -7,12 +7,20 @@ import { ForbiddenException } from '@nestjs/common';
 const ALLOWED_WRITES: RegExp[] = [
   /^\/api\/auth\/logout\/?$/,
   /^\/api\/quotes\/?$/, // probar el cotizador con IA
+  /^\/api\/ai\/assistant\/?$/, // el asistente solo lee
   /^\/api\/quotes\/[^/]+\/pdf\/?$/,
   /^\/api\/reservations\/[^/]+\/portal-access\/?$/, // abrir el portal del viajero
 ];
 
-export function demoReadonlyAgencies(env = process.env.DEMO_READONLY_AGENCY_IDS): Set<string> {
-  return new Set((env ?? '').split(',').map((s) => s.trim()).filter(Boolean));
+export function demoReadonlyAgencies(
+  env = process.env.DEMO_READONLY_AGENCY_IDS,
+): Set<string> {
+  return new Set(
+    (env ?? '')
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean),
+  );
 }
 
 export function assertDemoCanWrite(
@@ -25,5 +33,7 @@ export function assertDemoCanWrite(
   if (['GET', 'HEAD', 'OPTIONS'].includes(method.toUpperCase())) return;
   const path = url.split('?')[0];
   if (ALLOWED_WRITES.some((re) => re.test(path))) return;
-  throw new ForbiddenException('Cuenta demo de solo lectura: esta acción no está disponible en la demo.');
+  throw new ForbiddenException(
+    'Cuenta demo de solo lectura: esta acción no está disponible en la demo.',
+  );
 }
