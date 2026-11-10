@@ -1,0 +1,162 @@
+[
+  {
+    "meta": {
+      "pid": "P1",
+      "profile": "Asesor",
+      "device": "Portátil",
+      "mod": "Juan José Palacio",
+      "obs": "Miguel Mercado",
+      "date": "2026-11-07",
+      "consent": true,
+      "agencia": "Punto D' Partida",
+      "nombreAnon": "Asesor A",
+      "duracionMin": 28
+    },
+    "tasks": {
+      "T1": { "ms": 52000, "result": "ok", "errors": 0, "seq": "7", "notes": "Escribió el pedido de una vez; abrió Cotizador sin pedir ayuda." },
+      "T2": { "ms": 35000, "result": "ok", "errors": 0, "seq": "6", "notes": "Comparó las tres tarjetas y bajó el PDF de la más barata." },
+      "T3": { "ms": 32000, "result": "ok", "errors": 0, "seq": "6", "notes": "Usó el selector del encabezado; encontró a Ana Martínez." },
+      "T4": { "ms": 18000, "result": "ok", "errors": 0, "seq": "6", "notes": "Leyó la razón del copiloto en voz alta: seguimiento vencido." },
+      "T5": { "ms": 15000, "result": "ok", "errors": 0, "seq": "7", "notes": "Arrastró la tarjeta a En cierre a la primera." },
+      "T6": { "ms": 48000, "result": "ok", "errors": 1, "seq": "5", "notes": "Buscó primero en Configuración; luego encontró Base IA." },
+      "T7": { "ms": 0, "result": "", "errors": 0, "seq": "", "notes": "" },
+      "T8": { "ms": 24000, "result": "ok", "errors": 0, "seq": "6", "notes": "Generó el enlace y lo copió." },
+      "T9": { "ms": 0, "result": "", "errors": 0, "seq": "", "notes": "" }
+    },
+    "sus": ["5", "2", "4", "2", "4", "2", "5", "2", "4", "2"],
+    "follow": [
+      "Fácil: cotizar y el kanban. Difícil: encontrar Base IA la primera vez.",
+      "Sí, con una revisión rápida del margen del hotel.",
+      "Poder invitar a otros asesores yo mismo y recuperar la contraseña.",
+      ""
+    ]
+  },
+  {
+    "meta": {
+      "pid": "P2",
+      "profile": "Asesor",
+      "device": "Portátil",
+      "mod": "Juan José Palacio",
+      "obs": "Miguel Mercado",
+      "date": "2026-11-07",
+      "consent": true,
+      "agencia": "Punto D' Partida",
+      "nombreAnon": "Asesor B",
+      "duracionMin": 31
+    },
+    "tasks": {
+      "T1": { "ms": 70000, "result": "ok", "errors": 1, "seq": "6", "notes": "Entró primero a CRM; luego Cotizador. Completó sin ayuda." },
+      "T2": { "ms": 38000, "result": "ok", "errors": 1, "seq": "6", "notes": "Dudó entre dos PDFs; eligió el correcto." },
+      "T3": { "ms": 45000, "result": "help", "errors": 1, "seq": "5", "notes": "No vio el selector; el moderador señaló el encabezado (sin ejecutar)." },
+      "T4": { "ms": 25000, "result": "ok", "errors": 1, "seq": "6", "notes": "Nombró al lead correcto tras releer la tarjeta." },
+      "T5": { "ms": 20000, "result": "ok", "errors": 0, "seq": "6", "notes": "Arrastre correcto." },
+      "T6": { "ms": 62000, "result": "help", "errors": 2, "seq": "4", "notes": "No encontraba Base IA; con pista de la barra lateral lo logró." },
+      "T7": { "ms": 0, "result": "", "errors": 0, "seq": "", "notes": "" },
+      "T8": { "ms": 30000, "result": "ok", "errors": 0, "seq": "6", "notes": "OK." },
+      "T9": { "ms": 0, "result": "", "errors": 0, "seq": "", "notes": "" }
+    },
+    "sus": ["4", "2", "4", "2", "4", "3", "4", "2", "4", "2"],
+    "follow": [
+      "Fácil: mover tarjetas. Difícil: vincular el lead y Base IA.",
+      "Sí, pero validaría tarifas del hotel a mano la primera semana.",
+      "Recuperar contraseña sin pedirle al admin.",
+      ""
+    ]
+  },
+  {
+    "meta": {
+      "pid": "P3",
+      "profile": "Asesor",
+      "device": "Portátil",
+      "mod": "Juan José Palacio",
+      "obs": "Miguel Mercado",
+      "date": "2026-11-08",
+      "consent": true,
+      "agencia": "Punto D' Partida",
+      "nombreAnon": "Asesor C",
+      "duracionMin": 29
+    },
+    "tasks": {
+      "T1": { "ms": 78000, "result": "ok", "errors": 0, "seq": "6", "notes": "Prompt largo; la IA respondió con 3 alternativas." },
+      "T2": { "ms": 52000, "result": "help", "errors": 2, "seq": "5", "notes": "Descargó primero la opción media; se autocorrijo tras pista." },
+      "T3": { "ms": 35000, "result": "ok", "errors": 0, "seq": "6", "notes": "Vinculación clara." },
+      "T4": { "ms": 22000, "result": "ok", "errors": 0, "seq": "6", "notes": "Confianza 5/5 en la razón del copiloto." },
+      "T5": { "ms": 17000, "result": "ok", "errors": 0, "seq": "7", "notes": "Sin fricción." },
+      "T6": { "ms": 50000, "result": "ok", "errors": 1, "seq": "5", "notes": "Encontró Base IA al segundo intento." },
+      "T7": { "ms": 0, "result": "", "errors": 0, "seq": "", "notes": "" },
+      "T8": { "ms": 28000, "result": "ok", "errors": 1, "seq": "6", "notes": "Buscó el botón en Viajes; lo halló." },
+      "T9": { "ms": 0, "result": "", "errors": 0, "seq": "", "notes": "" }
+    },
+    "sus": ["4", "2", "5", "2", "4", "2", "4", "2", "4", "2"],
+    "follow": [
+      "Fácil: lenguaje natural. Difícil: elegir el PDF correcto entre tres.",
+      "Sí, con revisión rápida.",
+      "Invitaciones de usuarios y notificaciones por WhatsApp de seguimientos.",
+      ""
+    ]
+  },
+  {
+    "meta": {
+      "pid": "P4",
+      "profile": "Gerente",
+      "device": "Portátil",
+      "mod": "Juan José Palacio",
+      "obs": "Miguel Mercado",
+      "date": "2026-11-08",
+      "consent": true,
+      "agencia": "Punto D' Partida",
+      "nombreAnon": "Gerente / dueño",
+      "duracionMin": 32
+    },
+    "tasks": {
+      "T1": { "ms": 72000, "result": "ok", "errors": 1, "seq": "6", "notes": "Completó la cotización; revisó margen." },
+      "T2": { "ms": 39000, "result": "ok", "errors": 0, "seq": "6", "notes": "Identificó la más económica de inmediato." },
+      "T3": { "ms": 40000, "result": "ok", "errors": 1, "seq": "5", "notes": "OK tras un clic fallido en el historial." },
+      "T4": { "ms": 23000, "result": "ok", "errors": 0, "seq": "6", "notes": "Priorizó igual que el copiloto." },
+      "T5": { "ms": 20000, "result": "ok", "errors": 0, "seq": "6", "notes": "Kanban claro." },
+      "T6": { "ms": 56000, "result": "ok", "errors": 0, "seq": "6", "notes": "Guardó la política de 30 % de anticipo." },
+      "T7": { "ms": 8000, "result": "ok", "errors": 0, "seq": "7", "notes": "Leyó ventas del mes y top asesor en < 10 s." },
+      "T8": { "ms": 26000, "result": "ok", "errors": 0, "seq": "6", "notes": "Compartió el portal." },
+      "T9": { "ms": 0, "result": "", "errors": 0, "seq": "", "notes": "" }
+    },
+    "sus": ["4", "2", "4", "2", "4", "2", "4", "2", "4", "2"],
+    "follow": [
+      "Fácil: dashboard y kanban. Difícil: nada crítico; pediría onboarding multi-usuario.",
+      "Sí; lo enviaría a un cliente real con revisión de 30 s.",
+      "Invitar asesores y roles desde la app.",
+      ""
+    ]
+  },
+  {
+    "meta": {
+      "pid": "P5",
+      "profile": "Viajero",
+      "device": "Celular",
+      "mod": "Juan José Palacio",
+      "obs": "Miguel Mercado",
+      "date": "2026-11-10",
+      "consent": true,
+      "agencia": "Cliente de Punto D' Partida",
+      "nombreAnon": "Viajero",
+      "duracionMin": 18
+    },
+    "tasks": {
+      "T1": { "ms": 0, "result": "", "errors": 0, "seq": "", "notes": "" },
+      "T2": { "ms": 0, "result": "", "errors": 0, "seq": "", "notes": "" },
+      "T3": { "ms": 0, "result": "", "errors": 0, "seq": "", "notes": "" },
+      "T4": { "ms": 0, "result": "", "errors": 0, "seq": "", "notes": "" },
+      "T5": { "ms": 0, "result": "", "errors": 0, "seq": "", "notes": "" },
+      "T6": { "ms": 0, "result": "", "errors": 0, "seq": "", "notes": "" },
+      "T7": { "ms": 0, "result": "", "errors": 0, "seq": "", "notes": "" },
+      "T8": { "ms": 0, "result": "", "errors": 0, "seq": "", "notes": "Observó al asesor generar el enlace (sesión P3)." },
+      "T9": { "ms": 45000, "result": "ok", "errors": 0, "seq": "6", "notes": "Abrió voucher del hotel y envió pregunta de recogida desde el portal en iPhone Safari." }
+    },
+    "sus": ["4", "2", "4", "2", "4", "2", "4", "2", "4", "2"],
+    "follow": [
+      "Fácil: ver documentos. Difícil: nada; pediría el enlace también por WhatsApp.",
+      "",
+      "",
+      "Prefiero el portal para documentos; el enlace por WhatsApp para abrirlo rápido."
+    ]
+  }
+]

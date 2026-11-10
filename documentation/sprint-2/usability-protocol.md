@@ -10,13 +10,13 @@ Verificar que asesores y gerentes de Punto D' Partida puedan cotizar, gestionar 
 |---|---|---|
 | Asesor de viajes de la agencia | 3 | Por el PO |
 | Gerente / dueño de agencia | 1 | El PO |
-| Viajero (cliente real o simulado) | 2 | Por el equipo |
+| Viajero (cliente real de la agencia) | 1 | Reclutado con el PO |
 
 Criterio: usan WhatsApp y Excel a diario; no han visto TravelOS antes.
 
 ## 3. Entorno
 
-https://travel-os.pdpcomunica.com, usuario demo por rol. Portátil para asesor/gerente, celular propio para el viajero. Grabación de pantalla con consentimiento. Un moderador (UX) y un observador que cronometra (QA).
+https://travel-os.pdpcomunica.com, cuentas de prueba por rol en producción. Portátil para asesor/gerente, celular propio para el viajero. Grabación de pantalla con consentimiento. Un moderador (UX) y un observador que cronometra (QA).
 
 ## 4. Tareas
 

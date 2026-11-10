@@ -8,7 +8,7 @@ El MVP está en producción en infraestructura administrada de PDP (Vercel + Neo
 
 ## 6.2 Viabilidad operativa
 
-Una agencia se configura en menos de una hora: catálogo, marca y base de conocimiento. El portal no exige cuenta al viajero. Pendiente: medir la adopción con las pruebas de usabilidad (Sprint 3, en ejecución). **Viable con validación pendiente.**
+Una agencia se configura en menos de una hora: catálogo, marca y base de conocimiento. El portal no exige cuenta al viajero. Adopción medida con pruebas de usabilidad (5 usuarios finales reales, SUS 76, efectividad 91 %). Ver Wiki 22. **Viable y validado con usuarios.**
 
 ## 6.3 Viabilidad económica
 

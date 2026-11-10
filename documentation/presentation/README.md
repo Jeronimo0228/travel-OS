@@ -9,7 +9,7 @@
 
 **Presentar:** abre el archivo en el navegador (doble clic). `F` pone pantalla completa, `→` o espacio avanza y `←` retrocede. Con `#s5` en la URL se abre en la diapositiva 5.
 
-**Resultados de usabilidad en el deck:** después de las sesiones, edita la constante `USABILIDAD` al final de `sprint-3-final-deck.html` con los datos exportados de la planilla. Mientras sea `null`, la diapositiva 13 muestra el protocolo y las metas.
+**Resultados de usabilidad en el deck:** constante `USABILIDAD` ya poblada con las 5 sesiones reales (SUS 76). Fuente: `documentation/sprint-3/usability/sessions.json` y Wiki 22.
 
 ---
 
